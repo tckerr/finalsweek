@@ -1,0 +1,1 @@
+python.exe $PSScriptRoot\manage.py migrate

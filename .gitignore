@@ -1,3 +1,9 @@
+.venv
+*.sqlite3
+*.sublime-project
+*.sublime-workspace
+notes.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
