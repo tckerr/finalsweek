@@ -3,6 +3,9 @@
 *.sublime-project
 *.sublime-workspace
 notes.txt
+arch.txt
+components.txt
+*.sqlite 
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

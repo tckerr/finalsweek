@@ -1,3 +1,7 @@
+param(
+    [switch]$s = $false
+)
+
 write-host "Installing VirtualEnv..." -ForegroundColor Cyan
 pip install virtualenv
 
@@ -21,8 +25,11 @@ pip install django-filter
 write-host "Running initial migration..." -ForegroundColor Cyan
 ./finalsweek/migrate.ps1
 
-write-host "Creating superuser..." -ForegroundColor Cyan
-python finalsweek/manage.py createsuperuser
+
+if($s){
+    write-host "Creating superuser..." -ForegroundColor Cyan
+    python finalsweek/manage.py createsuperuser
+}
 
 deactivate
 write-host "Done!" -ForegroundColor Green
