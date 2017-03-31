@@ -1,4 +1,4 @@
-from sim.messages.message_types import MessageTypes
+from sim.messaging.message_types import MessageTypes
 
 class MessageDispatcher(object):
     def __init__(self, component_entity_map):
@@ -20,11 +20,11 @@ class MessageDispatcher(object):
             self.__dispatch_to_all(message_type, data)
 
     def __dispatch_to_all(self, message_type, data):
-        components = self.component_entity_map.get_all()
+        components = self.component_entity_map.list_components()
         self.__send_message_to_component_list(components, message_type, data)
 
     def __dispatch_to_entity(self, message_type, data, entity_id):
-        components = self.component_entity_map.get_by_entity_id(entity_id)
+        components = self.component_entity_map.list_components_by_entity_id(entity_id)
         self.__send_message_to_component_list(components, message_type, data)
 
     def __send_message_to_component_list(self, component_list, message_type, data):
