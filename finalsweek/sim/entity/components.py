@@ -1,6 +1,7 @@
 from django.db import models
 from sim.messaging.message_types import MessageTypes
 from django.contrib.auth.models import User
+from datetime import datetime
 
 class Component(models.Model):
     class Meta:
@@ -46,6 +47,9 @@ class TurnComponent(Component):
     if player leaves, all --1
     '''    
     actions_left = models.IntegerField(null=False)
+    round_number = models.IntegerField(null=False)
+    expended = models.DateTimeField(null=True)
+
 
 class GradesComponent(IntegerComponent):
     def msg(self, message_type, data):

@@ -10,19 +10,17 @@ class GameInterface(object):
         self.game_manager_factory = GameManagerFactory()
         self.ruleset_factory = RulesetFactory()
 
-    def create_ruleset(self, max_actors, actions_per_turn, auto_create_ai):
-        ruleset = self.ruleset_factory.create(max_actors, actions_per_turn, auto_create_ai)
+    def create_ruleset(self, max_actors, actions_per_turn, rounds_per_game, auto_create_ai):
+        ruleset = self.ruleset_factory.create(max_actors, actions_per_turn, rounds_per_game, auto_create_ai)
         return ruleset.id
 
     def create_game(self, user_ids, ai_slots, ruleset_id):
         game_manager = self.game_manager_factory.create_new(user_ids, ai_slots, ruleset_id)
         return game_manager.game_id
 
-
     def submit_action(self, game_id, action):
         game_manager = self.game_manager_factory.load(game_id)
-        assert issubclass(action.__class__, GameApiAction)
-        
+        assert issubclass(action.__class__, GameApiAction)        
         game_manager.submit_action(action)
 
 

@@ -9,6 +9,7 @@ from sim.engine.systems.gameslot_manager import GameslotManager
 from sim.engine.systems.turn_manager import TurnManager
 from sim.entity.providers import ComponentEntityMap
 from sim.entity.factories.actor_factory import ActorFactory
+from sim.entity.entity import Entity
 
 class GameManagerFactory(object):
 
@@ -66,4 +67,12 @@ class GameManager(object):
 
     def initialize_gamestate(self):
         self.gameslot_manager.jumble()
-        self.turn_manager.initialize_next_turn()
+        self.turn_manager.provide_turn()    
+
+    def expend_action(self, entity_id, cost):        
+        entity = Entity.objects.get(pk=entity_id)
+        self.turn_manager.expend_action(entity, cost)
+        self.__provide_turn()
+
+    def __provide_turn(self):
+        self.turn_manager.provide_turn()

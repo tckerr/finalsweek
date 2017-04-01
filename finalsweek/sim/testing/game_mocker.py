@@ -16,33 +16,30 @@ class GameMocker(object):
             game_manager.message_dispatcher.dispatch(*message)
 
     def performance_test(self, game_manager):
-        start = datetime.now()        
+        start = datetime.utcnow()        
         mock_message = ( MessageTypes.DebugValues, {"value": "hello world"} )
         game_manager.message_dispatcher.dispatch(*mock_message)
-        end = datetime.now()
+        end = datetime.utcnow()
         elapsed = end - start
         print("Time to dispatch 1 message to {} entities:".format(str(game_manager.game.total_actors)), elapsed.total_seconds())
         
 
-    def turn_test(self, game_manager, rounds=10):
+    def turn_test(self, game_manager):
+        while True:
+            # this will be provided somewhere else
+            new_entity_id, round_number = self.__get_current_turn_entity_id(game_manager.game.id)
+            print ("   [Round {}]".format(str(round_number)))
+            print ("      It is entity({})'s turn".format(str(new_entity_id)))
+            cost = random.randint(1,2)
+            try:
+                print("      Attempting action of cost ({})".format(str(cost)))
+                game_manager.expend_action(new_entity_id, cost)
+                
+            except GameFlowViolation as e:
+                print("         Invalid Request!", e)
+            
 
-        for round_number in range(1, rounds+1):
-            print ("   [Starting round {}]".format(str(round_number)))
-
-            if game_manager.turn_manager.needs_turn_assignment():
-                game_manager.turn_manager.initialize_next_turn()
-
-            turns = TurnComponent.objects.filter(entity__game=game_manager.game)
-            print (turns.count())
-            assert turns.count() == 1
-            entity = TurnComponent.objects.filter(entity__game=game_manager.game).first().entity
-            print ("      It is entity({})'s turn".format(str(entity.id)))
-            while game_manager.turn_manager.entity_has_turn(entity):
-                cost = random.randint(1,2)
-                try:
-                    print("      Attempting action of cost ({})".format(str(cost)))
-                    game_manager.turn_manager.expend_action(entity, cost)
-                    
-                except GameFlowViolation as e:
-                    print("         Invalid Request!", e)
-            print("      Turn complete!")
+    # hack to get something that will be public knowledge later
+    def __get_current_turn_entity_id(self, game_id):
+        component = TurnComponent.objects.filter(entity__game_id=game_id, expended__isnull=True).first()
+        return component.entity.id, component.round_number
