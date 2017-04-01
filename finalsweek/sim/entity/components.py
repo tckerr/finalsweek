@@ -91,17 +91,12 @@ class VisibilityComponent(Component):
     """
 
 class ActorComponent(Component):
-    def __init__(self, *args, **kwargs):
-        super(ActorComponent, self).__init__(*args, **kwargs)
-        self.user_id = None
-        self.seat_id = None
-
     user = models.ForeignKey(User, null=True)
-    seat_number = models.IntegerField(null=True)
+    gameslot_number = models.IntegerField(null=True)
 
     def msg(self, message_type, data):
-        if message_type is MessageTypes.UpdateSeat:
-            self.seat_number = data["value"]
+        if message_type is MessageTypes.UpdateGameslot:
+            self.gameslot_number = data["value"]
             self.save()
 
         super(ActorComponent, self).msg(message_type, data)

@@ -11,10 +11,8 @@ class Table(object):
     def seats(self):
         return [seat_number for seat_number in range(0, self.size)]
 
-class SeatManager(object):
-
+class GameslotManager(object):
     #TODO: make this not based on actors
-
     def __init__(self, game):
         self.actor_provider = ActorProvider(game)
         self.table = Table(game.ruleset.max_actors)

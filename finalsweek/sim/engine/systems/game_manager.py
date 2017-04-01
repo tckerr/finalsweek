@@ -5,11 +5,10 @@ from sim.messaging.message_types import MessageTypes
 from sim.messaging.message_dispatcher import MessageDispatcher#
 from sim.engine.game import Game
 from sim.engine.ruleset import Ruleset
-from sim.engine.systems.seat_manager import SeatManager
+from sim.engine.systems.gameslot_manager import GameslotManager
 from sim.engine.systems.turn_manager import TurnManager
 from sim.entity.providers import ComponentEntityMap
 from sim.entity.factories.actor_factory import ActorFactory
-
 
 class GameManagerFactory(object):
 
@@ -49,7 +48,7 @@ class GameManagerFactory(object):
 
     def __initialize_game_manager(self, game, user_ids):
         game_manager = GameManager(game)
-        game_manager.jumble_seats()
+        game_manager.jumble_gameslots()
         game_manager.initialize_turns()
         return game_manager
    
@@ -59,15 +58,15 @@ class GameManager(object):
     def __init__(self, game):
         self.game = game
         self.message_dispatcher = MessageDispatcher(self.game.id)      
-        self.seat_manager = SeatManager(self.game) 
+        self.gameslot_manager = GameslotManager(self.game) 
         self.turn_manager = TurnManager(self.game) 
 
     @property
     def game_id(self):
         return self.game.id
 
-    def jumble_seats(self):
-        self.seat_manager.jumble()
+    def jumble_gameslots(self):
+        self.gameslot_manager.jumble()
 
     def initialize_turns(self):
         if self.turn_manager.needs_turn_assignment():

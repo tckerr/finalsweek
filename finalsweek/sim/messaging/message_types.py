@@ -7,7 +7,7 @@ class MessageTypes(object):
 
     GradesModification = "GradesModification"
     ReportGrades = "ReportGrades"
-    UpdateSeat = "UpdateSeat"
+    UpdateGameslot = "UpdateGameslot"
 
     # DEBUGGING
     DebugEcho = "DebugEcho"
