@@ -1,6 +1,7 @@
 import random
 from sim.entity.providers import ActorProvider
-from sim.messaging import MessageTypes, ValueMessage
+from sim.messaging.message_types import MessageTypes
+from sim.messaging.message import ValueMessage
 
 class Table(object):
     def __init__(self, size):
@@ -14,9 +15,9 @@ class SeatManager(object):
 
     #TODO: make this not based on actors
 
-    def __init__(self, component_entity_map, game):
-        self.actor_provider = ActorProvider(component_entity_map)
-        self.table = Table(game.total_actors)
+    def __init__(self, game):
+        self.actor_provider = ActorProvider(game)
+        self.table = Table(game.ruleset.max_actors)
     
     def jumble(self):
         seats = self.__jumble_list(self.table.seats)

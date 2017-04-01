@@ -2,15 +2,6 @@ from django.db import models
 from sim.messaging.message_types import MessageTypes
 from django.contrib.auth.models import User
 
-class ComponentIdGenerator(object):
-    __component_incr = 0
-
-    @classmethod
-    def generate(cls):
-        cls.__component_incr += 1
-        return cls.__component_incr
-
-
 class Component(models.Model):
     class Meta:
         abstract = True
@@ -45,8 +36,6 @@ class IntegerComponent(Component):
         self.add(-1 * value)
         self.save()
 
-
-
 class PopularityComponent(IntegerComponent):
     pass
 
@@ -55,7 +44,8 @@ class TurnComponent(Component):
     has turn counter, gets += 1 each turn
     player with turn counter = total players goes next and it gets set to 0
     if player leaves, all --1
-    '''
+    '''    
+    actions_left = models.IntegerField(null=False)
 
 class GradesComponent(IntegerComponent):
     def msg(self, message_type, data):
@@ -113,6 +103,8 @@ class ActorComponent(Component):
         if message_type is MessageTypes.UpdateSeat:
             self.seat_number = data["value"]
             self.save()
+
+        super(ActorComponent, self).msg(message_type, data)
 
     def is_ai(self):
         return self.user_id is None

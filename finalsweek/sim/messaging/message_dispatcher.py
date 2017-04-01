@@ -1,8 +1,9 @@
 from sim.messaging.message_types import MessageTypes
+from sim.entity.providers import ComponentEntityMap
 
 class MessageDispatcher(object):
-    def __init__(self, component_entity_map):
-        self.component_entity_map = component_entity_map
+    def __init__(self, game_id):
+        self.component_entity_map = ComponentEntityMap(game_id)
         self.message_types = set()
         self.__init_message_types()
 

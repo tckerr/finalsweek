@@ -6,9 +6,6 @@ from sim.entity.components import (
     ActorComponent, )
 
 class ActorFactory(object):
-    def __init__(self, component_entity_map):
-        self.component_entity_map = component_entity_map
-
     def create_user(self, game_id, user_id):
         component = self.__build_components(game_id, user_id)     
     
@@ -32,17 +29,14 @@ class ActorFactory(object):
         grades_component = GradesComponent()
         grades_component.entity_id = entity_id
         grades_component.save()
-        self.component_entity_map.insert(entity_id, grades_component)
 
     def __build_popularity_component(self, entity_id):
         popularity_component = PopularityComponent(entity_id)
         popularity_component.entity_id = entity_id
         popularity_component.save()
-        self.component_entity_map.insert(entity_id, popularity_component)
              
     def __build_actor_component(self, entity_id, user_id):
         actor_component = ActorComponent(entity_id)
         actor_component.entity_id = entity_id
         actor_component.user_id = user_id #otherwise AI
         actor_component.save()
-        self.component_entity_map.insert(entity_id, actor_component)

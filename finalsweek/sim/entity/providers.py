@@ -1,83 +1,51 @@
 from sim.messaging.message_types import MessageTypes
-from sim.entity.components import (
-    Component, 
-    ActorComponent, )
-
-class ActorProvider(object):
-    def __init__(self, component_entity_map):
-        self.component_entity_map = component_entity_map
-
-    @property
-    def all(self):
-        return self.component_entity_map.list_components_by_component_type(ActorComponent)
+from sim.entity.components import *
 
 class ComponentEntityMap(object):
-    top_level_components = MessageTypes.all_types()
+
+    mapped_component_types = (
+        PopularityComponent,
+        TurnComponent,
+        GradesComponent,
+        CostComponent,
+        DisposableComponent,
+        ActionComponent,
+        StackableComponent,
+        VisibilityComponent,
+        ActorComponent, )
 
     def __init__(self, game_id):
-        self.__component_types = { component_type: set() for component_type in self.top_level_components }
-        self.__entities = {}
-        self.__components = {}
         self.__game_id = game_id
 
-    def insert(self, entity_id, component):
-        component_type = component.__class__
-        print (component_type, Component)
-        assert issubclass(component_type, Component)
-        self.__safe_add(self.__component_types, component_type, component)
-        self.__safe_add(self.__entities, entity_id, component)
-        self.__assign(self.__components, component.id, component)
+    def list_components(self, **filters):
+        for component_type in self.mapped_component_types:
+            for component in self.list_components_by_component_type(component_type, **filters):
+                yield component
 
-    def list_components(self):
-        for component_id, component in self.__components.items():
-            yield component
-
-    def list_components_by_component_type(self, component_type):
-        for component in self.__safe_list(self.__component_types, component_type):
+    def list_components_by_component_type(self, component_type, **filters):
+        for component in component_type.objects.filter(entity__game_id=self.__game_id, **filters):
             yield component
 
     def list_components_by_entity_id(self, entity_id):
-        for component in self.__safe_list(self.__entities, entity_id):
+        for component in self.list_components(entity_id=entity_id):
             yield component
-
-    def get_component_by_id(self, component_id):
-        return self.__safe_get(self.__components, component_id)
-
-    def get_entity_id_by_component(self, input_component):
-        for entity_id, component_set in self.__entities.items():
-            for component in component_set:
-                if component is input_component:
-                    return entity_id
     
     def delete_component(self, component):
-        entity_id = self.get_entity_id_by_component(component)
-        self.__safe_delete(self.__entities, entity_id, component)
-        self.__safe_delete(self.__component_types, component.__class__, component)
-        del self.__components[component.id]
+        component.delete()
 
     def move_component(self, component, entity_id):
-        self.delete_component(component)
-        self.insert(entity_id, component)
+        component.entity_id = entity_id
+        component.save()
 
-    def __safe_add(self, dictionary, index, value):
-        print(index.__class__)
-        if index not in dictionary:
-            dictionary[index] = set()
-        dictionary[index].add(value)
-        print ("--")
+class ComponentProvider(object):
+    component_type = None
 
-    def __assign(self, dictionary, index, value):
-        dictionary[index] = value
+    def __init__(self, game_id):
+        self.component_entity_map = ComponentEntityMap(game_id)
 
-    def __safe_list(self, dictionary, index):
-        if index not in dictionary:
-            return set()
-        return dictionary[index]
+    @property
+    def all(self):
+        return self.component_entity_map.list_components_by_component_type(self.__class__.component_type)
 
-    def __safe_get(self, dictionary, index):
-        if index in dictionary:
-            return dictionary[index]
-
-    def __safe_delete(self, dictionary, index, value):
-        if index in dictionary:
-            dictionary[index].discard(value)
+class ActorProvider(ComponentProvider):
+    component_type = ActorComponent 
