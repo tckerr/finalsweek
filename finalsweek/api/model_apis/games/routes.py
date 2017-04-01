@@ -1,6 +1,6 @@
 from rest_framework import routers
 #
-from viewsets import GameViewSet
+from api.model_apis.games.viewsets import GameViewSet
 
 router = routers.DefaultRouter()
 router.register(r'games', GameViewSet)

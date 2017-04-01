@@ -1,2 +1,3 @@
 from sim.entity.components import GradesComponent
-from sim.models.Game import Game
+from sim.entity.entity import Entity
+from sim.engine.game import Game

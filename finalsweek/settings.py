@@ -87,11 +87,11 @@ DATABASES = {
     #},
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'DB_NAME',
+        'NAME': credentials.app_db_name,
         'USER': credentials.app_username,
         'PASSWORD': credentials.app_password,
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'HOST': credentials.db_connection_host,
+        'PORT': credentials.db_connection_port,
     }
 }
 

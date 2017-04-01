@@ -12,9 +12,11 @@ class Table(object):
 
 class SeatManager(object):
 
-    def __init__(self, component_entity_map, rules):
+    #TODO: make this not based on actors
+
+    def __init__(self, component_entity_map, game):
         self.actor_provider = ActorProvider(component_entity_map)
-        self.table = Table(rules.total_actors)
+        self.table = Table(game.total_actors)
     
     def jumble(self):
         seats = self.__jumble_list(self.table.seats)

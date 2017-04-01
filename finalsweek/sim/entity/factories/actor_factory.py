@@ -1,5 +1,5 @@
-from sim.entity.factories.entity_factory import EntityIdGenerator
 from sim.exceptions import NotImplementedException
+from sim.entity.entity import Entity
 from sim.entity.components import (
     GradesComponent, 
     PopularityComponent,
@@ -9,28 +9,40 @@ class ActorFactory(object):
     def __init__(self, component_entity_map):
         self.component_entity_map = component_entity_map
 
-    def create_user(self, user_id):
-        return self.__build_components(user_id)     
+    def create_user(self, game_id, user_id):
+        component = self.__build_components(game_id, user_id)     
     
-    def create_ai(self):
-        return self.__build_components()        
+    def create_ai(self, game_id):
+        return self.__build_components(game_id)     
 
-    def __build_components(self, user_id=None):
-        entity_id = EntityIdGenerator.generate()
+    def __build_entity(self, game_id):
+        entity = Entity()
+        entity.game_id = game_id
+        entity.save()
+        return entity
+
+    def __build_components(self, game_id, user_id=None):
+        entity_id = self.__build_entity(game_id).id
         self.__build_grades_component(entity_id)
         self.__build_popularity_component(entity_id)
         self.__build_actor_component(entity_id, user_id)
-        return entity_id
+        return entity_id    
 
     def __build_grades_component(self, entity_id):
         grades_component = GradesComponent()
+        grades_component.entity_id = entity_id
+        grades_component.save()
         self.component_entity_map.insert(entity_id, grades_component)
 
     def __build_popularity_component(self, entity_id):
-        popularity_component = PopularityComponent()
+        popularity_component = PopularityComponent(entity_id)
+        popularity_component.entity_id = entity_id
+        popularity_component.save()
         self.component_entity_map.insert(entity_id, popularity_component)
              
     def __build_actor_component(self, entity_id, user_id):
-        actor_component = ActorComponent()
+        actor_component = ActorComponent(entity_id)
+        actor_component.entity_id = entity_id
         actor_component.user_id = user_id #otherwise AI
+        actor_component.save()
         self.component_entity_map.insert(entity_id, actor_component)

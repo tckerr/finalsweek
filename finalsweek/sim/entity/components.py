@@ -1,5 +1,6 @@
 from django.db import models
 from sim.messaging.message_types import MessageTypes
+from django.contrib.auth.models import User
 
 class ComponentIdGenerator(object):
     __component_incr = 0
@@ -15,6 +16,7 @@ class Component(models.Model):
         abstract = True
 
     id = models.AutoField(primary_key=True)
+    entity = models.ForeignKey("Entity")
 
     def __init__(self, *args, **kwargs):
         super(Component, self).__init__(*args, **kwargs)
@@ -37,9 +39,11 @@ class IntegerComponent(Component):
 
     def add(self, value):
         self.value += value
+        self.save()
 
     def remove(self, value):
         self.add(-1 * value)
+        self.save()
 
 
 
@@ -82,6 +86,7 @@ class ActionComponent(Component):
     Is a candidate for action on a turn
     defines the action
     """
+    #action_message = models.CharField(max_length=256)
 
 class StackableComponent(Component):
     """
@@ -101,6 +106,13 @@ class ActorComponent(Component):
         self.user_id = None
         self.seat_id = None
 
+    user = models.ForeignKey(User, null=True)
+    seat_number = models.IntegerField(null=True)
+
+    def msg(self, message_type, data):
+        if message_type is MessageTypes.UpdateSeat:
+            self.seat_number = data["value"]
+            self.save()
+
     def is_ai(self):
         return self.user_id is None
-

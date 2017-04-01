@@ -1,9 +1,9 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 #
-from model_apis.users.routes import router as user_router
-from model_apis.games.routes import router as game_router
-from routing.RouteRegister import RouteRegister
+from api.model_apis.users.routes import router as user_router
+from api.model_apis.games.routes import router as game_router
+from api.routing.RouteRegister import RouteRegister
 
 router = routers.DefaultRouter()
 route_register = RouteRegister();

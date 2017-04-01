@@ -14,10 +14,11 @@ class ActorProvider(object):
 class ComponentEntityMap(object):
     top_level_components = MessageTypes.all_types()
 
-    def __init__(self):
+    def __init__(self, game_id):
         self.__component_types = { component_type: set() for component_type in self.top_level_components }
         self.__entities = {}
         self.__components = {}
+        self.__game_id = game_id
 
     def insert(self, entity_id, component):
         component_type = component.__class__
@@ -28,7 +29,7 @@ class ComponentEntityMap(object):
         self.__assign(self.__components, component.id, component)
 
     def list_components(self):
-        for component_id, component in self.__components.iteritems():
+        for component_id, component in self.__components.items():
             yield component
 
     def list_components_by_component_type(self, component_type):
@@ -43,7 +44,7 @@ class ComponentEntityMap(object):
         return self.__safe_get(self.__components, component_id)
 
     def get_entity_id_by_component(self, input_component):
-        for entity_id, component_set in self.__entities.iteritems():
+        for entity_id, component_set in self.__entities.items():
             for component in component_set:
                 if component is input_component:
                     return entity_id
@@ -59,9 +60,11 @@ class ComponentEntityMap(object):
         self.insert(entity_id, component)
 
     def __safe_add(self, dictionary, index, value):
+        print(index.__class__)
         if index not in dictionary:
             dictionary[index] = set()
         dictionary[index].add(value)
+        print ("--")
 
     def __assign(self, dictionary, index, value):
         dictionary[index] = value

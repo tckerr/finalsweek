@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 #
 from sim.engine.initializer import Initializer
-from sim.engine.savestate import Rules
 
 
 class Command(BaseCommand):
@@ -10,7 +9,7 @@ class Command(BaseCommand):
         # now do the things that you want with your models here
        
         print("======================( Functional test )======================")
-        initializer = Initializer.new([1, 2], Rules(5))
+        initializer = Initializer.new([], 5)
         initializer.mock()
 
         #print("======================( Performance test )======================")
