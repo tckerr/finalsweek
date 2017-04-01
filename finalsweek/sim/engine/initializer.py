@@ -72,5 +72,5 @@ class Initializer(object):
         self.message_dispatcher.dispatch(*mock_message)
         end = datetime.now()
         elapsed = end - start
-        print "Time to dispatch 1 message to {} entities:".format(str(self.rules.total_actors)), elapsed.total_seconds()
+        print("Time to dispatch 1 message to {} entities:".format(str(self.rules.total_actors)), elapsed.total_seconds())
         

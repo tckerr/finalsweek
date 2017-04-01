@@ -21,7 +21,7 @@ class ComponentEntityMap(object):
 
     def insert(self, entity_id, component):
         component_type = component.__class__
-        print component_type, Component
+        print (component_type, Component)
         assert issubclass(component_type, Component)
         self.__safe_add(self.__component_types, component_type, component)
         self.__safe_add(self.__entities, entity_id, component)

@@ -14,17 +14,19 @@ class Component(models.Model):
     class Meta:
         abstract = True
 
-    def __init__(self):
-        self.id = ComponentIdGenerator.generate()
+    id = models.AutoField(primary_key=True)
+
+    def __init__(self, *args, **kwargs):
+        super(Component, self).__init__(*args, **kwargs)
 
     # extend me
     def msg(self, message_type, data):
         if message_type is MessageTypes.DebugEcho:
-            print "Echoing from {}:".format(str(self.id)), data["value"]
+            print("Echoing from {}:".format(str(self.id)), data["value"])
 
         if message_type is MessageTypes.DebugValues:
             class_name = self.__class__.__name__
-            print "Echoing from {}({}):".format(class_name, str(self.id)), self.__dict__
+            print("Echoing from {}({}):".format(class_name, str(self.id)), self.__dict__)
 
 
 class IntegerComponent(Component):
@@ -57,7 +59,7 @@ class GradesComponent(IntegerComponent):
             self.add(data["value"])
 
         if message_type is MessageTypes.ReportGrades:
-            print self.value
+            print(self.value)
 
         super(GradesComponent, self).msg(message_type, data)
 
