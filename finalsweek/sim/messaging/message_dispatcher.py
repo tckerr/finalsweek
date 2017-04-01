@@ -29,4 +29,4 @@ class MessageDispatcher(object):
 
     def __send_message_to_component_list(self, component_list, message_type, data):
         for component in component_list:
-            component.receive_message(message_type, data)
+            component.msg(message_type, data)

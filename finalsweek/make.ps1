@@ -1,1 +1,0 @@
-python.exe $PSScriptRoot\manage.py makemigrations

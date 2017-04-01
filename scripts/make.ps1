@@ -1,0 +1,1 @@
+python.exe $PSScriptRoot\..\finalsweek\manage.py makemigrations

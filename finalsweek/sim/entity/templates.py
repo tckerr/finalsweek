@@ -6,19 +6,13 @@ class ComponentSetTemplate(object):
     def build(self, component_id):
         return (component_type(component_id) for component_type in self.components)
 
-class PlayerComponentSetTemplate(ComponentSetTemplate):
-    components = (
+class ActorComponentSetTemplate(ComponentSetTemplate):
+    components = [
         GradesComponent,
         PopularityComponent,
-        TurnComponent
-    )
-
-
-class PlayableCardTemplate(ComponentSetTemplate):
-    components = (
-        ActionComponent,
-        StackableComponent
-    )
+        TurnComponent,
+        ActorComponent
+    ]
 
 
 '''

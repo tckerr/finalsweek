@@ -1,28 +1,15 @@
 from sim.messaging.message_types import MessageTypes
-from sim.entity.components import Component
+from sim.entity.components import (
+    Component, 
+    ActorComponent, )
 
-
-class EntityFactory(object):
-    __entity_incr = 0
-    __component_incr = 0
-
-    def __generate_entity_id(self):
-        self.__entity_incr += 1
-        return self.__entity_incr
-
-    def __generate_component_id(self):
-        self.__component_incr += 1
-        return self.__component_incr
-
+class ActorProvider(object):
     def __init__(self, component_entity_map):
         self.component_entity_map = component_entity_map
 
-    def create(self, template):
-        entity_id = self.__generate_entity_id()
-        for component in template.build(self.__generate_component_id):
-            self.component_entity_map.insert(entity_id, component)
-        return entity_id
-
+    @property
+    def all(self):
+        return self.component_entity_map.list_components_by_component_type(ActorComponent)
 
 class ComponentEntityMap(object):
     top_level_components = MessageTypes.all_types()
@@ -34,6 +21,7 @@ class ComponentEntityMap(object):
 
     def insert(self, entity_id, component):
         component_type = component.__class__
+        print component_type, Component
         assert issubclass(component_type, Component)
         self.__safe_add(self.__component_types, component_type, component)
         self.__safe_add(self.__entities, entity_id, component)

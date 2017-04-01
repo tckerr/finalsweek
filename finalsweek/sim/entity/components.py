@@ -1,32 +1,49 @@
+from django.db import models
 from sim.messaging.message_types import MessageTypes
 
-class Component(object):
+class ComponentIdGenerator(object):
+    __component_incr = 0
 
-    def __init__(self, id_delegate):
-        self.id = id_delegate()
+    @classmethod
+    def generate(cls):
+        cls.__component_incr += 1
+        return cls.__component_incr
 
-    # overwrite me
-    def receive_message(self, message_type, data):
-        pass
+
+class Component(models.Model):
+    class Meta:
+        abstract = True
+
+    def __init__(self):
+        self.id = ComponentIdGenerator.generate()
+
+    # extend me
+    def msg(self, message_type, data):
+        if message_type is MessageTypes.DebugEcho:
+            print "Echoing from {}:".format(str(self.id)), data["value"]
+
+        if message_type is MessageTypes.DebugValues:
+            class_name = self.__class__.__name__
+            print "Echoing from {}({}):".format(class_name, str(self.id)), self.__dict__
+
 
 class IntegerComponent(Component):
+    class Meta:
+        abstract = True
 
-    def __init__(self, *args, **kwargs):
-        self.__value = 0
-        super(IntegerComponent, self).__init__(*args, **kwargs)
+    value = models.IntegerField(default=0)
 
     def add(self, value):
-        self.__value += value
+        self.value += value
 
     def remove(self, value):
         self.add(-1 * value)
 
-    @property
-    def value(self):
-        return self.__value
 
 
-class PopularityComponent(IntegerComponent): pass
+class PopularityComponent(IntegerComponent):
+    pass
+
 class TurnComponent(Component):
     '''
     has turn counter, gets += 1 each turn
@@ -35,12 +52,14 @@ class TurnComponent(Component):
     '''
 
 class GradesComponent(IntegerComponent):
-    def receive_message(self, message_type, data):
+    def msg(self, message_type, data):
         if message_type is MessageTypes.GradesModification:
             self.add(data["value"])
 
         if message_type is MessageTypes.ReportGrades:
             print self.value
+
+        super(GradesComponent, self).msg(message_type, data)
 
 # cards
 
@@ -73,3 +92,13 @@ class VisibilityComponent(Component):
     private - hidden from other players than sibling obsever
     unknown - hidden to all but system
     """
+
+class ActorComponent(Component):
+    def __init__(self, *args, **kwargs):
+        super(ActorComponent, self).__init__(*args, **kwargs)
+        self.user_id = None
+        self.seat_id = None
+
+    def is_ai(self):
+        return self.user_id is None
+
