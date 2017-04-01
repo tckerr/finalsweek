@@ -48,8 +48,7 @@ class GameManagerFactory(object):
 
     def __initialize_game_manager(self, game, user_ids):
         game_manager = GameManager(game)
-        game_manager.jumble_gameslots()
-        game_manager.initialize_turns()
+        game_manager.initialize_gamestate()
         return game_manager
    
 
@@ -65,9 +64,6 @@ class GameManager(object):
     def game_id(self):
         return self.game.id
 
-    def jumble_gameslots(self):
+    def initialize_gamestate(self):
         self.gameslot_manager.jumble()
-
-    def initialize_turns(self):
-        if self.turn_manager.needs_turn_assignment():
-            self.turn_manager.initialize_next_turn()
+        self.turn_manager.initialize_next_turn()

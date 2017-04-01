@@ -8,7 +8,7 @@ class Table(object):
         self.size = size
 
     @property
-    def seats(self):
+    def gameslots(self):
         return [seat_number for seat_number in range(0, self.size)]
 
 class GameslotManager(object):
@@ -18,11 +18,11 @@ class GameslotManager(object):
         self.table = Table(game.ruleset.max_actors)
     
     def jumble(self):
-        seats = self.__jumble_list(self.table.seats)
+        gameslots = self.__jumble_list(self.table.gameslots)
         actor_components = self.__jumble_list(self.actor_provider.all)
         for actor_component in actor_components:
-            seat_number = seats.pop()
-            actor_component.msg(MessageTypes.UpdateSeat, ValueMessage(seat_number))
+            gameslots_number = gameslots.pop()
+            actor_component.msg(MessageTypes.UpdateGameslot, ValueMessage(gameslots_number))
 
     def __jumble_list(self, val):
         new_val = list(val)
