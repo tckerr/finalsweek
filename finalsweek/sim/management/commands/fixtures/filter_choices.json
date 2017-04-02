@@ -4,18 +4,16 @@
     "component_type": "student",
     "returning_component_property": null,
     "count": null,
-    "filters": [
-        "lte_popularity"
-    ],
+    "filters": [],
     "strategies": [
         {
             "id": 0,
-            "combination_logic": "and",
+            "combination_logic": "or",
             "component_type": "student",
             "returning_component_property": null,
             "count": null,
             "filters": [
-                "id_me"
+                "id_not_me"
             ],
             "strategies": [
                 {
@@ -26,6 +24,17 @@
                     "count": null,
                     "filters": [
                         "col_same"
+                    ],
+                    "strategies": []
+                },
+                {
+                    "id": 5,
+                    "combination_logic": "and",
+                    "component_type": "seat",
+                    "returning_component_property": "student",
+                    "count": null,
+                    "filters": [
+                        "row_same"
                     ],
                     "strategies": []
                 }

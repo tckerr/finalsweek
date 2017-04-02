@@ -5,7 +5,18 @@
     "returning_component_property": null,
     "count": null,
     "filters": [
-        "lte_popularity"
+        {
+            "filter_type": "context_comparitor",
+            "property": "popularity",
+            "operator": "<=",
+            "comparison_value": "popularity"
+        },
+        {
+            "filter_type": "evaluation",
+            "property": "popularity",
+            "operator": ">",
+            "comparison_value": 7
+        }
     ],
     "strategies": [
         {

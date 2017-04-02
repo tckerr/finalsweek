@@ -1,7 +1,12 @@
-from sim.entity.filtering.target_strategy import TargetStrategyFieldsDefinition
-
 class TargetStrategyPrinter(object):
-    padding_per_level = 5
+    padding_per_level = 6
+    assert padding_per_level % 2 is 0
+    fields = (
+        "id",
+        "combination_logic",
+        "returning_component_property",
+        "count"
+    )
 
     def print(self, root_strategy):
         print(self.get_str(root_strategy))
@@ -11,11 +16,18 @@ class TargetStrategyPrinter(object):
 
     def __print_repr(self, strategy, padding):
         text = ""
-        pad_str = "".join([" " for _ in range(0, padding)])
+        pad_str = self.__get_indent(padding)
         text += pad_str + "[{}]".format(strategy.__class__.__name__) + "\n"
 
-        for field in TargetStrategyFieldsDefinition.fields:  
+        for field in self.fields:  
             text += self.__print_field_with_padding(strategy, pad_str, field) + "\n"
+
+        text += "{}{}: {}\n".format(pad_str, "component_type", strategy.source["component_type"])
+
+
+        filters_str = "Simple: [" + ", ".join([f for f in strategy.source["filters"] if f.__class__ == str]) + "]"
+        filters_str += ",  Dynamic: [" + str([ f for f in strategy.source["filters"] if f.__class__ is dict]) + "]"
+        text += "{}{}: {}\n".format(pad_str, "filters", filters_str)
 
         for strategy in strategy.strategies:
             new_padding = padding + self.padding_per_level
@@ -26,3 +38,6 @@ class TargetStrategyPrinter(object):
     def __print_field_with_padding(self, strategy, pad_str, field_name):
         text = "{}{}: {}".format(pad_str, field_name, str(getattr(strategy, field_name)))        
         return text
+
+    def __get_indent(self, padding):
+        return "".join([" " for _ in range(0, padding)])
