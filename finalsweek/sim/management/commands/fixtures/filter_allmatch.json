@@ -1,0 +1,12 @@
+{
+    "id": 4,
+    "combination_logic": "and",
+    "component_type": "student",
+    "returning_component_property": null,
+    "count": null,
+    "filters": [
+        "less_popularity"
+    ],
+    "strategies": [
+    ]
+}

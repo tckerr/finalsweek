@@ -203,7 +203,7 @@ fi
     "condition_set_combination_type": "OR",
     "result_set_dedupe_property": null, // no need, no children
     "component_type": "student",
-    "component_property": null,
+    "returning_component_property": null,
     "count": null,
     "conditions": [
         "less_popularity"
@@ -214,7 +214,7 @@ fi
             "condition_set_combination_type": "AND",
             "condition_set_dedupe_property": null, // no need, no multiple children
             "component_type": "student",
-            "component_property": null, // not a prop on component_type, but the obj itself
+            "returning_component_property": null, // not a prop on component_type, but the obj itself
             "count": null, //ALL! 
             "conditions": [
                 "id_not_me",
@@ -225,7 +225,7 @@ fi
                     "id": 1,
                     "condition_set_combination_type": "AND",
                     "component_type": "seat", // different so must have a way to get to parent type!
-                    "component_property": "student", // property type that will yield parent type
+                    "returning_component_property": "student", // property type that will yield parent type
                     "count": null, // ALL !
                     "child_condition_set_dedupe_property": null, // no need, no children
                     "conditions": [
@@ -241,7 +241,7 @@ fi
             "condition_set_combination_type": "AND",
             "result_set_dedupe_property": null, // no need, no children
             "component_type": "seat",
-            "component_property": "student",
+            "returning_component_property": "student",
             "count": null,
             "conditions": [
                 "row_back",
