@@ -1,0 +1,49 @@
+{
+    "id": 4,
+    "combination_logic": "or",
+    "component_type": "student",
+    "returning_component_property": null,
+    "count": null,
+    "filters": [
+        "less_popularity"
+    ],
+    "strategies": [
+        {
+            "id": 0,
+            "combination_logic": "and",
+            "component_type": "student",
+            "returning_component_property": null,
+            "count": null,
+            "filters": [
+                "id_not_me",
+                "less_grades"
+            ],
+            "strategies": [
+                {
+                    "id": 1,
+                    "combination_logic": "and",
+                    "component_type": "seat",
+                    "returning_component_property": "student",
+                    "count": null,
+                    "child_condition_set_dedupe_property": null,
+                    "filters": [
+                        "col_same",
+                        "row_lower"
+                    ],
+                    "strategies": []
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "combination_logic": "and",
+            "component_type": "seat",
+            "returning_component_property": "student",
+            "count": null,
+            "filters": [
+                "row_back"
+            ],
+            "strategies": []
+        }
+    ]
+}

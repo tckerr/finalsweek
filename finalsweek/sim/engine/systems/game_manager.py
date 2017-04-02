@@ -67,7 +67,7 @@ class GameManager(object):
 
     def initialize_gamestate(self):
         self.gameslot_manager.jumble()
-        self.turn_manager.provide_turn()    
+        self.__provide_turn()   
 
     def expend_action(self, entity_id, cost):        
         entity = Entity.objects.get(pk=entity_id)

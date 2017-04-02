@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
         mocker = GameMocker()
         game_interface = DebugGameInterface()
-        ruleset_id = game_interface.create_ruleset(10, 2, 10, True)
+        ruleset_id = game_interface.create_ruleset(10, 3, 5, True)
 
         print("======================( New test )======================")
         newgame_manager = game_interface.create_game_debug([], 5, ruleset_id)

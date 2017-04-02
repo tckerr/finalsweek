@@ -79,8 +79,39 @@ class ActionComponent(Component):
     """
     Is a candidate for action on a turn
     defines the action
+    these are OPTIONS
     """
     #action_message = models.CharField(max_length=256)
+    name = models.CharField(null=False, max_length=256)    
+    uses = models.IntegerField(null=True) # null = infinite
+    action_type = models.CharField(null=True, max_length=256) 
+        # enum?
+        # 1.  PlayActionCard
+        # 2.  PlayAfterSchoolCard
+        # 3.  PlayDisciplineCard ??
+        # 4.  Draw
+        # 5.  TargetOther
+        # 6.  TargetSelf
+        # 7.  TargetAllOthers
+        # 8.  TargetAll
+        # 9.  TargetSeat
+        # 10. Confirm ??
+        # 11. TargetDirection
+        # 12. TargetAdjacent
+        # 13. ChooseNumberInRange
+
+        # alternate:
+        # conditions:
+        #   types (student, actor, seat, direction)
+        #  TargetOther: count: 1, id != me, type=actor, type=student
+        #  TargetSelf: count: 1 , id == me
+        #  TargetAllOthers, id != me
+        #  TargetAll, __all__
+        #  TargetSeat
+
+        # target:
+        
+
 
 class StackableComponent(Component):
     """
