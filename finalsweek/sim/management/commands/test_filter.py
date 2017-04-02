@@ -1,7 +1,5 @@
 from django.core.management.base import BaseCommand
-from sim.entity.filtering.builders import TargetStrategyBuilder
-from sim.entity.filtering.providers import ContextProvider
-from sim.entity.filtering.util.printers import TargetStrategyPrinter
+from siftpy import SiftBuilder, ContextProvider
 import json, os
 
 class JsonLoader(object):
@@ -25,15 +23,6 @@ class Seat(object):
         self.column = data["column"]
         self.row = data["row"]
         self.student = None
-
-class TypeProvider(object):
-
-    def resolve(self, val):
-        if val == "seat":
-            return Seat
-        if val == "student":
-            return Student
-
 
 
 class FinalsWeekContextProvider(ContextProvider):
@@ -97,8 +86,7 @@ class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
         self.json_loader = JsonLoader()
-        self.builder = TargetStrategyBuilder()
-        self.printer = TargetStrategyPrinter()
+        self.builder = SiftBuilder()
 
     def handle(self, *args, **options):
         strategy_json_path = os.path.dirname(__file__) + '/fixtures/filters_advanced.json'        
@@ -107,11 +95,10 @@ class Command(BaseCommand):
         seed_data = self.json_loader.load(seed_json_path)      
 
         context_provider = FinalsWeekContextProvider(seed_data)
-        type_provider = TypeProvider()
-        root_strategy = self.builder.build(strategy_data, context_provider, type_provider)
-        self.printer.print(root_strategy)
+        sift = self.builder.build(strategy_data, context_provider)
+        sift.print()
 
-        results = root_strategy.evaluate()
+        results = sift.evaluate().data
         self.__print_results(results, context_provider)
 
     def __print_results(self, results, context_provider):

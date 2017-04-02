@@ -40,6 +40,7 @@ pip install djangorestframework
 pip install markdown
 pip install django-filter
 pip install wheel
+pip install siftpy -U
 
 # this one is tricky, try these first:
 #     https://dev.mysql.com/downloads/file/?id=378015

@@ -1,7 +1,7 @@
 {
     "id": 4,
-    "combination_logic": "or",
-    "returning_component_property": null,
+    "merge_children": false,
+    "returning_object_property": null,
     "count": null,
     "filters": [
         {
@@ -17,11 +17,10 @@
             "comparison_value": 7
         }
     ],
-    "strategies": [
+    "sifts": [
         {
-            "id": 0,
-            "combination_logic": "and",
-            "returning_component_property": null,
+            "merge_children": true,
+            "returning_object_property": null,
             "count": null,
             "filters": [
                 {
@@ -31,12 +30,12 @@
                     "comparison_value": "requestor.student.id"
                 }
             ],
-            "strategies": [
+            "sifts": [
                 {
                     "id": 1,
-                    "combination_logic": "and",
-                    "components_source": "seats",
-                    "returning_component_property": "student",
+                    "merge_children": true,
+                    "context_source": "seats",
+                    "returning_object_property": "student",
                     "count": null,
                     "filters": [
                         {
@@ -46,15 +45,15 @@
                             "comparison_value": "requestor.seat.column"
                         }
                     ],
-                    "strategies": []
+                    "sifts": []
                 }
             ]
         },
         {
             "id": 2,
-            "combination_logic": "and",
-            "components_source": "seats",
-            "returning_component_property": "student",
+            "merge_children": true,
+            "context_source": "seats",
+            "returning_object_property": "student",
             "count": null,
             "filters": [
                 {
@@ -63,8 +62,7 @@
                     "operator": "==",
                     "comparison_value": 4
                 }
-            ],
-            "strategies": []
+            ]
         }
     ]
 }
