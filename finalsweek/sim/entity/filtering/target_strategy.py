@@ -14,10 +14,6 @@ class TargetStrategy(object):
     def __flatten_results(self):
         return self.combination_logic == "and" #or not self.__is_root
 
-    @property
-    def __requestor_component(self):
-        return self.context_provider.requestor_by_type(self.component_type)
-
     def evaluate(self):
         '''Returns an array of component instance sets'''        
         branch_results = self.__get_branch_results() 
@@ -34,7 +30,7 @@ class TargetStrategy(object):
 
     def __get_leaf_results(self):
         assert self.__is_root or self.__flatten_results
-        return self.context_provider.all_of_type(self.component_type)
+        return getattr(self.context_provider.context, self.components_source)
 
     def __evaluate_child_strategies(self):
         return [strategy.evaluate() for strategy in self.strategies]
@@ -46,10 +42,8 @@ class TargetStrategy(object):
         return filtered
 
     def __filter(self, component_list):
-        if not self.__requestor_component:
-            raise Exception("No requestor component to compare")
         for filter_fn in self.filters:
-            component_list = filter_list(filter_fn, component_list, self.__requestor_component)
+            component_list = filter_list(filter_fn, component_list)
         return component_list
 
     def __convert(self, result_set): 
@@ -57,7 +51,5 @@ class TargetStrategy(object):
         for result in result_set:
             prop = getattr(result, self.returning_component_property)
             if prop:
-                if self.parent:
-                    assert prop.__class__ is self.parent.component_type
                 new_result_set.append(prop)
         return new_result_set

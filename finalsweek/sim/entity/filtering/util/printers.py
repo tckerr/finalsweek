@@ -22,11 +22,10 @@ class TargetStrategyPrinter(object):
         for field in self.fields:  
             text += self.__print_field_with_padding(strategy, pad_str, field) + "\n"
 
-        text += "{}{}: {}\n".format(pad_str, "component_type", strategy.source["component_type"])
+        text += "{}{}: {}\n".format(pad_str, "component_source", strategy.source.get("component_source", "None"))
 
 
-        filters_str = "Simple: [" + ", ".join([f for f in strategy.source["filters"] if f.__class__ == str]) + "]"
-        filters_str += ",  Dynamic: [" + str([ f for f in strategy.source["filters"] if f.__class__ is dict]) + "]"
+        filters_str = ",  Dynamic: [" + str([ f for f in strategy.source["filters"]]) + "]"
         text += "{}{}: {}\n".format(pad_str, "filters", filters_str)
 
         for strategy in strategy.strategies:

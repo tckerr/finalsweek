@@ -1,15 +1,14 @@
 {
     "id": 4,
     "combination_logic": "or",
-    "component_type": "student",
     "returning_component_property": null,
     "count": null,
     "filters": [
         {
-            "filter_type": "context_comparitor",
+            "filter_type": "context",
             "property": "popularity",
             "operator": "<=",
-            "comparison_value": "popularity"
+            "comparison_value": "requestor.student.popularity"
         },
         {
             "filter_type": "evaluation",
@@ -22,21 +21,30 @@
         {
             "id": 0,
             "combination_logic": "and",
-            "component_type": "student",
             "returning_component_property": null,
             "count": null,
             "filters": [
-                "id_me"
+                {
+                    "filter_type": "context",
+                    "property": "id",
+                    "operator": "!=",
+                    "comparison_value": "requestor.student.id"
+                }
             ],
             "strategies": [
                 {
                     "id": 1,
                     "combination_logic": "and",
-                    "component_type": "seat",
+                    "components_source": "seats",
                     "returning_component_property": "student",
                     "count": null,
                     "filters": [
-                        "col_same"
+                        {
+                            "filter_type": "context",
+                            "property": "column",
+                            "operator": "==",
+                            "comparison_value": "requestor.seat.column"
+                        }
                     ],
                     "strategies": []
                 }
@@ -45,11 +53,16 @@
         {
             "id": 2,
             "combination_logic": "and",
-            "component_type": "seat",
+            "components_source": "seats",
             "returning_component_property": "student",
             "count": null,
             "filters": [
-                "row_back"
+                {
+                    "filter_type": "evaluation",
+                    "property": "row",
+                    "operator": "==",
+                    "comparison_value": 4
+                }
             ],
             "strategies": []
         }
