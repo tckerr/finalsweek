@@ -52,7 +52,7 @@ write-host "Running initial migration..." -ForegroundColor Cyan
 
 if($s){
     write-host "Creating superuser..." -ForegroundColor Cyan
-    python finalsweek/manage.py createsuperuser
+    python ../finalsweek/manage.py createsuperuser
 }
 
 deactivate

@@ -74,18 +74,9 @@ class DisposableComponent(Component):
     Emits a discard message when it receives a played message
     defines target pile
     """
+class ActionType(object):
+    PlayActionCard = "play_action_card"
 
-class ActionComponent(Component):
-    """
-    Is a candidate for action on a turn
-    defines the action
-    these are OPTIONS
-    """
-    #action_message = models.CharField(max_length=256)
-    name = models.CharField(null=False, max_length=256)    
-    uses = models.IntegerField(null=True) # null = infinite
-    action_type = models.CharField(null=True, max_length=256) 
-        # enum?
         # 1.  PlayActionCard
         # 2.  PlayAfterSchoolCard
         # 3.  PlayDisciplineCard ??
@@ -99,6 +90,17 @@ class ActionComponent(Component):
         # 11. TargetDirection
         # 12. TargetAdjacent
         # 13. ChooseNumberInRange
+
+class ActionComponent(Component):
+    """
+    Is a candidate for action on a turn
+    defines the action
+    these are OPTIONS
+    """
+    #action_message = models.CharField(max_length=256)
+    description = models.CharField(null=False, max_length=256)    
+    uses = models.IntegerField(null=True) # null = infinite
+    action_type = models.CharField(null=True, max_length=256) 
 
         # alternate:
         # conditions:

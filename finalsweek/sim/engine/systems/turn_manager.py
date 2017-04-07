@@ -1,9 +1,36 @@
-from sim.entity.components import TurnComponent
+from sim.entity.components import TurnComponent, ActionComponent, ActionType
 from sim.entity.providers import ActorProvider
 from sim.exceptions import GameFlowViolation
 import random
 from datetime import datetime
 from django.utils import timezone
+
+class ActionCardActionFactory(object):
+
+    def create(self):
+        component = ActionComponent()
+        component.description = "Play an Action Card from your hand."
+        component.action_type = ActionType.PlayActionCard
+
+
+class TurnFactory(object):
+
+    def __init__(self, ruleset):
+        self.ruleset = ruleset
+        self.action_card_action_factory = ActionCardActionFactory()
+
+    def create(self, entity, round_number):        
+        turn_component = TurnComponent()
+        turn_component.entity_id = entity.id
+        turn_component.round_number = round_number
+        turn_component.expended = None
+        turn_component.actions_left = self.game.ruleset.actions_per_turn
+        turn_component.save()
+
+    def __default_actions(self):
+        action_card_component = self.action_card_action_factory.create()
+        
+        actions = []
 
 
 class TurnManager(object):
@@ -14,6 +41,7 @@ class TurnManager(object):
         self.game = game    
         self.actor_provider = ActorProvider(self.game)
         self.components = TurnComponent.objects
+        self.turn_factory = TurnFactory(self.game.ruleset)
 
     def provide_turn(self):        
         actor_components = list(self.actor_provider.all)
@@ -130,12 +158,7 @@ class TurnManager(object):
     def __assign_turn(self, entity, round_number):
         if self.__entity_has_turn(entity):
             raise Exception("This entity already has a turn.")
-        turn_component = TurnComponent()
-        turn_component.entity_id = entity.id
-        turn_component.round_number = round_number
-        turn_component.expended = None
-        turn_component.actions_left = self.game.ruleset.actions_per_turn
-        turn_component.save()
+        return turn_factory.create(entity, round_number)
 
     def __turn_is_complete(self, turn_component):
         return turn_component.actions_left <= 0
