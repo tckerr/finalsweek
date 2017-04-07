@@ -1,4 +1,4 @@
-from game.models import Pile, Actor, Game, StudentInfo, Card
+from game.models import Pile, Actor, Game, StudentInfo, Card, Seat
 from game.settings import settings
 
 class ActionDeckFactory(object):
@@ -45,12 +45,30 @@ class ActorFactory(object):
         pile.save()
         return pile
 
+class SeatFactory(object):
+
+    def create(self, game, row, column):            
+        seat = Seat()
+        seat.game = game
+        seat.row = row
+        seat.column = column
+        seat.save()
+        return seat
+
+    def create_for_grid(self, game, row_dims, column_dims):
+        seats = []
+        for row in range(0, row_dims):
+            for column in range(0, column_dims):
+                seats.append(self.create(game, row, column))
+        return seats
+
 class GameFactory(object):
 
     def __init__(self):
         self.actor_factory = ActorFactory()
         self.pile_factory = PileFactory()
         self.action_deck_factory = ActionDeckFactory()
+        self.seat_factory = SeatFactory()
 
     def load(self, game_id):
         return Game.objects.get(id=game_id)  
@@ -64,4 +82,7 @@ class GameFactory(object):
         game.save()
         for _ in range(0, ai_players):
             self.actor_factory.create(game)
+        self.seat_factory.create_for_grid(game, settings["seat_rows"], settings["seat_columns"])
+
+        # TODO: assign seating?
         return game

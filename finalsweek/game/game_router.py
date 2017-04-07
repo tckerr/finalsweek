@@ -4,7 +4,12 @@ from game.ensurers import TypeEnsurer, StudentInfoEnsurer, CardTypeEnsurer, Card
 from game.managers import InputManager
 from game.resolvers import AutomaticActionResolver
 
-class GameManager(object):
+class GameInfo(object):
+    def __init__(self, actors, current_turn):
+        self.actors = actors
+        self.current_turn = current_turn
+
+class GameRouter(object):
 
     def __init__(self):
         self.type_ensurer = TypeEnsurer()
@@ -19,39 +24,49 @@ class GameManager(object):
         self.input_manager = InputManager()
         self.automatic_action_resolver = AutomaticActionResolver()
 
-    def create(self):
+    def create(self, player_count):
         self.student_info_ensurer.ensure()
         self.type_ensurer.ensure() 
         self.card_type_ensurer.ensure() 
         self.card_ensurer.ensure() 
-        game = self.game_factory.create(4)
-        return self.load(game.id)
+        game = self.game_factory.create(player_count)
+        next_turn = self.__next_turn(game)
+        return GameInfo(game.actors.all(), next_turn)    
     
-    def load(self, game_id, count=0):
-        try:                       
-            game = self.game_factory.load(game_id) 
-            stage = self.stage_provider.provide(game)
-            if stage is None:
-                return
-            phase = self.phase_provider.provide(stage)
-            next_turn = self.turn_provider.provide(phase)
-            return self.__automate_if_needed(next_turn)
-        except Reset as e:
-            good = False if count > 20 else True           
-        if good:
-            return self.load(game_id, count+1)
-        else:
-            raise Exception("At least 20 resets() called...")
+    def load(self, actor_id, count=0):
+        game_id = self.actor_factory.load(actor_id).game_id
+        game = self.game_factory.load(game_id)
+        next_turn = self.__next_turn(game)
+        return self.__build_game_info(game.actors.all(), next_turn)
+
+    def __next_turn(self, game):
+        loop = 0
+        while True:
+            loop += 1
+            try:
+                stage = self.stage_provider.provide(game)
+                if stage is None:
+                    return
+                phase = self.phase_provider.provide(stage)
+                next_turn = self.turn_provider.provide(phase)
+                return self.__automate_if_needed(next_turn)
+            except Reset as e:
+                if loop > 10:
+                    raise Exception("Loop > 10")
+                continue
 
     def __automate_if_needed(self, next_turn):
         if self.__requires_automation(next_turn):
             print("> System is automating: Stage: {}, Phase: {}, Actor {}'s turn".format(str(next_turn.phase.stage.stage_type_id), str(next_turn.phase.phase_type_id), str(next_turn.actor.id)))
             auto_action = self.automatic_action_resolver.resolve(next_turn)
-            return self.take_turn(next_turn.actor_id, auto_action)
+            return self.take_turn(next_turn.actor_id, auto_action).current_turn
         return next_turn
 
     def __requires_automation(self, next_turn):
         return not next_turn or next_turn.phase.phase_type.is_automatic
+
+    def __build_game_info(self, actors, current_turn):
+        return GameInfo(actors, current_turn)
 
     def take_turn(self, actor_id, action=None):
 
@@ -63,7 +78,7 @@ class GameManager(object):
             raise Exception("More than 1 turn!")
         turn = turns.first()
         self.input_manager.input(turn, action) # true if it did anything        
-        return self.load(actor.game_id)
+        return self.load(actor_id)
 
 
 

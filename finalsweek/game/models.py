@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 '''
 Create Game
 Subscribe Actors --> ref a StudentInfo and maybe a User
@@ -92,6 +93,12 @@ class Pile(DefaultModel):
     def get_cards(self):
         return PileCard.objects.filter(pile=self)
 
+class Seat(DefaultModel):
+    id = models.AutoField(primary_key=True)
+    row = models.IntegerField()
+    column = models.IntegerField()
+    game = models.ForeignKey("Game", related_name="seats")
+
 
 class Actor(DefaultModel):
     id = models.AutoField(primary_key=True)
@@ -130,6 +137,9 @@ class PileCard(DefaultModel):
 
 # card effects ---------------
 
+class EntityType(DefaultModel):
+    id = models.CharField(max_length=255, primary_key=True)
+
 class EffectSet(DefaultModel):
     def __str__(self):
        effect_list = [str(eff) for eff in self.effects.all()]
@@ -144,6 +154,7 @@ class Effect(DefaultModel):
     id = models.AutoField(primary_key=True)
     effect_sets = models.ManyToManyField("EffectSet", related_name="effects")
     description = models.CharField(max_length=255)
+    eligible_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
 
 class Target(DefaultModel):
 
@@ -153,6 +164,7 @@ class Target(DefaultModel):
     id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255)
     sift = models.TextField()
+    target_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
 
 class CardTargetEffectSet(DefaultModel):
     def __str__(self):
@@ -166,3 +178,14 @@ class CardTargetEffectSet(DefaultModel):
     effect_set = models.ForeignKey("EffectSet", related_name="+", on_delete=models.CASCADE)
     target = models.ForeignKey("Target", related_name="+", on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        if not self.__target_result_type_equality():
+            raise Exception("You may not create a CardTargetEffectSet set that has differing target types between the target result and effect type.")
+        super(CardTargetEffectSet, self).save(*args, **kwargs)
+
+    def __target_result_type_equality(self):
+        expected_type = self.target.target_content_type
+        for effect in self.effect_set.effects.all():
+            if effect.eligible_content_type is not expected_type:
+                return False
+        return True
