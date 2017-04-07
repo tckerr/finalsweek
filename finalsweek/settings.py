@@ -74,18 +74,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-# 
 import finalsweek_auth as credentials
 
 DATABASES = {
-    #'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #},
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': credentials.app_db_name,
@@ -167,7 +158,7 @@ LOGGING = {
         'django.db.backends': {
             'level': 'DEBUG',
             'handlers': [
-                #'console',
+                'console',
             ],
         }
     }
