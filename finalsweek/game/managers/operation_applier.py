@@ -1,4 +1,4 @@
-from game.models import Operation
+from game.models import Instruction
 from game.resolvers import OperatorResolver
 
 class OperationApplier(object):
@@ -10,12 +10,12 @@ class OperationApplier(object):
         targets = decisions["target_choices"]
         operation_set_results = decisions["operation_set_choices"]
 
-        for operation_id, operation_results in operation_set_results.items():
+        for instruction_id, operation_results in operation_set_results.items():
             kwargs = {}
             for arg_key, argument_result in operation_results.items():
                 kwargs[arg_key] = argument_result
             # we have to go back for the operator
-            operation = Operation.objects.get(pk=operation_id)
-            operator_fn = self.operator_resolver.resolve(operation.operator_id)
+            instruction = Instruction.objects.get(pk=instruction_id)
+            operator_fn = self.operator_resolver.resolve(instruction.operator_id)
             for target in targets:
-                operator_fn(target, operation.target_field, **kwargs)
+                operator_fn(target, instruction.target_field, **kwargs)

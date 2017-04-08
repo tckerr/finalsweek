@@ -7,7 +7,7 @@ class CardTargetOperationSetInline(admin.TabularInline):
     model = CardTargetOperationSet
 
 class OperationM2mInline(admin.TabularInline):
-    model = OperationSet.operations.through
+    model = OperationSet.instructions.through
 
 class OperationSetAdmin(admin.ModelAdmin):
     model = OperationSet
@@ -19,8 +19,8 @@ class OperationSetAdmin(admin.ModelAdmin):
 #    model = Operation.arguments.through
 
 
-class OperationAdmin(admin.ModelAdmin):
-    model = Operation
+class InstructionAdmin(admin.ModelAdmin):
+    model = Instruction
     #inlines = [
         #OperationArgumentM2mInline,
     #]
@@ -33,7 +33,8 @@ class CardAdmin(admin.ModelAdmin):
 
 admin.site.register(Card, CardAdmin)
 admin.site.register(Target)
-admin.site.register(Operation, OperationAdmin)
+admin.site.register(Instruction, InstructionAdmin)
 admin.site.register(OperationSet, OperationSetAdmin)
-admin.site.register(OperationArgument)
+admin.site.register(Argument)
 admin.site.register(Operator)
+admin.site.register(CardType)

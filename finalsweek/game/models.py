@@ -154,7 +154,7 @@ class EntityType(DefaultModel):
 
 class OperationSet(DefaultModel):
     def __str__(self):
-       operation_list = [str(eff) for eff in self.operations.all()]
+       operation_list = [str(eff) for eff in self.instructions.all()]
        return "Set: {}".format(", ".join(operation_list))
 
     id = models.AutoField(primary_key=True)
@@ -164,24 +164,25 @@ class Operator(DefaultModel):
        return "{}".format(self.id) 
     id = models.CharField(max_length=255, primary_key=True)
 
-class Operation(DefaultModel):
+
+class Instruction(DefaultModel):
     def __str__(self):
        return "{}".format(self.description) 
 
     id = models.AutoField(primary_key=True)
-    operation_sets = models.ManyToManyField("OperationSet", related_name="operations", blank=True)
+    operation_sets = models.ManyToManyField("OperationSet", related_name="instructions", blank=True)
     description = models.CharField(max_length=255)
     eligible_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     target_field = models.CharField(max_length=255)
     operator = models.ForeignKey(Operator, on_delete=models.CASCADE)
 
 # RENAME TO ARG, MOVE TO M2M with operation/operation set 
-class OperationArgument(DefaultModel):
+class Argument(DefaultModel):
     def __str__(self):
        return "{}".format(self.description) 
 
     id = models.AutoField(primary_key=True)
-    operation = models.ForeignKey("Operation", related_name="arguments", on_delete=models.CASCADE)
+    instruction = models.ForeignKey("Instruction", related_name="arguments", on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
     is_sift = models.BooleanField() # potentially move this to its own table
     key = models.CharField(max_length=255)
@@ -218,7 +219,7 @@ class CardTargetOperationSet(DefaultModel):
     @property
     def __target_result_type_equality(self):
         expected_type = self.target.target_content_type
-        for operation in self.operation_set.operations.all():
+        for operation in self.operation_set.instructions.all():
             if operation.eligible_content_type != expected_type:
                 return False
         return True

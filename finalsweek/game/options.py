@@ -68,8 +68,8 @@ class CardTargetOperationSetChoiceBuilder(object):
             return result if supply_results else target_decisions
 
     def __build_operation_set_result(self, current_actor, cto, operation_set_decisions, supply_results):
-        operations = cto.operation_set.operations.all()
-        return { o.id: self.operation_choice_builder.build(o, operation_set_decisions, current_actor, supply_results) for o in operations}
+        instructions = cto.operation_set.instructions.all()
+        return { o.id: self.operation_choice_builder.build(o, operation_set_decisions, current_actor, supply_results) for o in instructions}
 
     def __assert_content_types(self, items, cto):
         for item in items:
