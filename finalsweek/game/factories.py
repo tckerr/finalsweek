@@ -1,5 +1,6 @@
 from game.models import Pile, Actor, Game, StudentInfo, Card, Seat
 from game.settings import settings
+from random import shuffle
 
 class ActionDeckFactory(object):
 
@@ -25,11 +26,12 @@ class ActorFactory(object):
     def __init__(self):
         self.pile_factory = PileFactory()
 
-    def create(self, game):            
+    def create(self, game, seat):            
         actor = Actor()
         actor.game = game
         actor.grades = 0
         actor.popularity = 0
+        actor.seat = seat
         actor.student_info = StudentInfo.objects.get(name="Test Student")
         actor.discard_pile = self.__create_pile(None)
         actor.afterschool_hand = self.__create_pile(None)
@@ -80,9 +82,13 @@ class GameFactory(object):
         game.afterschool_deck = self.pile_factory.create(None)
         game.discipline_card_deck = self.pile_factory.create(None)
         game.save()
-        for _ in range(0, ai_players):
-            self.actor_factory.create(game)
         self.seat_factory.create_for_grid(game, settings["seat_rows"], settings["seat_columns"])
-
-        # TODO: assign seating?
+        self.__create_actors_with_seat(game, ai_players)
         return game
+
+    def __create_actors_with_seat(self, game, ai_players):
+        seats = list(game.seats.all())
+        shuffle(seats)
+        for _ in range(0, ai_players):
+            seat = seats.pop()
+            self.actor_factory.create(game, seat)

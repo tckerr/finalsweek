@@ -14,3 +14,4 @@ class GameSummaryBuilder(object):
             
         actors = game.actors.all()
         return GameSummary(actors, stage, phase, complete, current_turn_actor_id, perspective)
+ 

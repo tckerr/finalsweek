@@ -96,8 +96,22 @@ class Seat(DefaultModel):
     column = models.IntegerField()
     game = models.ForeignKey("Game", related_name="seats")
 
+    @property
+    def empty(self):
+        return self.actor_or_none is None
+
+    @property
+    def actor_or_none(self):
+        try:
+            return self.actor
+        except:
+            return None
+
 
 class Actor(DefaultModel):
+    def __str__(self):
+       return "Actor: {}".format(self.id)
+
     id = models.AutoField(primary_key=True)
     game = models.ForeignKey("Game", related_name="actors")
     user = models.ForeignKey(User, related_name="player_actors", null=True)
@@ -105,6 +119,7 @@ class Actor(DefaultModel):
     discard_pile = models.ForeignKey("Pile", related_name="+")
     action_hand = models.ForeignKey("Pile", related_name="+")
     afterschool_hand = models.ForeignKey("Pile", related_name="+")
+    seat = models.OneToOneField("Seat", related_name="actor")
     grades = models.IntegerField()
     popularity = models.IntegerField()
 
@@ -132,26 +147,45 @@ class PileCard(DefaultModel):
     card = models.ForeignKey("Card", on_delete=models.CASCADE)
     pile = models.ForeignKey("Pile", on_delete=models.CASCADE)
 
-# card effects ---------------
+# card operations ---------------
 
 class EntityType(DefaultModel):
     id = models.CharField(max_length=255, primary_key=True)
 
-class EffectSet(DefaultModel):
+class OperationSet(DefaultModel):
     def __str__(self):
-       effect_list = [str(eff) for eff in self.effects.all()]
-       return "Set: {}".format(", ".join(effect_list))
+       operation_list = [str(eff) for eff in self.operations.all()]
+       return "Set: {}".format(", ".join(operation_list))
 
     id = models.AutoField(primary_key=True)
 
+class Operator(DefaultModel):
+    def __str__(self):
+       return "{}".format(self.id) 
+    id = models.CharField(max_length=255, primary_key=True)
 
-class Effect(DefaultModel):
+class Operation(DefaultModel):
     def __str__(self):
        return "{}".format(self.description) 
+
     id = models.AutoField(primary_key=True)
-    effect_sets = models.ManyToManyField("EffectSet", related_name="effects")
+    operation_sets = models.ManyToManyField("OperationSet", related_name="operations", blank=True)
     description = models.CharField(max_length=255)
     eligible_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    target_field = models.CharField(max_length=255)
+    operator = models.ForeignKey(Operator, on_delete=models.CASCADE)
+
+# RENAME TO ARG, MOVE TO M2M with operation/operation set 
+class OperationArgument(DefaultModel):
+    def __str__(self):
+       return "{}".format(self.description) 
+
+    id = models.AutoField(primary_key=True)
+    operation = models.ForeignKey("Operation", related_name="arguments", on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    is_sift = models.BooleanField() # potentially move this to its own table
+    key = models.CharField(max_length=255)
+    value = models.TextField()
 
 class Target(DefaultModel):
 
@@ -163,26 +197,28 @@ class Target(DefaultModel):
     sift = models.TextField()
     target_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
 
-class CardTargetEffectSet(DefaultModel):
+class CardTargetOperationSet(DefaultModel):
     def __str__(self):
-        return "CARD {} --> TARGETS {} --> WITH EFFECTS {}".format(
+        return "CARD {} --> TARGETS {} --> WITH OPERATIONS {}".format(
             str(self.card),
             str(self.target),
-            str(self.effect_set)) 
+            str(self.operation_set)) 
 
     id = models.AutoField(primary_key=True)
-    card = models.ForeignKey("Card", related_name="card_target_effect_sets", on_delete=models.CASCADE)
-    effect_set = models.ForeignKey("EffectSet", related_name="+", on_delete=models.CASCADE)
+    card = models.ForeignKey("Card", related_name="card_target_operation_sets", on_delete=models.CASCADE)
+    operation_set = models.ForeignKey("OperationSet", related_name="+", on_delete=models.CASCADE)
     target = models.ForeignKey("Target", related_name="+", on_delete=models.CASCADE)
+    execution_order = models.IntegerField() 
 
     def save(self, *args, **kwargs):
-        if not self.__target_result_type_equality():
-            raise Exception("You may not create a CardTargetEffectSet set that has differing target types between the target result and effect type.")
-        super(CardTargetEffectSet, self).save(*args, **kwargs)
+        if not self.__target_result_type_equality:
+            raise Exception("You may not create a CardTargetOperationSet set that has differing target types between the target result and operation type.")
+        super(CardTargetOperationSet, self).save(*args, **kwargs)
 
+    @property
     def __target_result_type_equality(self):
         expected_type = self.target.target_content_type
-        for effect in self.effect_set.effects.all():
-            if effect.eligible_content_type is not expected_type:
+        for operation in self.operation_set.operations.all():
+            if operation.eligible_content_type != expected_type:
                 return False
         return True

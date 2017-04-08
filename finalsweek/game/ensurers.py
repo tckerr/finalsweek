@@ -5,13 +5,11 @@ class GameCreationEnsurer(object):
         self.type_ensurer = TypeEnsurer()
         self.student_info_ensurer = StudentInfoEnsurer()
         self.card_type_ensurer = CardTypeEnsurer()
-        self.card_ensurer = CardEnsurer()
 
     def ensure(self):
         self.student_info_ensurer.ensure()
         self.type_ensurer.ensure() 
         self.card_type_ensurer.ensure() 
-        self.card_ensurer.ensure() 
 
 class TypeEnsurer(object):
     def ensure(self):
@@ -56,15 +54,3 @@ class CardTypeEnsurer(object):
                 card_type = CardType()
                 card_type.id = type
                 card_type.save()
-
-class CardEnsurer(object):
-    names = ("Joke", "Torment", "Pay Attention",)
-    def ensure(self):
-        return
-        for name in self.names:
-            if not Card.objects.filter(name=name):
-                card = Card()
-                card.card_type_id = "Action"
-                card.name = name
-                card.targeting_sift = '{"nothing":"atall"}'
-                card.save()
