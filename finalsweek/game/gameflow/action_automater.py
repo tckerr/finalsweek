@@ -10,8 +10,8 @@ class ActionAutomater(object):
             print("> System is automating: Stage: {}, Phase: {}, Actor {}'s turn".format(str(turn.phase.stage.stage_type_id), str(turn.phase.phase_type_id), str(turn.actor.id)))
             auto_action = self.automatic_action_resolver.resolve(turn)
             response = self.take_turn_proxy(turn.actor_id, auto_action)
-            return self.automate_if_needed(response.current_turn)
-        return turn
+            return True
+        return False
 
     def __requires_automation(self, turn):
         return turn and turn.phase.phase_type.is_automatic

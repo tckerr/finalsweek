@@ -1,12 +1,10 @@
 from game.gameflow.generators import StageGenerator, PhaseGenerator, TurnGenerator, Reset
-from game.gameflow.action_automater import ActionAutomater
 
 class CurrentTurnProvider(object):
-    def __init__(self, take_turn_proxy):
+    def __init__(self):
         self.stage_generator = StageGenerator()
         self.phase_generator = PhaseGenerator()
         self.turn_generator = TurnGenerator()
-        self.action_automater = ActionAutomater(take_turn_proxy)
 
     def get(self, game):
         loop = 0
@@ -17,8 +15,7 @@ class CurrentTurnProvider(object):
                 if stage is None:
                     return
                 phase = self.phase_generator.get_or_generate(stage)
-                next_turn = self.turn_generator.get_or_generate(phase)
-                return self.action_automater.automate_if_needed(next_turn)
+                return self.turn_generator.get_or_generate(phase)
             except Reset as e:
                 if loop > 10:
                     raise Exception("Loop > 10")

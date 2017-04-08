@@ -29,23 +29,29 @@ class RandomPollAi(object):
 
     def poll(self):
         print("Actor {} polling for turn...".format(str(self.actor_id)))
-        current_turn = self.router.load(self.actor_id).current_turn
-        if not current_turn:
+        game_summary = self.router.load(self.actor_id)
+        self.__assert_permissions(game_summary)
+        if game_summary.complete:
             return False
-        if current_turn.actor.id == self.actor_id:
-            self.__take_turn(current_turn)
-        else:
-            print("Not my turn.")
+        if game_summary.current_turn_actor_id == self.actor_id:
+            self.__take_turn(game_summary)
         return True
 
-    def __take_turn(self, current_turn):
+    def __assert_permissions(self, game_summary):
+        for actor_summary in game_summary.actors:
+            assert actor_summary != self.actor_id
+            assert getattr(actor_summary, "action_hand", None) is None
+        assert game_summary.me.id == self.actor_id
+        assert game_summary.me.action_hand is not None
+
+    def __take_turn(self, game_summary):
         print("Actor {actor}'s turn is up. Stage: {stage}, Phase: {phase}".format(
                 actor=str(self.actor_id), 
-                stage=str(current_turn.phase.stage.stage_type_id), 
-                phase=str(current_turn.phase.phase_type_id)))            
-        if current_turn.phase.phase_type_id == "Classtime":
-            random_card = choice(PileCard.objects.filter(pile=self.actor.action_hand))
-            action = UseActionCardAction(self.actor, random_card.card_id)
+                stage=game_summary.stage, 
+                phase=game_summary.phase))            
+        if game_summary.phase == "Classtime":
+            random_card = choice(PileCard.objects.filter(pile=game_summary.me.action_hand))
+            action = UseActionCardAction(self.actor_id, random_card.card_id)
             print("   Using card id {}, pc: {}".format(str(random_card.card_id), str(random_card.id)))
             self.router.take_turn(self.actor_id, action)
         else:

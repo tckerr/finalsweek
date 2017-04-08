@@ -1,11 +1,11 @@
 class DrawAction(object):
-    def __init__(self, quantity, actor, card_type_id):
+    def __init__(self, quantity, actor_id, card_type_id):
         self.quantity = quantity
-        self.actor = actor
+        self.actor_id = actor_id
         self.card_type_id = card_type_id
 
 
 class UseActionCardAction(object):
-    def __init__(self, actor, card_id):
-        self.actor = actor
+    def __init__(self, actor_id, card_id):
+        self.actor_id = actor_id
         self.card_id = card_id

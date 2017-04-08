@@ -16,7 +16,7 @@ class DrawManager(object):
         return pilecards
 
     def _transfer(self, pilecards, to_pile, quantity):
-        if len(pilecards) <= quantity:
+        if len(pilecards) < quantity:
             raise Exception("Cannot draw {quantity} cards from a pile of size {pilesize}.".format(quantity=str(quantity), pilesize=str(len(pilecards))))
         cards = []
         for carddraw in range(0, quantity):
