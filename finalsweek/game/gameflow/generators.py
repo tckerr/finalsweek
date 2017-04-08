@@ -3,9 +3,9 @@ from django.utils import timezone
 
 class Reset(Exception): pass
 
-class StageProvider(object):
+class StageGenerator(object):
 
-    def provide(self, game):
+    def get_or_generate(self, game):
         pending = game.stages.filter(completed__isnull=True)
         if pending.count() == 1:
             return pending.first()
@@ -31,9 +31,9 @@ class StageProvider(object):
         elif not game.stages.filter(completed__isnull=False, stage_type_id="Scoring").count() > 0:
             return "Scoring"
 
-class PhaseProvider(object):
+class PhaseGenerator(object):
 
-    def provide(self, stage):
+    def get_or_generate(self, stage):
         pending = stage.phases.filter(completed__isnull=True)
         if pending.count() == 1:
             return pending.first()
@@ -84,9 +84,9 @@ class PhaseProvider(object):
         stage.save()
         raise Reset()
 
-class TurnProvider(object):
+class TurnGenerator(object):
 
-    def provide(self, phase):
+    def get_or_generate(self, phase):
         pending = phase.turns.filter(completed__isnull=True)
         if pending.count() > 0:
             return pending.first()

@@ -1,5 +1,18 @@
 from game.models import StageType, PhaseType, StudentInfo, CardType, Card
 
+class GameCreationEnsurer(object):
+    def __init__(self):
+        self.type_ensurer = TypeEnsurer()
+        self.student_info_ensurer = StudentInfoEnsurer()
+        self.card_type_ensurer = CardTypeEnsurer()
+        self.card_ensurer = CardEnsurer()
+
+    def ensure(self):
+        self.student_info_ensurer.ensure()
+        self.type_ensurer.ensure() 
+        self.card_type_ensurer.ensure() 
+        self.card_ensurer.ensure() 
+
 class TypeEnsurer(object):
     def ensure(self):
         for stage_type in ("GameStart", "Play", "Scoring"):

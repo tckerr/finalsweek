@@ -90,9 +90,6 @@ class Pile(DefaultModel):
         pc.pile = self
         pc.save()
 
-    def get_cards(self):
-        return PileCard.objects.filter(pile=self)
-
 class Seat(DefaultModel):
     id = models.AutoField(primary_key=True)
     row = models.IntegerField()
