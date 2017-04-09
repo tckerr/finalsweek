@@ -15,7 +15,7 @@ class AutomaticActionResolver(object):
 def increase(values, field, amount):
     real_amount = amount[0]
     old_value = getattr(values, field)
-    new_value = old_value + int(real_amount)
+    new_value = max(0, old_value + int(real_amount))
     print("         --> Updating {} on {} from {} by {} to {}. (received: {})".format(field, values, str(old_value), str(real_amount), str(new_value), amount))
     setattr(values, field, new_value)
     if issubclass(values.__class__, models.Model):

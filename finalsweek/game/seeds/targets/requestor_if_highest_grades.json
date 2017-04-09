@@ -1,0 +1,25 @@
+{
+    "aggregation_type": "combine",
+    "description": "Requestor if he/she has highest grades",    
+    "filters": [],
+    "sifts":[
+        {
+            "aggregation_type": "combine",
+            "context_source": "actors",
+            "filters": [
+                {
+                    "filter_type": "relative",
+                    "property": "grades",
+                    "operator": "in_top",
+                    "comparison_value": 1
+                },
+                {
+                    "filter_type": "context",
+                    "property": "id",
+                    "operator": "==",
+                    "comparison_value": "requestor.id"
+                }
+            ]
+        }
+    ]
+}

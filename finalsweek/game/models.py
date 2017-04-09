@@ -122,6 +122,8 @@ class Actor(DefaultModel):
     seat = models.OneToOneField("Seat", related_name="actor")
     grades = models.IntegerField()
     popularity = models.IntegerField()
+    torment = models.IntegerField()
+    trouble = models.IntegerField()
 
 class CardType(DefaultModel):
     def __str__(self):
@@ -140,7 +142,7 @@ class Card(DefaultModel):
 
     id = models.AutoField(primary_key=True)
     card_type = models.ForeignKey("CardType", related_name="+")
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     piles = models.ManyToManyField("Pile", through="PileCard", related_name="cards")
 
 class PileCard(DefaultModel):
@@ -154,7 +156,7 @@ class EntityType(DefaultModel):
 
 class OperationSet(DefaultModel):
     def __str__(self):
-       operation_list = [str(eff) for eff in self.instructions.all()]
+       operation_list = [str(eff) for eff in self.operations.all()]
        return "Set: {}".format(", ".join(operation_list))
 
     id = models.AutoField(primary_key=True)
@@ -164,13 +166,21 @@ class Operator(DefaultModel):
        return "{}".format(self.id) 
     id = models.CharField(max_length=255, primary_key=True)
 
+class Operation(DefaultModel):
+    def __str__(self):
+        args = ", ".join([a.description for a in self.arguments.all()])
+        return "{} {}".format(str(self.instruction), args) 
+
+    id = models.AutoField(primary_key=True)
+    operation_set = models.ForeignKey("OperationSet", related_name="operations", on_delete=models.CASCADE)
+    instruction = models.ForeignKey("Instruction", related_name="operations", on_delete=models.CASCADE)    
+    arguments = models.ManyToManyField("Argument", related_name="operations") # set?
 
 class Instruction(DefaultModel):
     def __str__(self):
        return "{}".format(self.description) 
 
     id = models.AutoField(primary_key=True)
-    operation_sets = models.ManyToManyField("OperationSet", related_name="instructions", blank=True)
     description = models.CharField(max_length=255)
     eligible_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     target_field = models.CharField(max_length=255)
@@ -179,14 +189,14 @@ class Instruction(DefaultModel):
 # RENAME TO ARG, MOVE TO M2M with operation/operation set 
 class Argument(DefaultModel):
     def __str__(self):
-       return "{}".format(self.description) 
+       return "{}={}".format(self.key,self.description) 
 
     id = models.AutoField(primary_key=True)
-    instruction = models.ForeignKey("Instruction", related_name="arguments", on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
     is_sift = models.BooleanField() # potentially move this to its own table
     key = models.CharField(max_length=255)
     value = models.TextField()
+    # TODO: add type
 
 class Target(DefaultModel):
 
@@ -219,7 +229,7 @@ class CardTargetOperationSet(DefaultModel):
     @property
     def __target_result_type_equality(self):
         expected_type = self.target.target_content_type
-        for operation in self.operation_set.instructions.all():
-            if operation.eligible_content_type != expected_type:
+        for operation in self.operation_set.operations.all():
+            if operation.instruction.eligible_content_type != expected_type:
                 return False
         return True

@@ -5,26 +5,39 @@
     "sifts":[
         {
             "aggregation_type": "combine",
-            "returning_object_property": "actor",
-            "context_source": "seats",
             "filters": [
                 {
                     "filter_type": "context",
-                    "property": "column",
-                    "operator": "dif_abs_lte_1",
-                    "comparison_value": "requestor.seat.column"
-                },
-                {
-                    "filter_type": "context",
-                    "property": "row",
-                    "operator": "dif_abs_lte_1",
-                    "comparison_value": "requestor.seat.row"
-                },
-                {
-                    "filter_type": "evaluation",
-                    "property": "actor_or_none",
+                    "property": "id",
                     "operator": "!=",
-                    "comparison_value": null
+                    "comparison_value": "requestor.id"
+                }
+            ],
+            "sifts": [ 
+                {
+                    "aggregation_type": "combine",
+                    "returning_object_property": "actor",
+                    "context_source": "seats",
+                    "filters": [
+                        {
+                            "filter_type": "context",
+                            "property": "column",
+                            "operator": "dif_abs_lte_1",
+                            "comparison_value": "requestor.seat.column"
+                        },
+                        {
+                            "filter_type": "context",
+                            "property": "row",
+                            "operator": "dif_abs_lte_1",
+                            "comparison_value": "requestor.seat.row"
+                        },
+                        {
+                            "filter_type": "evaluation",
+                            "property": "actor_or_none",
+                            "operator": "!=",
+                            "comparison_value": null
+                        }
+                    ]
                 }
             ]
         }

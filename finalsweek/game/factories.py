@@ -31,6 +31,8 @@ class ActorFactory(object):
         actor.game = game
         actor.grades = 0
         actor.popularity = 0
+        actor.trouble = 0
+        actor.torment = 0
         actor.seat = seat
         actor.student_info = StudentInfo.objects.get(name="Test Student")
         actor.discard_pile = self.__create_pile(None)

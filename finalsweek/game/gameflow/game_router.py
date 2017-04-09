@@ -34,10 +34,12 @@ class TurnOptionBuilder(object):
             seen = []
             hand = []
             for card in action_cards:
-                if card.id not in seen:
+                if card.name not in seen:
                     hand.append(card)
-                    seen.append(card.id)
-            return { card.id: self.action_card_option_builder.build(current_turn, card, decisions) for card in hand }
+                    seen.append(card.name)
+            return {
+                "Action Cards": { card.name: self.action_card_option_builder.build(current_turn, card, decisions) for card in hand }
+            } 
 
 
 

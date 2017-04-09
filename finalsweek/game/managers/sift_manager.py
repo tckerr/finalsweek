@@ -36,7 +36,14 @@ class SiftManager(object):
 
     def parse_sift(self, sift_json_str, decisions, actor):
         context_provider = CardTargetContextProvider(actor)
-        return self.get_result_or_choice(sift_json_str, decisions, context_provider)   
+        result = self.get_result_or_choice(sift_json_str, decisions, context_provider)
+        #from pprint import pprint
+        #pprint(sift_json_str)
+        #pprint(decisions)
+        #pprint(result)
+        #input()
+        return result
+
 
     def get_result_or_choice(self, sift_json_str, choices, context_provider):
         sift_dict = json.loads(sift_json_str)
@@ -54,5 +61,6 @@ class SiftManager(object):
                 return choice
         potential_choice = sift.get_choice()
         if potential_choice:
+            print (sift.description, "Returned choice", potential_choice, potential_choice.question)
             return potential_choice
         return sift.results()

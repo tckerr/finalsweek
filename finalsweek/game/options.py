@@ -2,9 +2,6 @@ from game.managers.sift_manager import SiftManager
 from django.contrib.contenttypes.models import ContentType
 from siftpy._choice import Choice
 
-class ResultSet(list):
-    pass
-
 
 class ArgumentChoiceBuilder(object):
     def __init__(self):
@@ -13,7 +10,7 @@ class ArgumentChoiceBuilder(object):
     def build(self, arg, operation_decisions, current_actor, supply_results):
         if not arg.is_sift:
             if supply_results:
-                return { arg.key: arg.value }
+                return { arg.key: [arg.value] }
         else:
             arg_decisions = operation_decisions.get(arg.id, [])
             result = self.sift_manager.parse_sift(arg.value, arg_decisions, current_actor) 
@@ -68,8 +65,8 @@ class CardTargetOperationSetChoiceBuilder(object):
             return result if supply_results else target_decisions
 
     def __build_operation_set_result(self, current_actor, cto, operation_set_decisions, supply_results):
-        instructions = cto.operation_set.instructions.all()
-        return { o.id: self.operation_choice_builder.build(o, operation_set_decisions, current_actor, supply_results) for o in instructions}
+        operations = cto.operation_set.operations.all()
+        return { o.id: self.operation_choice_builder.build(o, operation_set_decisions, current_actor, supply_results) for o in operations}
 
     def __assert_content_types(self, items, cto):
         for item in items:

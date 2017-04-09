@@ -7,6 +7,6 @@ class DrawAction(object):
 class UseActionCardAction(object):
     def __init__(self, actor_id, decisions):
         self.actor_id = actor_id
-        self.card_id = int(decisions["card_id"])
+        self.card_name = decisions["card_name"]
         #example
         self.decisions = decisions
