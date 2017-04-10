@@ -1,0 +1,92 @@
+// message_type defines data schema
+
+{
+    "message_type": "turn_digest",
+    "current_phase": "Classtime",
+    "turn_set": 1,
+    "automatic": false,
+    "choices": [
+        {
+            "message_type": "play_action_card",
+            "name": "Play action card",
+            "description": "Play an action card from your hand",
+            "choices": [ //cards in hand
+                {
+                    "message_type": "action_card",
+                    "id": 6,
+                    "card_type": "ActionCard",
+                    "name": "Joke",
+                    "description": "+1 popularity per adjacent student",
+                    "flavor": "Class clown evokes a teacher's frown.",
+                    "trouble": 3,
+                    "action_cost": 1,
+                    "step_count": 0,
+                    "steps": {}
+                },
+                {
+                    "message_type": "action_card",
+                    "id": 3,
+                    "card_type": "ActionCard",
+                    "name": "Principal's Office",
+                    "description": "Target student +2 trouble",
+                    "flavor": "",
+                    "trouble": 0,
+                    "action_cost": 1,
+                    "step_count": 1,
+                    "steps": {
+                        "1": {
+                            "message_type": "choose_student",
+                            "message_type": "action_card_step",
+                        }
+                    }
+                },
+            ]
+        },
+        {
+            "message_type": "pass",
+            "name": "Skip your turn",           
+            "description": "Skip your turn and forfeit an action",
+            "choices": [
+            ]
+        }
+    ]
+}
+
+{
+   "Action Cards": {
+      "Cry": {
+         "10": {
+            "operation_set_choices": {
+               "13": {},
+               "14": {}
+            },
+            "target_choices": []
+         }
+      },
+      "Joke": {
+         "3": {
+            "operation_set_choices": {
+               "4": {
+                  "4": []
+               },
+               "9": {}
+            },
+            "target_choices": []
+         }
+      },
+      "Tutor": {
+         "6": {
+            "operation_set_choices": {
+               "6": {}
+            },
+            "target_choices": []
+         },
+         "7": {
+            "operation_set_choices": {
+               "7": {}
+            },
+            "target_choices": []
+         }
+      }
+   }
+}

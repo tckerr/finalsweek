@@ -77,3 +77,37 @@ class CardTargetOperationSetChoiceBuilder(object):
                     target_id=str(cto.target.id),
                     result_content_type=content_type,
                     target_content_type=cto.target.target_content_type))
+
+class Perspective(object):
+    def __init__(self, actor_id):
+        self.actor_id = actor_id
+
+class TurnSummary(object): pass
+
+class ActionCardOptionBuilder(object):
+    def __init__(self):
+        self.card_target_operation_set_choice_builder = CardTargetOperationSetChoiceBuilder()
+
+    def build(self, current_turn, card, decisions):
+        card_decisions = decisions.get(card.id, {})
+        card_target_operation_sets = card.card_target_operation_sets.order_by('execution_order')
+        return { cto.id: self.card_target_operation_set_choice_builder.build(current_turn, cto, card_decisions) for cto in card_target_operation_sets }
+
+class TurnOptionBuilder(object):
+    # TODO, we can early exit if this isnt chosen yet
+    def __init__(self):
+        self.action_card_option_builder = ActionCardOptionBuilder()
+
+    def build(self, current_turn, decisions):
+        phase = current_turn.phase.phase_type_id
+        if phase == "Classtime":
+            action_cards = list(current_turn.actor.action_hand.cards.all())
+            seen = []
+            hand = []
+            for card in action_cards:
+                if card.name not in seen:
+                    hand.append(card)
+                    seen.append(card.name)
+            return {
+                "Action Cards": { card.name: self.action_card_option_builder.build(current_turn, card, decisions) for card in hand }
+            } 

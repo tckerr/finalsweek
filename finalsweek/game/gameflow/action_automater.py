@@ -7,11 +7,17 @@ class ActionAutomater(object):
 
     def automate_if_needed(self, turn):
         if self.__requires_automation(turn):
-            print("> System is automating: Stage: {}, Phase: {}, Actor {}'s turn".format(str(turn.phase.stage.stage_type_id), str(turn.phase.phase_type_id), str(turn.actor.id)))
             auto_action = self.automatic_action_resolver.resolve(turn)
+            self.__log(turn)
             response = self.take_turn_proxy(turn.actor_id, auto_action)
             return True
         return False
 
     def __requires_automation(self, turn):
         return turn and turn.phase.phase_type.is_automatic
+
+    def __log(self, turn):
+        print("> System is automating: Stage: {stage}, Phase: {phase}, Actor {actor_id}'s turn".format(
+            stage=str(turn.phase.stage.stage_type_id), 
+            phase=str(turn.phase.phase_type_id), 
+            actor_id=str(turn.actor.id)))

@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 #
-from game.gameflow.game_router import GameRouter
+from game.interface.routers import GameRouter
 from game.actions import UseActionCardAction
 from random import choice
 from game.models import PileCard
@@ -17,7 +17,8 @@ class Command(BaseCommand):
 
         while True:
             #more = choice(ai).poll()
-            more = list(filter(lambda act: act.actor_id == router.load(ai[0].actor_id).current_turn_actor_id, ai))
+            current_turn = router.load(ai[0].actor_id)
+            more = list(filter(lambda act: act.actor_id == current_turn.current_turn_actor_id, ai))
             if not more:
                 break
             more[0].poll()
@@ -56,14 +57,14 @@ class RandomPollAi(object):
                 stage=game_summary.stage, 
                 phase=game_summary.phase))            
         if game_summary.phase == "Classtime":
-            #print("My options:")
-            #pprint(options)
+            print("My options:")
+            pprint(options)
             decisions = self.decider.decide(options)
             #print("My decisions:")
             #pprint(decisions)
-            self.router.take_turn_desc(self.actor_id, decisions)
+            self.router.take_turn(self.actor_id, decisions)
         else:
-            self.router.take_turn(self.actor_id)
+            self.router.take_turn(self.actor_id, {})
 
 from random import randint
 

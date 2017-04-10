@@ -1,7 +1,57 @@
 settings = {
     "play_phase_count": 2,
     "hand_size": 6,
-    "card_copies_in_action_deck": 100,
+    "card_copies_in_action_deck": 20,
     "seat_rows": 5,
-    "seat_columns": 4
+    "seat_columns": 4,
+    "game_definition": [
+        {
+            "name": "GameStart",
+            "phase_sets": 1,
+            "phases": [
+                {
+                    "name": "Choose Seats",
+                    "turn_sets": 1,
+                    "automatic": False
+                }
+            ]
+        },
+        {
+            "name": "Play",
+            "phase_sets": 2,
+            "phases": [
+                {
+                    "name": "Accumulation",
+                    "turn_sets": 1,
+                    "automatic": True
+                },
+                {
+                    "name": "Classtime",
+                    "turn_sets": 2,
+                    "automatic": False
+                },
+                {
+                    "name": "Dismissal",
+                    "turn_sets": 1,
+                    "automatic": False
+                },
+                {
+                    "name": "After School",
+                    "turn_sets": 1,
+                    "automatic": False
+                }
+            ]
+        },
+        {
+            "name": "Scoring",
+            "phase_sets": 1,
+            "phases": [
+                {
+                    "name": "Score",
+                    "turn_sets": 1,
+                    "automatic": True
+                }
+            ]
+        }
+    ]
 }

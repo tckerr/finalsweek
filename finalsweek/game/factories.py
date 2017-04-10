@@ -40,8 +40,11 @@ class ActorFactory(object):
         actor.action_hand = self.__create_pile(settings["hand_size"])
         actor.save()
 
-    def load(self, actor_id):
-        return Actor.objects.get(id=actor_id)  
+    def load(self, actor_id, prefetch=None):
+        base_qs = Actor.objects
+        if prefetch:
+            return base_qs.prefetch_related(prefetch).get(id=actor_id)
+        return base_qs.get(id=actor_id)  
 
     def __create_pile(self, size_limit):
         pile = Pile()
