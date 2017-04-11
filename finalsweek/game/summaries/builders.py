@@ -12,6 +12,6 @@ class GameSummaryBuilder(object):
             phase = "Score"
             current_turn_actor_id = None
             
-        actors = game.actors.all()
+        actors = game.actors.prefetch_related("action_hand__cards").all()
         return GameSummary(actors, stage, phase, complete, current_turn_actor_id, perspective)
  

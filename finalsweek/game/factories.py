@@ -1,6 +1,7 @@
 from game.models import Pile, Actor, Game, StudentInfo, Card, Seat
 from game.settings import settings
 from random import shuffle
+from django.db import transaction
 
 class ActionDeckFactory(object):
 
@@ -80,16 +81,17 @@ class GameFactory(object):
     def load(self, game_id):
         return Game.objects.get(id=game_id)  
 
-    def create(self, ai_players):            
-        game = Game()
-        game.play_phase_count = settings["play_phase_count"]
-        game.action_deck = self.action_deck_factory.create(None)
-        game.afterschool_deck = self.pile_factory.create(None)
-        game.discipline_card_deck = self.pile_factory.create(None)
-        game.save()
-        self.seat_factory.create_for_grid(game, settings["seat_rows"], settings["seat_columns"])
-        self.__create_actors_with_seat(game, ai_players)
-        return game
+    def create(self, ai_players):   
+        with transaction.atomic():         
+            game = Game()
+            game.play_phase_count = settings["play_phase_count"]
+            game.action_deck = self.action_deck_factory.create(None)
+            game.afterschool_deck = self.pile_factory.create(None)
+            game.discipline_card_deck = self.pile_factory.create(None)
+            game.save()
+            self.seat_factory.create_for_grid(game, settings["seat_rows"], settings["seat_columns"])
+            self.__create_actors_with_seat(game, ai_players)
+            return game
 
     def __create_actors_with_seat(self, game, ai_players):
         seats = list(game.seats.all())

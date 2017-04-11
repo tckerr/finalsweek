@@ -10,7 +10,7 @@ class DrawManager(object):
 
     def _get_pilecards(self, from_pile, card_id=None):
 
-        pilecards = list(PileCard.objects.filter(pile=from_pile))
+        pilecards = list(PileCard.objects.filter(pile=from_pile).prefetch_related("card"))
         if card_id:
             return list(filter(lambda pc: pc.card_id == card_id, pilecards))
         return pilecards
@@ -18,14 +18,15 @@ class DrawManager(object):
     def _transfer(self, pilecards, to_pile, quantity):
         if len(pilecards) < quantity:
             raise Exception("Cannot draw {quantity} cards from a pile of size {pilesize}.".format(quantity=str(quantity), pilesize=str(len(pilecards))))
-        cards = []
+        drawn = []
         for carddraw in range(0, quantity):
             pilecard = pilecards.pop()
             pilecard.pile = to_pile
-            print("    + Drawing {} card, pc: {}".format(pilecard.card.name, str(pilecard.id)))
-            pilecard.save()
-            cards.append(pilecard.card)
-        return cards
+            print("    + Drawing {} card, pc: {}".format(pilecard.card.name, str(pilecard.id)))            
+            drawn.append(pilecard)
+        PileCard.objects.filter(pk__in=[pc.id for pc in drawn]).update(pile=to_pile)
+        return [pc.card for pc in drawn]
+        
 
 class DeckDrawManager(DrawManager):
 

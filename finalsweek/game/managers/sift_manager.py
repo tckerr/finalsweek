@@ -2,6 +2,7 @@ from siftpy import SiftBuilder, ContextProvider
 from game.operations import max_seat_difference
 import json
 from game.operators import dif_abs_lte_1
+from game.models import Actor
 
 class CardTargetContextProvider(ContextProvider):
     custom_operators = {
@@ -19,7 +20,7 @@ class CardTargetContextProvider(ContextProvider):
         self.__init_context(requestor, seats, actors)
 
     def __init_context(self, requestor, seats, actors):
-        self.context.requestor = requestor
+        self.context.requestor = Actor.objects.get(pk=requestor.id)
         self.context.seats = seats
         self.context.actors = actors
 

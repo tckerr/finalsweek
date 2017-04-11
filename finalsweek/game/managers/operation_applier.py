@@ -15,7 +15,7 @@ class OperationApplier(object):
             for arg_key, argument_result in operation_results.items():
                 kwargs[arg_key] = argument_result
             # we have to go back for the operator
-            operation = Operation.objects.get(pk=operation_id)
+            operation = Operation.objects.prefetch_related("instruction").get(pk=operation_id)
             operator_fn = self.operator_resolver.resolve(operation.instruction.operator_id)
             for target in targets:
                 operator_fn(target, operation.instruction.target_field, **kwargs)

@@ -24,11 +24,21 @@ def increase(values, field, amount):
 def decrease(values, field, amount):
     return increase(values, field, [int(amount[0])*-1])
 
+def set_prop(values, field, amount):
+    real_amount = amount[0]
+    old_value = getattr(values, field)
+    new_value = max(0, int(real_amount))
+    print("         --> Updating {} on {} from {} to {}. (received: {})".format(field, values, str(old_value), str(real_amount), str(new_value), amount))
+    setattr(values, field, new_value)
+    if issubclass(values.__class__, models.Model):
+        values.save()
+
 class OperatorResolver(object):
 
     operators = {
         "increase": increase,
-        "decrease": decrease
+        "decrease": decrease,
+        "set": set_prop
     }
 
     def resolve(self, operator_id):

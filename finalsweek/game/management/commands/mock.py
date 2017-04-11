@@ -57,8 +57,8 @@ class RandomPollAi(object):
                 stage=game_summary.stage, 
                 phase=game_summary.phase))            
         if game_summary.phase == "Classtime":
-            print("My options:")
-            pprint(options)
+            #print("My options:")
+            #pprint(options)
             decisions = self.decider.decide(options)
             #print("My decisions:")
             #pprint(decisions)

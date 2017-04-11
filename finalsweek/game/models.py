@@ -219,7 +219,7 @@ class CardTargetOperationSet(DefaultModel):
     card = models.ForeignKey("Card", related_name="card_target_operation_sets", on_delete=models.CASCADE)
     operation_set = models.ForeignKey("OperationSet", related_name="+", on_delete=models.CASCADE)
     target = models.ForeignKey("Target", related_name="+", on_delete=models.CASCADE)
-    execution_order = models.IntegerField() 
+    execution_order = models.IntegerField(default=0) 
 
     def save(self, *args, **kwargs):
         if not self.__target_result_type_equality:

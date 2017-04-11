@@ -18,13 +18,15 @@ class GameRouter(object):
     
     def load(self, actor_id,):
         game = self.game_runner.load(actor_id)  
-        current_turn = self.game_runner.get_current_turn(game)     
-        return self.__build_summary(game, current_turn, actor_id)    
+        current_turn = self.game_runner.get_current_turn(game)    
+        summary = self.__build_summary(game, current_turn, actor_id)  
+        return summary  
 
     def take_turn(self, actor_id, decisions=None):
         action = UseActionCardAction(actor_id, decisions) if decisions else None
         self.game_runner.take_turn(actor_id, action)  
-        return self.load(actor_id)
+        result = self.load(actor_id)
+        return result
 
     def get_turn_options(self, actor_id, decisions):
         game = self.game_runner.load(actor_id)

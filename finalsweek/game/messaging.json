@@ -54,10 +54,10 @@
 
 {
    "Action Cards": {
-      "Cry": {
-         "10": {
+      "Cry": { //card.name
+         "10": { // cto.id
             "operation_set_choices": {
-               "13": {},
+               "13": {}, 
                "14": {}
             },
             "target_choices": []
