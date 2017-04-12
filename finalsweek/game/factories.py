@@ -84,7 +84,6 @@ class GameFactory(object):
     def create(self, ai_players):   
         with transaction.atomic():         
             game = Game()
-            game.play_phase_count = settings["play_phase_count"]
             game.action_deck = self.action_deck_factory.create(None)
             game.afterschool_deck = self.pile_factory.create(None)
             game.discipline_card_deck = self.pile_factory.create(None)

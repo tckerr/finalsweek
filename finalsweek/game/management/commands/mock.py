@@ -57,11 +57,11 @@ class RandomPollAi(object):
                 stage=game_summary.stage, 
                 phase=game_summary.phase))            
         if game_summary.phase == "Classtime":
-            #print("My options:")
-            #pprint(options)
+            print("My options:")
+            pprint(options)
             decisions = self.decider.decide(options)
-            #print("My decisions:")
-            #pprint(decisions)
+            print("My decisions:")
+            pprint(decisions)
             self.router.take_turn(self.actor_id, decisions)
         else:
             self.router.take_turn(self.actor_id, {})
@@ -85,28 +85,36 @@ class Decider(object):
 
     def __decide_card(self, card_options):
         card_decisions = {}
+        if not card_options:
+            return card_decisions
         for cto_id, _ in card_options.items():
             card_decisions[cto_id] = {
                 "target_decisions": [],
                 "operation_set_decisions": {}
             }
-            for item in card_options[cto_id]["target_choices"]:                    
-                if self.__is_choice(item):
-                    random_choice = self.__random_choice(item)
-                    card_decisions[cto_id]["target_decisions"].append(random_choice)
-                else:
-                    card_decisions[cto_id]["target_decisions"].append(item)
-                    
-            for operation_id, operation_choices in card_options[cto_id]["operation_set_choices"].items():
-                card_decisions[cto_id]["operation_set_decisions"][operation_id] = {}
-                for arg_id, argument_choices in operation_choices.items():
-                    card_decisions[cto_id]["operation_set_decisions"][operation_id][arg_id] = []
-                    for item in argument_choices:                    
-                        if self.__is_choice(item):
-                            random_choice = self.__random_choice(item)
-                            card_decisions[cto_id]["operation_set_decisions"][operation_id][arg_id].append(random_choice)
-                        else:
-                            card_decisions[cto_id]["operation_set_decisions"][operation_id][arg_id].append(item)
+            if card_options[cto_id] and card_options[cto_id]["target_choices"]:
+                for item in card_options[cto_id]["target_choices"]:                    
+                    if self.__is_choice(item):
+                        random_choice = self.__random_choice(item)
+                        card_decisions[cto_id]["target_decisions"].append(random_choice)
+                    else:
+                        card_decisions[cto_id]["target_decisions"].append(item)
+
+            if card_options[cto_id] and card_options[cto_id]["operation_set_choices"]:       
+                for operation_id, operation_choices in card_options[cto_id]["operation_set_choices"].items():
+                    card_decisions[cto_id]["operation_set_decisions"][operation_id] = {}
+                    if not operation_choices:
+                        continue
+                    for arg_id, argument_choices in operation_choices.items():
+                        card_decisions[cto_id]["operation_set_decisions"][operation_id][arg_id] = []
+                        if not argument_choices:
+                            continue
+                        for item in argument_choices:                    
+                            if self.__is_choice(item):
+                                random_choice = self.__random_choice(item)
+                                card_decisions[cto_id]["operation_set_decisions"][operation_id][arg_id].append(random_choice)
+                            else:
+                                card_decisions[cto_id]["operation_set_decisions"][operation_id][arg_id].append(item)
         return card_decisions
 
     def __decide_cto(self, cto_options):

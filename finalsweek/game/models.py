@@ -26,7 +26,6 @@ class DefaultModel(models.Model):
 
 class Game(DefaultModel):
     id = models.AutoField(primary_key=True)
-    play_phase_count = models.IntegerField()
     action_deck = models.ForeignKey("Pile", related_name="+")
     afterschool_deck = models.ForeignKey("Pile", related_name="+")
     discipline_card_deck = models.ForeignKey("Pile", related_name="+")

@@ -16,9 +16,15 @@ class ArgumentChoiceBuilder(object):
             result = self.sift_manager.parse_sift(arg.value, arg_decisions, current_actor) 
             if result.__class__ is Choice: 
                 combined_decisions = arg_decisions + [result]
-                return { arg.key: result } if supply_results else { arg.id: combined_decisions } 
+                if supply_results and result:
+                    return { arg.key: result }
+                elif not supply_results and combined_decisions:
+                    return { arg.id: combined_decisions } 
             else:
-                return { arg.key: result } if supply_results else { arg.id: arg_decisions }#ResultSet([operation_arg.key, result])  --> for actual value
+                if supply_results and result:
+                    return { arg.key: result }
+                elif not supply_results and arg_decisions:
+                    return { arg.id: arg_decisions }#ResultSet([operation_arg.key, result])  --> for actual value
 
 
 class OperationChoiceBuilder(object):
@@ -32,7 +38,8 @@ class OperationChoiceBuilder(object):
             result = self.arg_choice_builder.build(arg, operation_decisions, current_actor, supply_results)
             if result:
                 results.update(result)
-        return results
+        if results:
+            return results
 
 
 class CardTargetOperationSetChoiceBuilder(object):
@@ -49,24 +56,38 @@ class CardTargetOperationSetChoiceBuilder(object):
         current_actor = current_turn.actor
         target_result = self.__build_target_result(current_actor, cto, target_decisions, supply_results)
         operation_set_result = self.__build_operation_set_result(current_actor, cto, operation_set_decisions, supply_results)
-        return { 
-            "target_choices": target_result,
-            "operation_set_choices": operation_set_result
-        }
+        if target_result or operation_set_result:
+            return { 
+                "target_choices": target_result,
+                "operation_set_choices": operation_set_result
+            }
 
     def __build_target_result(self, current_actor, cto, target_decisions, supply_results):        
         sift_json_str = cto.target.sift
         result = self.sift_manager.parse_sift(sift_json_str, target_decisions, current_actor)   
         if result.__class__ is Choice: 
-            combined_decisions = target_decisions + [result]
-            return result if supply_results else combined_decisions
+            if supply_results and result:
+                return result
+            combined_decisions = target_decisions + [result]            
+            if not supply_results and combined_decisions:
+                return combined_decisions
         else:
-            self.__assert_content_types(result, cto)
-            return result if supply_results else target_decisions
+            # TODO: cache these
+            #self.__assert_content_types(result, cto)
+            if supply_results and result:
+                return result
+            else:
+                return target_decisions
 
     def __build_operation_set_result(self, current_actor, cto, operation_set_decisions, supply_results):
         operations = cto.operation_set.operations.all()
-        return { o.id: self.operation_choice_builder.build(o, operation_set_decisions, current_actor, supply_results) for o in operations}
+        results = {}
+        for o in operations:
+            operation_choice = self.operation_choice_builder.build(o, operation_set_decisions, current_actor, supply_results)
+            if operation_choice:
+                results[o.id] = operation_choice
+        if results:
+            return results
 
     def __assert_content_types(self, items, cto):
         for item in items:
@@ -91,7 +112,13 @@ class ActionCardOptionBuilder(object):
     def build(self, current_turn, card, decisions):
         card_decisions = decisions.get(card.id, {})
         card_target_operation_sets = card.card_target_operation_sets.order_by('execution_order')
-        return { cto.id: self.card_target_operation_set_choice_builder.build(current_turn, cto, card_decisions) for cto in card_target_operation_sets }
+        results = {}
+        for cto in card_target_operation_sets:
+            cto_choices = self.card_target_operation_set_choice_builder.build(current_turn, cto, card_decisions)
+            if cto_choices:
+                results[cto.id] = cto_choices
+        if results:
+            return results
 
 class TurnOptionBuilder(object):
     # TODO, we can early exit if this isnt chosen yet
@@ -101,6 +128,8 @@ class TurnOptionBuilder(object):
     def build(self, current_turn, decisions):
         phase = current_turn.phase.phase_type_id
         if phase == "Classtime":
+            # TODO: prefetch related here
+            cards = current_turn.actor.action_hand.cards.prefetch_related("card_target_operation_sets__operations")
             action_cards = list(current_turn.actor.action_hand.cards.all())
             seen = []
             hand = []

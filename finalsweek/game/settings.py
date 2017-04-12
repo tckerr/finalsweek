@@ -1,5 +1,4 @@
 settings = {
-    "play_phase_count": 2,
     "hand_size": 6,
     "card_copies_in_action_deck": 20,
     "seat_rows": 5,
@@ -18,7 +17,7 @@ settings = {
         },
         {
             "name": "Play",
-            "phase_sets": 2,
+            "phase_sets": 10,
             "phases": [
                 {
                     "name": "Accumulation",
