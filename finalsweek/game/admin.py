@@ -1,14 +1,20 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from game.models import *
 
 class CardTargetOperationSetInline(admin.TabularInline):
     model = CardTargetOperationSet
 
 class CardAdmin(admin.ModelAdmin):
+    list_display = ("id", "linked_name", "trouble_cost", "description")
+
     model = Card
     inlines = [
         CardTargetOperationSetInline,
     ]
+
+    def linked_name(self, obj):
+        return format_html("<a href='{id}/change'><b>{name}</b></a>".format(id=obj.id, name=obj.name))
 
 class OperationInline(admin.TabularInline):
     model = Operation

@@ -1,0 +1,82 @@
+{
+    "id": "choose",
+    "input_params": ["item_list"],
+    "output_params": ["chosen_item"],
+    "flow_type": "choice"
+},
+{
+    "id": "load",
+    "description": "Used to transfer results through",
+    "input_params": ["context_accessor"],
+    "output_params": ["item_list"], //maybe include original entity here too for saving
+    "flow_type": "process"
+},
+{
+    "id": "modify",
+    "input_params": ["operator", "x", "item_list", "field_accessor"],
+    "output_params": ["item_list"],
+    "flow_type": "process"
+},
+{
+    "id": "filter",
+    "input_params": ["item_list", "operator", "comparison_value"], 
+    "output_params": ["item_list"],
+    "flow_type": "process"
+}
+
+
+
+
+[
+    {
+        "flow_type": "load",
+        "input_map": {
+            "context_accessor": "context.seats"
+        },
+        "output_map": {
+            "item_list": "all_seats"
+        }
+    },
+    {
+        "flow_type": "filter",
+        "input_map": {
+            "item_list": "all_seats",
+            "field_accessor": "student",
+            "operator": "is_null",
+            "comparison_value": null,
+        },
+        "output_map": {
+            "item_list": "empty_seats"
+        }
+    },
+    {
+        "flow_type": "filter",
+        "input_map": {
+            "item_list": "empty_seats",
+            "field_accessor": "row",
+            "operator": "<",
+            "comparison_value": "context.requestor.seat.row",
+        },
+        "output_map": {
+            "item_list": "empty_seats_ahead_of_requestor"
+        }
+    },
+    {
+        "flow_type": "choose",        
+        "input_map": {
+            "item_list": "empty_seats_ahead_of_requestor"
+        },        
+        "output_map": {
+            "chosen_item": "selected_seat"
+        }
+    },
+    {
+        "flow_type": "choose",        
+        "input_map": {
+            "item_list": "empty_seats_ahead_of_requestor"
+        },        
+        "output_map": {
+            "chosen_item": "selected_seat"
+        }
+    },
+] 

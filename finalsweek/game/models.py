@@ -96,6 +96,10 @@ class Seat(DefaultModel):
     game = models.ForeignKey("Game", related_name="seats")
 
     @property
+    def coordinates_str(self):
+        return "({}, {})".format(self.column, self.row)
+
+    @property
     def empty(self):
         return self.actor_or_none is None
 
@@ -137,11 +141,13 @@ class CardType(DefaultModel):
 
 class Card(DefaultModel):
     def __str__(self):
-       return "{} ({})".format(self.name, str(self.id))
+       return "{} ({}): {}".format(self.name, str(self.id), self.description)
 
     id = models.AutoField(primary_key=True)
     card_type = models.ForeignKey("CardType", related_name="+")
+    description = models.TextField(default="")
     name = models.CharField(max_length=255, unique=True)
+    trouble_cost = models.IntegerField(default=0)
     piles = models.ManyToManyField("Pile", through="PileCard", related_name="cards")
 
 class PileCard(DefaultModel):
@@ -159,6 +165,7 @@ class OperationSet(DefaultModel):
        return "Set: {}".format(", ".join(operation_list))
 
     id = models.AutoField(primary_key=True)
+    description = models.CharField(max_length=255, default="")
 
 class Operator(DefaultModel):
     def __str__(self):
@@ -171,6 +178,7 @@ class Operation(DefaultModel):
         return "{} {}".format(str(self.instruction), args) 
 
     id = models.AutoField(primary_key=True)
+    description = models.CharField(max_length=255, default="")
     operation_set = models.ForeignKey("OperationSet", related_name="operations", on_delete=models.CASCADE)
     instruction = models.ForeignKey("Instruction", related_name="operations", on_delete=models.CASCADE)    
     arguments = models.ManyToManyField("Argument", related_name="operations") # set?
@@ -180,7 +188,7 @@ class Instruction(DefaultModel):
        return "{}".format(self.description) 
 
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, default="")
     eligible_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     target_field = models.CharField(max_length=255)
     operator = models.ForeignKey(Operator, on_delete=models.CASCADE)
@@ -191,7 +199,7 @@ class Argument(DefaultModel):
        return "{}={}".format(self.key,self.description) 
 
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, default="")
     is_sift = models.BooleanField() # potentially move this to its own table
     key = models.CharField(max_length=255)
     value = models.TextField()
@@ -215,6 +223,7 @@ class CardTargetOperationSet(DefaultModel):
             str(self.operation_set)) 
 
     id = models.AutoField(primary_key=True)
+    description = models.CharField(max_length=255, default="", blank=True)
     card = models.ForeignKey("Card", related_name="card_target_operation_sets", on_delete=models.CASCADE)
     operation_set = models.ForeignKey("OperationSet", related_name="+", on_delete=models.CASCADE)
     target = models.ForeignKey("Target", related_name="+", on_delete=models.CASCADE)
