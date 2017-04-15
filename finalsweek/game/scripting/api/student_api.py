@@ -22,7 +22,7 @@ class StudentApi(SandboxApi):
         for s in students:
             proximate_column = abs(s.seat.column - target_student.seat.column) <= 1
             proximate_row = abs(s.seat.row - target_student.seat.row) <= 1
-            if proximate_column and proximate_row:
+            if proximate_column and proximate_row and (proximate_column + proximate_row) > 0:
                 results.append(s)
         return results
 

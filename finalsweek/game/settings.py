@@ -17,7 +17,7 @@ settings = {
         },
         {
             "name": "Play",
-            "phase_sets": 10,
+            "phase_sets": 4,
             "phases": [
                 {
                     "name": "Accumulation",

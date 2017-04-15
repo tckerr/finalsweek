@@ -20,7 +20,7 @@ class ActorApi(SandboxApi):
         for a in actors:
             proximate_column = abs(a.student.seat.column - target_actor.student.seat.column) <= 1
             proximate_row = abs(a.student.seat.row - target_actor.student.seat.row) <= 1
-            if proximate_column and proximate_row:
+            if proximate_column and proximate_row and (proximate_column + proximate_row) > 0:
                 results.append(a)
         return results
 

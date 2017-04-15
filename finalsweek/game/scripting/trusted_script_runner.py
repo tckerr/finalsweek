@@ -40,7 +40,6 @@ class TrustedScriptRunner(object):
             exec(script, scope_vars, scope_vars)
         except PromptException as e:
             return self.__save_and_prompt(save_queue, e.prompt)
-
         return self.__save(save_queue)
 
 
