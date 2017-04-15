@@ -1,7 +1,5 @@
 from game.managers.input.input_manager_base import InputManagerBase
 from game.managers.draw_manager import ActionHandDrawManager
-from game.managers.operation_applier import OperationApplier
-from game.options import CardTargetOperationSetChoiceBuilder
 from game.interface.actions import UseActionCardAction
 from game.models import Card, PileCard
 from game.scripting.trusted_script_runner import TrustedScriptRunner
@@ -11,8 +9,6 @@ class ClasstimeInputManager(InputManagerBase):
 
     def __init__(self):
         self.action_hand_draw_manager = ActionHandDrawManager()
-        self.cto_choice_builder = CardTargetOperationSetChoiceBuilder()
-        self.operation_applier = OperationApplier()
         self.trusted_script_runner = TrustedScriptRunner()
 
     def input(self, current_turn, action):

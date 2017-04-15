@@ -1,6 +1,0 @@
-{
-    "aggregation_type": "combine",
-    "context_source": "requestor",
-    "returning_object_property": "trouble",
-    "filters": []
-}

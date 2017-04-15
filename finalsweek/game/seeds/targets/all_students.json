@@ -1,6 +1,0 @@
-{
-    "aggregation_type": "combine",
-    "description": "All students",
-    "context_source": "actors",
-    "filters": []
-}

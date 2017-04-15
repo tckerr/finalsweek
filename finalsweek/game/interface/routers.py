@@ -1,13 +1,14 @@
 from game.summaries.builders import GameSummaryBuilder
 from game.gameflow.runner import GameRunner
-from game.options import TurnOptionBuilder, Perspective
 
+class Perspective(object):
+    def __init__(self, actor_id):
+        self.actor_id = actor_id
 
 class GameRouter(object):
 
     def __init__(self):
         self.game_summary_builder = GameSummaryBuilder()
-        self.turn_option_builder = TurnOptionBuilder()
         self.game_runner = GameRunner()
         self.digest_provider = DigestProvider()
 
@@ -27,13 +28,6 @@ class GameRouter(object):
         turn_result = self.game_runner.take_turn(actor_id, action)  
         game_result = self.load(actor_id)
         return PromptDigest(turn_result, game_result) if turn_result else None
-
-    def get_turn_options(self, actor_id, decisions):
-        game = self.game_runner.load(actor_id)
-        current_turn = self.game_runner.get_current_turn(game)
-        if current_turn.actor.id != actor_id:
-            return None
-        return self.turn_option_builder.build(current_turn, decisions)    
 
     def __build_summary(self, game, current_turn, actor_id=None):
         return self.game_summary_builder.build(game, current_turn, perspective=Perspective(actor_id))

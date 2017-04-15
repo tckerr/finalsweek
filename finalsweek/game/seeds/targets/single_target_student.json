@@ -1,6 +1,0 @@
-{
-    "aggregation_type": "choose_element",
-    "description": "Single target student",
-    "context_source": "actors",
-    "filters": []
-}
