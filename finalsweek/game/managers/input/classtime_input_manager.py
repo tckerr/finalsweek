@@ -4,7 +4,7 @@ from game.managers.operation_applier import OperationApplier
 from game.options import CardTargetOperationSetChoiceBuilder
 from game.actions import UseActionCardAction
 from game.models import Card, PileCard
-from game.script_api import TrustedScriptRunner
+from game.scripting.trusted_script_runner import TrustedScriptRunner
 
 
 class ClasstimeInputManager(InputManagerBase):
