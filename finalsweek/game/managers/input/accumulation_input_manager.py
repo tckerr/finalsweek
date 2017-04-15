@@ -1,4 +1,4 @@
-from game.actions import DrawAction
+from game.interface.actions import DrawAction
 from game.managers.input.input_manager_base import InputManagerBase
 from game.managers.draw_manager import DeckDrawManager
 

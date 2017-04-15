@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 #
 from game.interface.routers import GameRouter
-from game.actions import UseActionCardAction
+from game.interface.actions import UseActionCardAction
 from random import choice
 
 player_count = 4

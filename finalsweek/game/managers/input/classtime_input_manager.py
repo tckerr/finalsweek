@@ -2,7 +2,7 @@ from game.managers.input.input_manager_base import InputManagerBase
 from game.managers.draw_manager import ActionHandDrawManager
 from game.managers.operation_applier import OperationApplier
 from game.options import CardTargetOperationSetChoiceBuilder
-from game.actions import UseActionCardAction
+from game.interface.actions import UseActionCardAction
 from game.models import Card, PileCard
 from game.scripting.trusted_script_runner import TrustedScriptRunner
 

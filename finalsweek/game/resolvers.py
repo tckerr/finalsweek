@@ -1,4 +1,3 @@
-from game.actions import DrawAction
 from game.settings import settings
 from game.models import PileCard
 from django.db import models

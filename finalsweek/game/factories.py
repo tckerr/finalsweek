@@ -60,8 +60,11 @@ class ActorFactory(object):
 class SeatFactory(object):
 
     def create(self, game, row, column):            
+        return self.create_with_id(game.id, row, column)
+
+    def create_with_id(self, game_id, row, column):            
         seat = Seat()
-        seat.game = game
+        seat.game_id = game_id
         seat.row = row
         seat.column = column
         seat.save()
