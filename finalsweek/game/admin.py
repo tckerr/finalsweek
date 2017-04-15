@@ -6,8 +6,8 @@ class CardTargetOperationSetInline(admin.TabularInline):
     model = CardTargetOperationSet
 
 class CardAdmin(admin.ModelAdmin):
-    list_display = ("id", "linked_name", "trouble_cost", "description")
-
+    list_display = ("id", "active", "linked_name", "has_script", "trouble_cost", "description")
+    list_editable = ('active',)
     model = Card
     inlines = [
         CardTargetOperationSetInline,
@@ -15,6 +15,9 @@ class CardAdmin(admin.ModelAdmin):
 
     def linked_name(self, obj):
         return format_html("<a href='{id}/change'><b>{name}</b></a>".format(id=obj.id, name=obj.name))
+
+    def has_script(self, obj):
+        return bool(obj.script)
 
 class OperationInline(admin.TabularInline):
     model = Operation

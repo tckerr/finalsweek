@@ -1,5 +1,6 @@
 from game.managers.input.accumulation_input_manager import AccumulationInputManager
 from game.managers.input.classtime_input_manager import ClasstimeInputManager
+from game.managers.input.dismissal_input_manager import DismissalInputManager
 from game.managers.input.input_manager_base import InputManagerBase
 
 class InputManagerResolver(object):
@@ -8,6 +9,7 @@ class InputManagerResolver(object):
         self.phase_type_managers = {
             "Accumulation": AccumulationInputManager(),
             "Classtime": ClasstimeInputManager(),            
+            "Dismissal": DismissalInputManager(),            
         }
 
     def resolve(self, turn, action):
@@ -16,4 +18,4 @@ class InputManagerResolver(object):
             return self.phase_type_managers[phase_type_id].input(turn, action)
         else:
             # temporary until i build em all
-            InputManagerBase().input(turn, action)
+            return InputManagerBase().input(turn, action)

@@ -43,3 +43,8 @@ class ActionHandDrawManager(DrawManager):
         from_pile = actor.action_hand
         pilecards = self._get_pilecards(from_pile, card_id) 
         return self._transfer(pilecards, to_pile, quantity)
+
+    def draw_pc(self, actor, pc):
+        to_pile = actor.discard_pile
+        from_pile = actor.action_hand        
+        return self._transfer([pc], to_pile, 1)

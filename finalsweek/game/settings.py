@@ -1,6 +1,6 @@
 settings = {
     "hand_size": 6,
-    "card_copies_in_action_deck": 20,
+    "total_cards": 1000,
     "seat_rows": 5,
     "seat_columns": 4,
     "game_definition": [
@@ -17,7 +17,7 @@ settings = {
         },
         {
             "name": "Play",
-            "phase_sets": 10,
+            "phase_sets": 30,
             "phases": [
                 {
                     "name": "Accumulation",

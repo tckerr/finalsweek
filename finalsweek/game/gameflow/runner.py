@@ -31,7 +31,7 @@ class GameRunner(object):
         if len(turns) > 1:
             raise Exception("More than 1 turn!")
         turn = turns[0]
-        self.input_manager_resolver.resolve(turn, action) # true if it did anything     
+        return self.input_manager_resolver.resolve(turn, action) # true if it did anything     
 
     def get_current_turn(self, game):
         next_turn = self.current_turn_provider.get_or_create_turn(game)

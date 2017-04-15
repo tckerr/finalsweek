@@ -128,6 +128,15 @@ class Actor(DefaultModel):
     torment = models.IntegerField()
     trouble = models.IntegerField()
 
+    @property
+    def summary(self):
+        return "[ Grades: {grades}, Pop: {popularity}, Troub: {trouble}, Tor: {torment}, Seat: {coords}]".format(
+            grades=self.grades,
+            popularity=self.popularity,
+            trouble=self.trouble,
+            torment=self.torment,
+            coords=self.seat.coordinates_str)
+
 class CardType(DefaultModel):
     def __str__(self):
        return "{}".format(self.id)
@@ -146,13 +155,15 @@ class Card(DefaultModel):
     id = models.AutoField(primary_key=True)
     card_type = models.ForeignKey("CardType", related_name="+")
     description = models.TextField(default="")
+    script = models.TextField(default="", blank=True)
+    active = models.BooleanField(default=True)
     name = models.CharField(max_length=255, unique=True)
     trouble_cost = models.IntegerField(default=0)
     piles = models.ManyToManyField("Pile", through="PileCard", related_name="cards")
 
 class PileCard(DefaultModel):
     card = models.ForeignKey("Card", on_delete=models.CASCADE)
-    pile = models.ForeignKey("Pile", on_delete=models.CASCADE)
+    pile = models.ForeignKey("Pile", related_name="pile_cards", on_delete=models.CASCADE)
 
 # card operations ---------------
 

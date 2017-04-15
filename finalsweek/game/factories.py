@@ -10,8 +10,10 @@ class ActionDeckFactory(object):
 
     def create(self, size_limit):
         pile = self.pile_factory.create(size_limit)
-        for card in Card.objects.all():
-            for _ in range(0, settings["card_copies_in_action_deck"]):
+        active_cards = list(Card.objects.filter(active=True))
+        cards_per_type = int(settings["total_cards"]/len(active_cards))
+        for card in active_cards:
+            for _ in range(0, cards_per_type):
                 pile.add_card(card)
         return pile
 

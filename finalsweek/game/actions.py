@@ -5,8 +5,8 @@ class DrawAction(object):
         self.card_type_id = card_type_id
 
 class UseActionCardAction(object):
-    def __init__(self, actor_id, decisions):
+    def __init__(self, actor_id, pc_id, decisions):
         self.actor_id = actor_id
-        self.card_name = decisions["card_name"]
+        self.pc_id = pc_id
         #example
         self.decisions = decisions
