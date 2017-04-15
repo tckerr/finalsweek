@@ -3,7 +3,7 @@ finalsweek/finalsweek_auth.py
 *.sqlite3
 *.sublime-project
 *.sublime-workspace
-notes.txt
+notes/
 arch.txt
 components.txt
 *.sqlite 
