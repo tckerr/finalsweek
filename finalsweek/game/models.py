@@ -74,9 +74,21 @@ class Turn(DefaultModel):
 
 
 class StudentInfo(DefaultModel):
+    def __str__(self):
+       return self.name
+
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     backstory = models.CharField(max_length=255)
+    perk_name = models.CharField(max_length=255)
+    perk_description = models.TextField()
+    fear_name = models.CharField(max_length=255)
+    fear_description = models.TextField()
+
+    @property
+    def name(self):
+        return "{} {}".format(self.first_name, self.last_name)
 
 class Pile(DefaultModel):
     id = models.AutoField(primary_key=True)
@@ -113,7 +125,7 @@ class Seat(DefaultModel):
 
 class Actor(DefaultModel):
     def __str__(self):
-       return "Actor: {}".format(self.id)
+       return "{} ({})".format(self.student_info, self.id)
 
     id = models.AutoField(primary_key=True)
     game = models.ForeignKey("Game", related_name="actors")

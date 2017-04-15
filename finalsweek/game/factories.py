@@ -1,6 +1,6 @@
 from game.models import Pile, Actor, Game, StudentInfo, Card, Seat
 from game.settings import settings
-from random import shuffle
+from random import shuffle, choice
 from django.db import transaction
 from game.managers.draw_manager import HandRefiller
 
@@ -29,6 +29,7 @@ class PileFactory(object):
 class ActorFactory(object):
     def __init__(self):
         self.pile_factory = PileFactory()
+        self.students = list(StudentInfo.objects.all())
 
     def create(self, game, seat):            
         actor = Actor()
@@ -38,7 +39,7 @@ class ActorFactory(object):
         actor.trouble = 0
         actor.torment = 0
         actor.seat = seat
-        actor.student_info = StudentInfo.objects.get(name="Test Student")
+        actor.student_info = choice(self.students)
         actor.discard_pile = self.__create_pile(None)
         actor.afterschool_hand = self.__create_pile(None)
         actor.action_hand = self.__create_pile(settings["hand_size"])

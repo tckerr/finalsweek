@@ -18,7 +18,7 @@ class Command(BaseCommand):
             if summary.complete:
                 break
             current_actor_id = summary.current_turn_actor_id
-            options = router.get_turn_options_v2(current_actor_id)
+            options = router.get_turn_options(current_actor_id)
             print("\n-----+ NEW TURN +-----")
             print("Actor {}, phase type: {}".format(current_actor_id, options.phase_type))
             if options.phase_type == "Classtime":

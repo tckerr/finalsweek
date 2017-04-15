@@ -32,7 +32,7 @@ class GameRouter(object):
     def __build_summary(self, game, current_turn, actor_id=None):
         return self.game_summary_builder.build(game, current_turn, perspective=Perspective(actor_id))
 
-    def get_turn_options_v2(self, actor_id):
+    def get_turn_options(self, actor_id):
         game = self.game_runner.load(actor_id)
         current_turn = self.game_runner.get_current_turn(game)
         return self.digest_provider.provide(actor_id, current_turn)

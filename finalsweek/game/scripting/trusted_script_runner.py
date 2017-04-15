@@ -18,7 +18,7 @@ class TrustedScriptRunner(object):
 
     def run(self, actor, script, answers):
 
-        print("        Prior to running script, requestor:", actor.id, actor.summary)
+        print("        Prior to running script, requestor:", actor, actor.summary)
         print("        Executing with answers:", answers)
         save_queue = SaveQueue()
         repository = ScriptContextRepository(actor)

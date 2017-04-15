@@ -8,8 +8,8 @@ class TurnFactory(object):
         self.stage_prefetch_repository = StagePrefetchRepository()
         self.flowstate_resolver = FlowstateResolver()
 
-    def get_or_create(self, game):
-        actors = list(game.actors.all())
+    def get_or_create(self, game):        
+        actors = self.__get_sorted_actors(game)
         stages = self.stage_prefetch_repository.get(game)
         flowstate = self.flowstate_resolver.resolve(actors, stages)
         if not flowstate.pending:
@@ -18,6 +18,11 @@ class TurnFactory(object):
         phase = flowstate.phase or self.__create_phase(stage, flowstate.phase_name)
         result = flowstate.turn or self.__create_turn(phase, flowstate.actor)
         return result
+
+    def __get_sorted_actors(self, game):
+        actors = game.actors.order_by('seat__row', 'seat__column')
+        return list(actors.all())
+
 
     def __create_stage(self, game, stage_name):
         stage = Stage()
