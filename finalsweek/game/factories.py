@@ -1,4 +1,4 @@
-from game.models import Pile, Actor, Game, StudentInfo, Card, Seat
+from game.models import Pile, Actor, Game, StudentInfo, Card, Seat, Student
 from game.settings import settings
 from random import shuffle, choice
 from django.db import transaction
@@ -26,24 +26,33 @@ class PileFactory(object):
         pile.save()
         return pile
 
+class StudentFactory(object):
+    def create(self, seat, student_info): 
+        student = Student()
+        student.seat = seat
+        student.student_info = student_info
+        student.save()
+        return student
+
 class ActorFactory(object):
     def __init__(self):
         self.pile_factory = PileFactory()
-        self.students = list(StudentInfo.objects.all())
+        self.student_factory = StudentFactory()
+        self.student_infos = list(StudentInfo.objects.all())
 
-    def create(self, game, seat):            
+    def create(self, game, seat): 
         actor = Actor()
+        actor.student = self.student_factory.create(seat, choice(self.student_infos)) 
         actor.game = game
         actor.grades = 0
         actor.popularity = 0
         actor.trouble = 0
         actor.torment = 0
-        actor.seat = seat
-        actor.student_info = choice(self.students)
         actor.discard_pile = self.__create_pile(None)
         actor.afterschool_hand = self.__create_pile(None)
         actor.action_hand = self.__create_pile(settings["hand_size"])
-        actor.save()
+        actor.save()                
+
         return actor
 
     def load(self, actor_id, prefetch=None):

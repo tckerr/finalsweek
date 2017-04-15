@@ -1,5 +1,5 @@
-all_students = StudentApi.get_students()
-for student in all_students:
-    StudentApi.add_grades(student, 8)
-requestor = StudentApi.get_requestor()
-StudentApi.add_popularity(requestor, 4)
+all_actors = ActorApi.get_actors()
+for actor in all_actors:
+    ActorApi.add_grades(actor, 8)
+requestor = ActorApi.get_requestor()
+ActorApi.add_popularity(requestor, 4)

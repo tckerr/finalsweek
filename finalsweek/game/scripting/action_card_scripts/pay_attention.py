@@ -1,2 +1,2 @@
-requestor = StudentApi.get_requestor()
-StudentApi.add_grades(requestor, 4)
+requestor = ActorApi.get_requestor()
+ActorApi.add_grades(requestor, 4)

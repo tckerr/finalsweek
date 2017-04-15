@@ -1,3 +1,3 @@
-requestor = StudentApi.get_requestor()
-StudentApi.add_torment(requestor, -1)
-StudentApi.add_popularity(requestor, -2)
+requestor = ActorApi.get_requestor()
+ActorApi.add_torment(requestor, -1)
+ActorApi.add_popularity(requestor, -2)

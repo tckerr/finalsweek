@@ -9,5 +9,6 @@ class BaseFlowstateResolver(object):
         return filtered_items[set_number]
 
     def _complete(self, mdl):
-        mdl.completed = timezone.now()
-        mdl.save()
+        if mdl:
+            mdl.completed = timezone.now()
+            mdl.save()

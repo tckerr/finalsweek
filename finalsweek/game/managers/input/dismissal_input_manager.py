@@ -9,7 +9,7 @@ class DismissalInputManager(InputManagerBase):
 
     def input(self, turn, action):
         actor = turn.actor
-        seat = actor.seat
+        seat = actor.student.seat
         self.__refill_hand(actor)
         self.__score_grades(seat, actor)
         self.__resolve_discipline()

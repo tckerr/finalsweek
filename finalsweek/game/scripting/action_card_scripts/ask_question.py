@@ -1,3 +1,3 @@
-requestor = StudentApi.get_requestor()
-StudentApi.add_grades(requestor, 6)
-StudentApi.add_popularity(requestor, -2)
+requestor = ActorApi.get_requestor()
+ActorApi.add_grades(requestor, 6)
+ActorApi.add_popularity(requestor, -2)

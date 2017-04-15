@@ -113,7 +113,26 @@ class Seat(DefaultModel):
 
     @property
     def empty(self):
-        return self.actor_or_none is None
+        try:
+            return self.student is None
+        except:
+            return True
+
+class Student(DefaultModel):
+
+    def __init__(self, *a, **k):
+        super(Student, self).__init__(*a, **k)
+
+    def __str__(self):
+       return "Student {}: {}".format(self.id, self.student_info)
+
+    id = models.AutoField(primary_key=True)
+    seat = models.OneToOneField("Seat", related_name="student")
+    student_info = models.ForeignKey("StudentInfo", related_name="+")
+
+    @property
+    def controlled(self):
+        return self.actor_or_none is not None
 
     @property
     def actor_or_none(self):
@@ -122,32 +141,30 @@ class Seat(DefaultModel):
         except:
             return None
 
-
 class Actor(DefaultModel):
     def __str__(self):
-       return "{} ({})".format(self.student_info, self.id)
+       return "Actor {}: [{}]".format(self.id, self.student)
 
     id = models.AutoField(primary_key=True)
     game = models.ForeignKey("Game", related_name="actors")
     user = models.ForeignKey(User, related_name="player_actors", null=True)
-    student_info = models.ForeignKey("StudentInfo", related_name="+")
     discard_pile = models.ForeignKey("Pile", related_name="+")
     action_hand = models.ForeignKey("Pile", related_name="+")
     afterschool_hand = models.ForeignKey("Pile", related_name="+")
-    seat = models.OneToOneField("Seat", related_name="actor")
     grades = models.IntegerField()
     popularity = models.IntegerField()
     torment = models.IntegerField()
     trouble = models.IntegerField()
+    student = models.OneToOneField("Student", related_name="actor", null=True)
 
     @property
     def summary(self):
-        return "[ Grades: {grades}, Pop: {popularity}, Troub: {trouble}, Tor: {torment}, Seat: {coords}]".format(
+        return "[ Grades: {grades}, Pop: {popularity}, Troub: {trouble}, Tor: {torment}, Student Seat: {coords}]".format(
             grades=self.grades,
             popularity=self.popularity,
             trouble=self.trouble,
             torment=self.torment,
-            coords=self.seat.coordinates_str)
+            coords=self.student.seat.coordinates_str)
 
 class CardType(DefaultModel):
     def __str__(self):

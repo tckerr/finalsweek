@@ -33,6 +33,9 @@ class PromptApi(SandboxApi):
     def prompt_student_choice(self, student_set, answer_key):
         return self.__answer_or_prompt(student_set, answer_key, "id", "id")
 
+    def prompt_actor_choice(self, actor_set, answer_key):
+        return self.__answer_or_prompt(actor_set, answer_key, "id", "id")
+
     def prompt_seat_choice(self, seat_set, answer_key):
         return self.__answer_or_prompt(seat_set, answer_key, "coordinates_str", "id")
 

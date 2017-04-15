@@ -20,9 +20,8 @@ class TurnFactory(object):
         return result
 
     def __get_sorted_actors(self, game):
-        actors = game.actors.order_by('seat__row', 'seat__column')
+        actors = game.actors.order_by('student__seat__row', 'student__seat__column')
         return list(actors.all())
-
 
     def __create_stage(self, game, stage_name):
         stage = Stage()

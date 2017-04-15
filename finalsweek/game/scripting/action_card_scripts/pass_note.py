@@ -1,12 +1,12 @@
-requestor = StudentApi.get_requestor()
+requestor = ActorApi.get_requestor()
 seats = SeatApi.get_filled_seats()
-r_seat = requestor.seat
+r_seat = requestor.student.seat
 
 eligible_seats = []
 for s in seats:
     if s.id != r_seat.id and (s.row == r_seat.row or s.column == r_seat.column):
         eligible_seats.append(s)
-eligible_students = [s.actor for s in eligible_seats]
+eligible_students = [s.student for s in eligible_seats]
 
 selected_student = PromptApi.prompt_student_choice(eligible_students, "Target Student")
 
@@ -23,4 +23,4 @@ eligible_seats = filter(lambda s: s.id != r_seat.id, seats)
 matching_seats = filter(in_between, eligible_seats)
 value = 3 * len(list(matching_seats))
 
-StudentApi.add_popularity(requestor, value)
+ActorApi.add_popularity(requestor, value)

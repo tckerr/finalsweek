@@ -1,8 +1,9 @@
 from django.db import transaction, models
-from game.models import Actor
+from game.models import Actor, Student
 from game.scripting.repositories import ScriptContextRepository
 from game.scripting.api.student_api import StudentApi
 from game.scripting.api.seat_api import SeatApi
+from game.scripting.api.actor_api import ActorApi
 from game.scripting.api.prompt_api import PromptApi, PromptException
 
 class SaveQueue(list):
@@ -23,12 +24,14 @@ class TrustedScriptRunner(object):
         save_queue = SaveQueue()
         repository = ScriptContextRepository(actor)
         student_api = StudentApi(save_queue, repository)
+        actor_api = ActorApi(save_queue, repository)
         seat_api = SeatApi(save_queue, repository)
         prompt_api = PromptApi(answers, save_queue, repository)
         scope_vars = dict(locals(), **globals())
         scope_vars.update({
             '__answers__': answers,
             'StudentApi': student_api,
+            'ActorApi': actor_api,
             'SeatApi': seat_api,
             'PromptApi': prompt_api
         })
@@ -47,6 +50,8 @@ class TrustedScriptRunner(object):
                 if issubclass(item.__class__, models.Model):
                     if item.__class__ is Actor:
                         print("        * Saving changes:", item, item.summary)
+                    elif item.__class__ is Student and item.actor_or_none is not None:
+                        print("        * Saving changes:", item, item.actor.summary)
                     else:
                         print("        * Saving changes:", item)
                     item.save()

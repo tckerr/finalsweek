@@ -1,3 +1,3 @@
-eligible_students = StudentApi.get_students()
-selected_student = PromptApi.prompt_student_choice(eligible_students, "Target Student")
-StudentApi.add_trouble(selected_student, 2)
+eligible_actors = ActorApi.get_actors()
+selected_actor = PromptApi.prompt_actor_choice(eligible_actors, "Target Actor")
+ActorApi.add_trouble(selected_actor, 2)

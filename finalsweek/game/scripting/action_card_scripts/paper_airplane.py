@@ -1,3 +1,4 @@
-requestor = StudentApi.get_requestor()
-StudentApi.add_popularity(requestor, 3 * requestor.seat.row)
-StudentApi.add_trouble(requestor, 3)
+requestor = ActorApi.get_requestor()
+requestor_row = requestor.student.seat.row
+ActorApi.add_popularity(requestor, 3 * requestor_row)
+ActorApi.add_trouble(requestor, 3)
