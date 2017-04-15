@@ -1,6 +1,17 @@
 from random import shuffle
 from game.models import PileCard
+from game.settings import settings
 
+class HandRefiller(object):
+    def __init__(self):
+        self.__deck_draw_manager = DeckDrawManager()
+
+    def refill_hand(self, actor):
+        hand = actor.action_hand
+        cards_needed = max(0, settings["hand_size"] - hand.pile_cards.count())
+        if cards_needed > 0:            
+            deck = actor.game.action_deck
+            self.__deck_draw_manager.draw(from_pile=deck, to_pile=hand, quantity=cards_needed)
 
 class DrawManager(object):
 

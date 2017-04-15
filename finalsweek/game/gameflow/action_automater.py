@@ -1,15 +1,11 @@
-from game.resolvers import AutomaticActionResolver
-
 class ActionAutomater(object):
     def __init__(self, take_turn_proxy):
-        self.automatic_action_resolver = AutomaticActionResolver()
         self.take_turn_proxy = take_turn_proxy
 
     def automate_if_needed(self, turn):
         if self.__requires_automation(turn):
-            auto_action = self.automatic_action_resolver.resolve(turn)
             self.__log(turn)
-            response = self.take_turn_proxy(turn.actor_id, auto_action)
+            response = self.take_turn_proxy(turn.actor_id, None)
             return True
         return False
 

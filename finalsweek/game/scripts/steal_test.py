@@ -1,0 +1,6 @@
+requestor = StudentApi.get_requestor()
+eligible_students = StudentApi.get_all_but_requestor()
+selected_student = PromptApi.prompt_student_choice(eligible_students, "Target Student")
+StudentApi.add_trouble(selected_student, 3)
+StudentApi.add_popularity(requestor, -4)
+StudentApi.add_trouble(requestor, -1)

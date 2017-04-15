@@ -2,6 +2,7 @@ from game.models import Pile, Actor, Game, StudentInfo, Card, Seat
 from game.settings import settings
 from random import shuffle
 from django.db import transaction
+from game.managers.draw_manager import HandRefiller
 
 class ActionDeckFactory(object):
 
@@ -42,6 +43,7 @@ class ActorFactory(object):
         actor.afterschool_hand = self.__create_pile(None)
         actor.action_hand = self.__create_pile(settings["hand_size"])
         actor.save()
+        return actor
 
     def load(self, actor_id, prefetch=None):
         base_qs = Actor.objects
@@ -79,6 +81,7 @@ class GameFactory(object):
         self.pile_factory = PileFactory()
         self.action_deck_factory = ActionDeckFactory()
         self.seat_factory = SeatFactory()
+        self.hand_refiller = HandRefiller()
 
     def load(self, game_id):
         return Game.objects.get(id=game_id)  
@@ -91,12 +94,19 @@ class GameFactory(object):
             game.discipline_card_deck = self.pile_factory.create(None)
             game.save()
             self.seat_factory.create_for_grid(game, settings["seat_rows"], settings["seat_columns"])
-            self.__create_actors_with_seat(game, ai_players)
+            actors = self.__create_actors_with_seat(game, ai_players)
+            self.__fill_hands(actors)
             return game
 
     def __create_actors_with_seat(self, game, ai_players):
+        actors = []
         seats = list(game.seats.all())
         shuffle(seats)
         for _ in range(0, ai_players):
             seat = seats.pop()
-            self.actor_factory.create(game, seat)
+            actors.append(self.actor_factory.create(game, seat))
+        return actors
+
+    def __fill_hands(self, actors):
+        for actor in actors:
+            self.hand_refiller.refill_hand(actor)

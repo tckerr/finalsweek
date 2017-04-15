@@ -8,10 +8,4 @@ class AccumulationInputManager(InputManagerBase):
         self.__deck_draw_manager = DeckDrawManager()
 
     def input(self, turn, action):
-        assert action.__class__ is DrawAction
-        actor = turn.actor
-        hand = actor.action_hand
-        deck = actor.game.action_deck
-        quantity = action.quantity
-        self.__deck_draw_manager.draw(from_pile=deck, to_pile=hand, quantity=quantity)
         self._complete_turn(turn)
