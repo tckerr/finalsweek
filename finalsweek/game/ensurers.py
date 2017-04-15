@@ -3,11 +3,9 @@ from game.models import StageType, PhaseType, StudentInfo, CardType, Card
 class GameCreationEnsurer(object):
     def __init__(self):
         self.type_ensurer = TypeEnsurer()
-        self.student_info_ensurer = StudentInfoEnsurer()
         self.card_type_ensurer = CardTypeEnsurer()
 
     def ensure(self):
-        self.student_info_ensurer.ensure()
         self.type_ensurer.ensure() 
         self.card_type_ensurer.ensure() 
 
@@ -37,14 +35,6 @@ class TypeEnsurer(object):
             model_object.is_automatic = auto
             model_object.stage_type_id = parent_stage_type
             model_object.save()
-
-class StudentInfoEnsurer(object):
-    def ensure(self):
-        if not StudentInfo.objects.filter(name="Test Student").count() > 0:
-            student_info = StudentInfo()
-            student_info.name = "Test Student"
-            student_info.backstory = "Just a simple tester."
-            student_info.save()
 
 class CardTypeEnsurer(object):
     types = ("AfterSchool", "Discipline", "Action",)
