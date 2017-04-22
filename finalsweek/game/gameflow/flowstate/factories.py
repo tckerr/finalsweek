@@ -6,9 +6,9 @@ class TurnFactory(object):
         self.flowstate_resolver = FlowstateResolver()
 
     def get_or_create(self, api):
-        actors = list(api.list_actors_sorted_by_seat())
-        stages = list(api.list_stages())
-        game_definition = api.get_game_definition()
+        actors = list(api.actors.list_actors_sorted_by_seat())
+        stages = list(api.stages.list_stages())
+        game_definition = api.settings.get_game_definition()
         flowstate = self.flowstate_resolver.resolve(actors, stages, game_definition, api)
         if not flowstate.pending:
             return
@@ -18,17 +18,13 @@ class TurnFactory(object):
         return result
 
     @staticmethod
-    def __get_sorted_actors(api):
-        return api.list_actors_sorted_by_seat()
-
-    @staticmethod
     def __create_stage(api, stage_type):
-        return api.create_stage(stage_type)
+        return api.stages.create_stage(stage_type)
 
     @staticmethod
     def __create_phase(api, stage, phase_type):
-        return api.create_phase(stage.id, phase_type)
+        return api.phases.create_phase(stage.id, phase_type)
 
     @staticmethod
     def __create_turn(api, phase, actor):
-        return api.create_turn(phase.id, actor.id)
+        return api.turns.create_turn(phase.id, actor.id)

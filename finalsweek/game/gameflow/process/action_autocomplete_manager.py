@@ -11,10 +11,10 @@ class ActionAutocompleteManager(object):
     def action_and_automate(self, action, api, turn):
         while True:
             self.action_executor.execute(turn, action, api)  # make prompts stateful?
-            turn = api.get_current_turn()
+            turn = api.turns.get_current_turn()
             if not turn:
                 return None
-            phase_definition = api.get_phase_definition(turn.phase.phase_type)
+            phase_definition = api.phases.get_phase_definition(turn.phase.phase_type)
             if not phase_definition.automatic:
                 break
             action = self.automated_action_factory.create(phase_definition)

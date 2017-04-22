@@ -8,8 +8,8 @@ class BaseFlowstateResolver(object):
 
     @staticmethod
     def _complete_stage(stage, api):
-        api.complete_stage(stage.id)
+        api.stages.complete_stage(stage.id)
 
     @staticmethod
     def _complete_phase(phase, api):
-        api.complete_phase(phase.id)
+        api.phases.complete_phase(phase.id)

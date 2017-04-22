@@ -11,10 +11,10 @@ class TrustedScriptRunner(object):
 
     @staticmethod
     def run(actor_id, api, script, turn_prompt):
-        actor = api.get_actor(actor_id)
+        actor = api.actors.get_actor(actor_id)
         print("Beginning script block:")
         print("   +--- Prior to running script, requester:", actor.name, actor_id)
-        for actor in api.list_actors():
+        for actor in api.actors.list_actors():
             print("   +------ {}: {}".format(actor.id, actor.summary))
         print("   +--- Executing with answers:", turn_prompt.closed)
         repository = ScriptContextRepository(actor_id, api)
@@ -33,7 +33,7 @@ class TrustedScriptRunner(object):
         try:
             exec(script, scope_vars, scope_vars)
             print("   +--- After running script:")
-            for actor in api.list_actors():
+            for actor in api.actors.list_actors():
                 print("   +------ {}: {}".format(actor.id, actor.summary))
 
         except PromptException as e:

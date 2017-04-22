@@ -10,13 +10,13 @@ class CurrentTurnProvider(object):
         pending_turn = self.__pending(api)
         if pending_turn:
             if fresh:
-                api.refresh_current_turn(pending_turn.id)
+                api.turns.refresh_current_turn(pending_turn.id)
             return pending_turn
         return self.__create(api)
 
     @staticmethod
     def __pending(api):
-        for turn in api.list_turns():
+        for turn in api.turns.list_turns():
             if turn.completed is None:
                 return turn
 

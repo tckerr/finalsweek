@@ -26,25 +26,25 @@ class ActorApi(SandboxApi):
         return results
 
     def set_grades(self, actor, value):
-        self.program_api.set_grades(actor.id, value)
+        self.program_api.actors.set_grades(actor.id, value)
 
     def add_grades(self, actor, value):
-        self.program_api.add_grades(actor.id, value)
+        self.program_api.actors.add_grades(actor.id, value)
 
     def set_popularity(self, actor, value):
-        self.program_api.set_popularity(actor.id, value)
+        self.program_api.actors.set_popularity(actor.id, value)
 
     def add_popularity(self, actor, value):
-        self.program_api.add_popularity(actor.id, value)
+        self.program_api.actors.add_popularity(actor.id, value)
 
     def set_trouble(self, actor, value):
-        self.program_api.set_trouble(actor.id, value)
+        self.program_api.actors.set_trouble(actor.id, value)
 
     def add_trouble(self, actor, value):
-        self.program_api.add_trouble(actor.id, value)
+        self.program_api.actors.add_trouble(actor.id, value)
 
     def set_torment(self, actor, value):
-        self.program_api.set_torment(actor.id, value)
+        self.program_api.actors.set_torment(actor.id, value)
 
     def add_torment(self, actor, value):
-        self.program_api.add_torment(actor.id, value)
+        self.program_api.actors.add_torment(actor.id, value)

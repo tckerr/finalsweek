@@ -33,7 +33,7 @@ class StudentApi(SandboxApi):
         return results
 
     def move_to_empty_seat(self, student, seat):
-        self.program_api.move_student_to_empty_seat(student.id, seat.id)
+        self.program_api.students.move_student_to_empty_seat(student.id, seat.id)
 
     def swap_seat(self, student, seat):
-        self.program_api.swap_seat(student.id, seat.id)
+        self.program_api.students.swap_seat(student.id, seat.id)

@@ -19,7 +19,7 @@ class RedrawToFullAction(ActionBase):
         self.hand_refiller = HandRefiller()
 
     def execute(self, actor_id, api):
-        actor = api.get_actor(actor_id)
+        actor = api.actors.get_actor(actor_id)
         self.hand_refiller.refill_hand(actor, api)
 
 
@@ -32,9 +32,9 @@ class ActionCardAction(ActionBase):
 
     def execute(self, actor_id, api):
         super().execute(actor_id, api)
-        card = api.get_action_card_by_actor(actor_id, self.card_id)
+        card = api.actors.get_action_card_by_actor(actor_id, self.card_id)
         script = card.template.script
         prompt = self.trusted_script_runner.run(actor_id, api, script, self.prompt)
         if not prompt:
-            # actually consume the card
-            api.expend_action_card(actor_id, self.card_id)
+            api.actors.expend_action_card(actor_id, self.card_id)
+        return prompt

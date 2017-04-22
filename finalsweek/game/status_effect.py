@@ -4,7 +4,8 @@ class AttributeModifier(object):
         self.criteria = criteria
 
     # override me
-    def modify(self, val): 
+    @staticmethod
+    def modify(val):
         return val
 
 
@@ -22,10 +23,11 @@ class StatusEffect(object):
             if modifier.criteria == criteria:
                 # Apply multiplicative modifier
                 return modifier.modify(val)
-        return val 
+        return val
 
     def filter_target_eligiblity(self, target, targeting_criteria): pass
+
     def generate_action(self, turn_type): pass
-    
+
     # call each turn?
     def expire_if_complete(self): pass

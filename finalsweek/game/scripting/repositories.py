@@ -4,13 +4,13 @@ class ScriptContextRepository(object):
         self.program_api = program_api
 
     def actors(self):
-        return list(self.program_api.list_actors())
+        return list(self.program_api.actors.list_actors())
 
     def students(self):
-        return list(self.program_api.list_students())
+        return list(self.program_api.students.list_students())
 
     def requestor(self):
-        return self.program_api.get_actor(self.requestor_id)
+        return self.program_api.actors.get_actor(self.requestor_id)
 
     def seats(self):
-        return list(self.program_api.list_seats())
+        return list(self.program_api.seats.list_seats())
