@@ -1,0 +1,80 @@
+class GameDigest(object):
+    def __init__(self) -> None:
+        self.complete = False
+
+
+class CardTemplateDigest(GameDigest):
+    def __init__(self, card_template):
+        super().__init__()
+        self.id = card_template.id
+        self.card_type = card_template.card_type
+        self.name = card_template.name
+        self.trouble_cost = card_template.trouble_cost
+
+
+class CardInfoDigest(GameDigest):
+    def __init__(self, card):
+        super().__init__()
+        self.id = card.id
+        self.template = CardTemplateDigest(card.template)
+
+
+class ActorDigest(GameDigest):
+    def __init__(self, actor):
+        super().__init__()
+        self.id = actor.id
+
+
+class GameInfoDigest(GameDigest):
+    def __init__(self, game_id, api):
+        super().__init__()
+        self.game_id = game_id
+        self.actors = [ActorDigest(actor) for actor in api.list_actors()]
+
+
+class HandDigest(GameDigest):
+    def __init__(self, requesting_actor_id, api):
+        super().__init__()
+        requesting_actor = api.get_actor(requesting_actor_id)
+        action_card_hand = requesting_actor.action_card_hand
+        self.action_cards = [CardInfoDigest(card) for card in action_card_hand.cards]
+
+
+class TurnDigest(GameDigest):
+    def __init__(self, requesting_actor_id, turn, api):
+        super().__init__()
+        self.current_turn_actor_id = turn.actor_id
+        self.phase_type = turn.phase.phase_type
+        self.stage_type = turn.phase.stage.stage_type
+        self.hand = HandDigest(requesting_actor_id, api)
+        self.prompt = turn.prompt
+        self.id = turn.id
+
+
+class GeneralDigest(GameDigest):
+    def __init__(self, game_info_digest, turn_digest=None):
+        super().__init__()
+        self.game_info = game_info_digest
+        self.turn = turn_digest
+
+
+class GameOverDigest(object):
+    def __init__(self, game_info_digest) -> None:
+        super().__init__()
+        self.game_info = game_info_digest
+        self.complete = True
+
+
+class DigestProvider(object):
+    @staticmethod
+    def game_info_digest(game_id, api):
+        game_info_digest = GameInfoDigest(game_id, api)
+        return GeneralDigest(game_info_digest)
+
+    @staticmethod
+    def general_digest(game_id, api, turn, requesting_actor_id):
+        game_info_digest = GameInfoDigest(game_id, api)
+        if not turn:
+            return GameOverDigest(game_info_digest)
+        turn_digest = TurnDigest(requesting_actor_id, turn, api)
+        return GeneralDigest(game_info_digest, turn_digest=turn_digest)

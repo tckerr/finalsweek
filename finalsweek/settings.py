@@ -15,8 +15,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_extensions',
     'game',
-    'api'
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +53,7 @@ WSGI_APPLICATION = 'wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': credentials.app_db_name,
         'USER': credentials.app_username,
         'PASSWORD': credentials.app_password,

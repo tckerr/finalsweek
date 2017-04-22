@@ -9,7 +9,7 @@ router = GameRouter()
 
 class Command(BaseCommand):
 
-    def handle(self, *args, **options):        
+    def handle(self, *args, **options):
         game_info = router.create(player_count)
         actors = [a for a in game_info.actors]
 
@@ -25,11 +25,11 @@ class Command(BaseCommand):
                 print("Action cards:", [c[1].name for c in options.action_cards])
                 random_choice = choice([pc_id for pc_id, card in options.action_cards])
                 action = UseActionCardAction(current_actor_id, random_choice, {})
-                keep_going = True                    
+                keep_going = True
 
                 while keep_going:
                     prompt_digest = router.take_turn(current_actor_id, action)
-                    if not prompt_digest: 
+                    if not prompt_digest:
                         break
                     prompt = prompt_digest.prompt
                     for answer_key, prompt_options in prompt.pending:

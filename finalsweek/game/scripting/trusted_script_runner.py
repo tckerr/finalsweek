@@ -1,62 +1,41 @@
-from django.db import transaction, models
-from game.models import Actor, Student
-from game.scripting.repositories import ScriptContextRepository
-from game.scripting.api.student_api import StudentApi
-from game.scripting.api.seat_api import SeatApi
 from game.scripting.api.actor_api import ActorApi
 from game.scripting.api.prompt_api import PromptApi, PromptException
-
-class SaveQueue(list):
-    def append(self, item):
-        if item not in self:
-            return super(SaveQueue, self).append(item)
+from game.scripting.api.seat_api import SeatApi
+from game.scripting.api.student_api import StudentApi
+from game.scripting.repositories import ScriptContextRepository
 
 
 class TrustedScriptRunner(object):
-
     def __init__(self):
         pass
 
-    def run(self, actor, script, answers):
-
-        print("        Prior to running script, requestor:", actor, actor.summary)
-        print("        Executing with answers:", answers)
-        save_queue = SaveQueue()
-        repository = ScriptContextRepository(actor)
-        student_api = StudentApi(save_queue, repository)
-        actor_api = ActorApi(save_queue, repository)
-        seat_api = SeatApi(save_queue, repository)
-        prompt_api = PromptApi(answers, save_queue, repository)
+    @staticmethod
+    def run(actor_id, api, script, turn_prompt):
+        actor = api.get_actor(actor_id)
+        print("Beginning script block:")
+        print("   +--- Prior to running script, requester:", actor.name, actor_id)
+        for actor in api.list_actors():
+            print("   +------ {}: {}".format(actor.id, actor.summary))
+        print("   +--- Executing with answers:", turn_prompt.closed)
+        repository = ScriptContextRepository(actor_id, api)
+        student_api = StudentApi(repository, api)
+        actor_api = ActorApi(repository, api)
+        seat_api = SeatApi(repository, api)
+        prompt_api = PromptApi(turn_prompt, repository, api)
         scope_vars = dict(locals(), **globals())
         scope_vars.update({
-            '__answers__': answers,
-            'StudentApi': student_api,
-            'ActorApi': actor_api,
-            'SeatApi': seat_api,
-            'PromptApi': prompt_api
+            'StudentApi':  student_api,
+            'ActorApi':    actor_api,
+            'SeatApi':     seat_api,
+            'PromptApi':   prompt_api
         })
 
         try:
             exec(script, scope_vars, scope_vars)
+            print("   +--- After running script:")
+            for actor in api.list_actors():
+                print("   +------ {}: {}".format(actor.id, actor.summary))
+
         except PromptException as e:
-            return self.__save_and_prompt(save_queue, e.prompt)
-        return self.__save(save_queue)
-
-
-    def __save(self, save_queue):
-        with transaction.atomic():
-            for item in save_queue:
-                if issubclass(item.__class__, models.Model):
-                    if item.__class__ is Actor:
-                        print("        * Saving changes:", item, item.summary)
-                    elif item.__class__ is Student and item.actor_or_none is not None:
-                        print("        * Saving changes:", item, item.actor.summary)
-                    else:
-                        print("        * Saving changes:", item)
-                    item.save()
-
-
-    def __save_and_prompt(self, save_queue, prompt):
-        self.__save(save_queue)
-        return prompt
-
+            print("   +--- Did not complete! Prompt must be resolved.")
+            return e.prompt

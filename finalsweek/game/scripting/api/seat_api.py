@@ -1,13 +1,14 @@
 from game.scripting.api.sandbox_api import SandboxApi
 
-class SeatApi(SandboxApi):
 
+class SeatApi(SandboxApi):
     def get_seats(self):
         return self.repo.seats()
 
     def get_filled_seats(self):
         seats = self.get_seats()
-        return list(filter(lambda s: not s.empty, seats))
+        filled = list(filter(lambda s: not s.empty, seats))
+        return filled
 
     def get_empty_seats(self):
         seats = self.get_seats()

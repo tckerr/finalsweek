@@ -7,9 +7,9 @@ write-host "Setting preferences..." -ForegroundColor Cyan
 $ErrorActionPreference = "Stop"
 
 write-host "Ensuring no VirtualEnv is running..." -ForegroundColor Cyan
-Try { 
-    deactivate 
-} 
+Try {
+    deactivate
+}
 Catch {
     write-host "Tried to deactivate, but no VirtualEnv was activated" -ForegroundColor Magenta
 }
@@ -39,11 +39,14 @@ write-host "Installing project dependencies..." -ForegroundColor Cyan
 #     https://dev.mysql.com/downloads/file/?id=378015
 #     http://stackoverflow.com/questions/2817869/error-unable-to-find-vcvarsall-bat
 pip install "../lib/mysqlclient-1.3.10-cp34-cp34m-win_amd64.whl"
+pip install pymongo
 pip install django
+pip install django-extensions
 pip install djangorestframework
 pip install markdown
 pip install django-filter
 pip install wheel
+pip install names
 pip install siftpy -U --no-cache-dir
 
 write-host "Running initial migration..." -ForegroundColor Cyan

@@ -1,8 +1,8 @@
 class Flowstate(object):
-    def __init__(self, stage_name, actual_stage, phase_name, actual_phase, actor, actual_turn):
-        self.stage_name = stage_name
+    def __init__(self, stage_type, actual_stage, phase_type, actual_phase, actor, actual_turn):
+        self.stage_type = stage_type
         self.stage = actual_stage
-        self.phase_name = phase_name
+        self.phase_type = phase_type
         self.phase = actual_phase
         self.actor = actor
         self.turn = actual_turn
@@ -10,7 +10,7 @@ class Flowstate(object):
 
     @property
     def game_over(self):
-        return self.stage_name is None
+        return self.stage_type is None
 
 class CompletedFlowstate(object):
     def __init__(self):

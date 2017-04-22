@@ -4,7 +4,7 @@ r_seat = requestor.student.seat
 
 eligible_seats = []
 for s in seats:
-    if s.id != r_seat.id and (s.row == r_seat.row or s.column == r_seat.column):
+    if s.id != r_seat.id and (s.row == r_seat.row or s.column == r_seat.column) and s.student is not None:
         eligible_seats.append(s)
 eligible_students = [s.student for s in eligible_seats]
 

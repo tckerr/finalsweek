@@ -1,11 +1,7 @@
 from game.scripting.api.sandbox_api import SandboxApi
-from game.factories import SeatFactory
+
 
 class StudentApi(SandboxApi):
-
-    def __init__(self, *args, **kwargs):
-        self.seat_factory = SeatFactory()
-        super(StudentApi, self).__init__(*args, **kwargs)
 
     def get_students(self):
         return self.repo.students()
@@ -37,26 +33,7 @@ class StudentApi(SandboxApi):
         return results
 
     def move_to_empty_seat(self, student, seat):
-        assert seat.empty
-        student.seat = seat
-        self.save_queue.append(student)
+        self.program_api.move_student_to_empty_seat(student.id, seat.id)
 
     def swap_seat(self, student, seat):
-        assert not seat.empty
-        temp_seat = self.seat_factory.create_with_id(student.seat.game_id, 9999, 9999)
-
-        orphan_student = seat.student
-        orphan_student.seat = temp_seat
-        orphan_student.save()
-
-        orphan_new_seat = student.seat
-        student.seat = seat
-        student.save()
-        orphan_student.seat = orphan_new_seat
-        orphan_student.save()
-
-        temp_seat.delete()
-
-        self.save_queue.append(student)
-        self.save_queue.append(orphan_student)
-
+        self.program_api.swap_seat(student.id, seat.id)
