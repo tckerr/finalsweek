@@ -1,5 +1,6 @@
-from game.actions import ActionBase, RedrawToFullAction
 from game.configuration.definitions import PhaseTypeName
+from game.gameflow.actions.base import ActionBase
+from game.gameflow.actions.redraw import RedrawAction
 
 
 class ActionFactory(object):
@@ -10,7 +11,7 @@ class ActionFactory(object):
 class AccumulationActionFactory(ActionFactory):
     def create(self):
         # TODO: add other parts of accumulation
-        return RedrawToFullAction()
+        return RedrawAction()
 
 
 class AutomatedActionFactory(object):

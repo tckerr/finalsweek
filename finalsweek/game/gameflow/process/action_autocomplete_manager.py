@@ -1,5 +1,5 @@
+from game.gameflow.actions.factories import AutomatedActionFactory
 from game.gameflow.process.action_executor import ActionExecutor
-from game.gameflow.process.action_factories import AutomatedActionFactory
 
 
 class ActionAutocompleteManager(object):

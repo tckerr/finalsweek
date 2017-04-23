@@ -1,4 +1,4 @@
-from game.gameflow.process.action_factories import AutomatedActionFactory
+from game.gameflow.actions.factories import AutomatedActionFactory
 
 
 class ActionExecutor(object):

@@ -1,7 +1,9 @@
 from random import choice
 
-from game.actions import ActionBase, ActionCardAction
+
 from game.configuration.definitions import PhaseTypeName
+from game.gameflow.actions.action_card import ActionCardAction
+from game.gameflow.actions.base import ActionBase
 
 
 class AiActor(object):
