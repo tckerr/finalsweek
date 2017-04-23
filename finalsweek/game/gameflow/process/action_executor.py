@@ -1,4 +1,5 @@
 from game.gameflow.actions.factories import AutomatedActionFactory
+from logger import log
 
 
 class ActionExecutor(object):
@@ -38,7 +39,7 @@ class ActionExecutor(object):
     @staticmethod
     def print_turn_details(action, actor_id, phase_type):
         action_class_name = type(action).__name__
-        print("Executing phase: '{phase}' with action '{action}' for actor '{actor}'".format(
+        log("Executing phase: '{phase}' with action '{action}' for actor '{actor}'".format(
             phase=phase_type,
             action=action_class_name,
             actor=actor_id))

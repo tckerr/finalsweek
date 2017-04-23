@@ -1,4 +1,5 @@
 from game.scripting.api.program_child_api import ProgramChildApi
+from logger import log
 
 
 class GameDeckApi(ProgramChildApi):
@@ -14,7 +15,7 @@ class GameDeckApi(ProgramChildApi):
         for _ in range(0, quantity):
             card = action_card_deck.cards.pop()
             actor.action_card_hand.cards.append(card)
-            print("    + Drawing {} card, pc: {}".format(card.template.name, card.id))
+            log("    + Drawing {} card, pc: {}".format(card.template.name, card.id))
             drawn.append(card)
         self.program_api.increment_metadata("drawn_action_cards", len(drawn))
         return drawn

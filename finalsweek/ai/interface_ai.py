@@ -4,6 +4,7 @@ from random import choice
 from game.configuration.definitions import PhaseTypeName
 from game.gameflow.actions.action_card import ActionCardAction
 from game.gameflow.actions.base import ActionBase
+from logger import log
 
 
 class AiActor(object):
@@ -17,7 +18,7 @@ class AiActor(object):
     def take_turn_if_possible(self):
         digest = self.__get_game_info()
         if self.__is_it_my_turn(digest):
-            print("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            log("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             self.__think("Starting new turn for actor: {}".format(self.id))
         while True:
             if digest.complete:
@@ -92,7 +93,7 @@ class AiActor(object):
 
     @staticmethod
     def __think(*a):
-        print(">", *a)
+        log(">", *a)
 
     @staticmethod
     def __get_card_details(card_id, turn):

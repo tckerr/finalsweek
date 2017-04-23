@@ -1,4 +1,5 @@
 from game.scripting.api.sandbox_api import SandboxApi
+from logger import log
 
 
 class PromptException(Exception):
@@ -36,8 +37,7 @@ class PromptApi(SandboxApi):
                 else:
                     if answer.__class__(item) == answer:
                         return item
-
-            print("No item in", item_set, "Matches", unique_field, "of", answer)
+            log("No item in", item_set, "Matches", unique_field, "of", answer)
             raise Exception("Invalid answer")
         else:
             prompt = self.__build_prompt(answer_key, item_set, unique_field, display_field)

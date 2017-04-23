@@ -4,6 +4,7 @@ from game.scripting.api.seat_api import SeatApi
 from game.scripting.api.student_api import StudentApi
 from game.scripting.repositories import ActionCardScriptContextRepository
 from game.scripting.trusted_script_runner import TrustedScriptRunner
+from logger import log
 
 
 class ActionCardScriptRunner(TrustedScriptRunner):
@@ -39,19 +40,19 @@ class ActionCardScriptRunner(TrustedScriptRunner):
 
     @staticmethod
     def log_script_halt():
-        print("   +--- Did not complete! Prompt must be resolved.")
+        log("   +--- Did not complete! Prompt must be resolved.")
 
     @staticmethod
     def log_script_start(actor_id, api, turn_prompt):
         actor = api.actors.get_actor(actor_id)
-        print("Beginning script block:")
-        print("   +--- Prior to running script, requester:", actor.name, actor_id)
+        log("Beginning script block:")
+        log("   +--- Prior to running script, requester:", actor.name, actor_id)
         for actor in api.actors.list_actors():
-            print("   +------ {}: {}".format(actor.id, actor.summary))
-        print("   +--- Executing with answers:", turn_prompt.closed)
+            log("   +------ {}: {}".format(actor.id, actor.summary))
+        log("   +--- Executing with answers:", turn_prompt.closed)
 
     @staticmethod
     def log_script_end(api):
-        print("   +--- After running script:")
+        log("   +--- After running script:")
         for actor in api.actors.list_actors():
-            print("   +------ {}: {}".format(actor.id, actor.summary))
+            log("   +------ {}: {}".format(actor.id, actor.summary))

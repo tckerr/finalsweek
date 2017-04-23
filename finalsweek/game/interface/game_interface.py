@@ -1,5 +1,5 @@
 from game.exceptions import TurnPermissionException
-from game.gameflow.process.action_autocomplete_manager import ActionAutocompleteManager
+from game.gameflow.process.action_executor import ActionExecutor
 from game.gameflow.process.game_state_manager import GameStateManager
 from game.interface.digest import DigestProvider
 
@@ -7,7 +7,7 @@ from game.interface.digest import DigestProvider
 class GameInterface(object):
     def __init__(self):
         self.digest_provider = DigestProvider()
-        self.action_autocomplete_manager = ActionAutocompleteManager()
+        self.action_executor = ActionExecutor()
         self.game_manager = GameStateManager()
 
     def create(self, player_count):
@@ -19,7 +19,7 @@ class GameInterface(object):
         api, turn = self.game_manager.load(game_id)
         if turn.actor_id != requesting_actor_id:
             raise TurnPermissionException("Not your turn!")
-        turn = self.action_autocomplete_manager.action_and_automate(action, api, turn)
+        turn = self.action_executor.execute(turn, action, api)
         return self.__save_and_summarize(api, requesting_actor_id, turn)
 
     def load(self, game_id, requesting_actor_id, fresh=False):

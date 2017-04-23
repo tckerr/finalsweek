@@ -10,8 +10,8 @@ def receives_operation(func):
         result = func(*args, **kwargs)
         if not metadata:
             pass
-        # print("Warning: no metadata supplied to a method that is marked as '@receives_operation'.")
-        # print(metadata, result)
+        # log("Warning: no metadata supplied to a method that is marked as '@receives_operation'.")
+        # log(metadata, result)
         return result
 
     return __fw_operation__
