@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from game.scripting.api.base import ProgramChildApi
+from game.scripting.api.program_child_api import ProgramChildApi
 
 
 class PhaseApi(ProgramChildApi):

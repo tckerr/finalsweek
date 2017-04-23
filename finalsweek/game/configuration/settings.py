@@ -1,15 +1,4 @@
-class PhaseTypeName:
-    ChooseSeats = "Choose Seats"
-    Accumulation = "Accumulation"
-    Classtime = "Classtime"
-    Dismissal = "Dismissal"
-    AfterSchool = "After School"
-    Score = "Score"
-
-
-class CardTypeName:
-    ActionCard = "Action Card"
-
+from game.configuration.definitions import PhaseTypeName, StageTypeName
 
 base_settings = {
     "hand_size":      6,
@@ -21,7 +10,7 @@ base_settings = {
 
 default_game_definition = [
     {
-        "stage_type": "GameStart",
+        "stage_type": StageTypeName.GameStart,
         "phase_sets": 1,
         "phases":     [
             {
@@ -32,7 +21,7 @@ default_game_definition = [
         ]
     },
     {
-        "stage_type": "Play",
+        "stage_type": StageTypeName.Play,
         "phase_sets": 8,
         "phases":     [
             {
@@ -58,7 +47,7 @@ default_game_definition = [
         ]
     },
     {
-        "stage_type": "Scoring",
+        "stage_type": StageTypeName.Scoring,
         "phase_sets": 1,
         "phases":     [
             {

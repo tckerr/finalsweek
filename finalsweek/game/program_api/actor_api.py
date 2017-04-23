@@ -1,5 +1,5 @@
 from game.operation.operator_eligible import receives_operation
-from game.scripting.api.base import ProgramChildApi
+from game.scripting.api.program_child_api import ProgramChildApi
 
 
 class ActorApi(ProgramChildApi):

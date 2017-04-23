@@ -1,6 +1,7 @@
 from random import choice
 
 from game.actions import ActionBase, ActionCardAction
+from game.configuration.definitions import PhaseTypeName
 
 
 class AiActor(object):
@@ -48,7 +49,7 @@ class AiActor(object):
 
     def __get_action(self, digest):
         turn = digest.turn
-        if turn.phase_type != "Classtime":
+        if turn.phase_type != PhaseTypeName.Classtime:
             return ActionBase()
         return self.__build_classtime_action(digest)
 

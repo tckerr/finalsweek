@@ -49,7 +49,7 @@
                         "automatic": true
                     },
                     {
-                        "name": "Classtime",
+                        "name": "Class Time",
                         "turn_sets": 2,
                         "automatic": false
                     },
@@ -84,7 +84,7 @@
                 "stage_type": "Play",
                 "phases": [
                     {
-                        "phase_type": "Classtime",
+                        "phase_type": "Class Time",
                         "turns": [
                             {
                                 "actor_id": 3545,

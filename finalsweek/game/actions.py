@@ -1,4 +1,4 @@
-from game.scripting.trusted_script_runner import ActionCardScriptRunner
+from game.scripting.action_card_script_runner import ActionCardScriptRunner
 from game.systems.draw_manager import HandRefiller
 
 

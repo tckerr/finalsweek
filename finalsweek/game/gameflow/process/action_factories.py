@@ -1,5 +1,5 @@
 from game.actions import ActionBase, RedrawToFullAction
-from game.settings import PhaseTypeName
+from game.configuration.definitions import PhaseTypeName
 
 
 class ActionFactory(object):

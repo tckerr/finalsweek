@@ -1,4 +1,4 @@
-from game.settings import default_game_definition
+from game.configuration.settings import default_game_definition
 
 
 class GameDefinitionSeedFactory(object):

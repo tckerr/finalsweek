@@ -1,6 +1,2 @@
-class GameOverException(Exception):
-    pass
-
-
-class TurnPermissionException(Exception):
-    pass
+class GameOverException(Exception): pass
+class TurnPermissionException(Exception): pass
