@@ -1,8 +1,10 @@
+from game.operation.operator_eligible import receives_operation
 from game.scripting.api.base import ProgramChildApi
 
 
 class StudentApi(ProgramChildApi):
 
+    @receives_operation
     def list_students(self):
         for seat in self.data.seats:
             student = seat.student

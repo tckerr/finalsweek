@@ -1,12 +1,13 @@
-from game.document.documents.api.actor_api import ActorApi
-from game.document.documents.api.card_template_api import CardTemplateApi
-from game.document.documents.api.game_deck_api import GameDeckApi
-from game.document.documents.api.phase_api import PhaseApi
-from game.document.documents.api.seat_api import SeatApi
-from game.document.documents.api.settings_api import SettingsApi
-from game.document.documents.api.stage_api import StageApi
-from game.document.documents.api.student_api import StudentApi
-from game.document.documents.api.turn_api import TurnApi
+from game.document.api.card_template_api import CardTemplateApi
+from game.document.api.game_deck_api import GameDeckApi
+from game.document.api.phase_api import PhaseApi
+from game.document.api.seat_api import SeatApi
+from game.document.api.settings_api import SettingsApi
+from game.document.api.stage_api import StageApi
+from game.document.api.student_api import StudentApi
+from game.document.api.turn_api import TurnApi
+
+from game.document.api.actor_api import ActorApi
 from game.document.game_document_cache import GameDocumentCache
 from game.document.seed_generators import GameSeedGenerator
 

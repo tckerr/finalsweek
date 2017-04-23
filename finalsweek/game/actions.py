@@ -1,4 +1,4 @@
-from game.scripting.trusted_script_runner import TrustedScriptRunner
+from game.scripting.trusted_script_runner import ActionCardScriptRunner
 from game.systems.draw_manager import HandRefiller
 
 
@@ -28,7 +28,7 @@ class ActionCardAction(ActionBase):
         super().__init__()
         self.prompt = prompt
         self.card_id = card_id
-        self.trusted_script_runner = TrustedScriptRunner()
+        self.trusted_script_runner = ActionCardScriptRunner()
 
     def execute(self, actor_id, api):
         super().execute(actor_id, api)
