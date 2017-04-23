@@ -2,7 +2,6 @@ from game.document.documents.document_base import DocumentBase
 
 
 class PhaseDefinition(DocumentBase):
-
     def __init__(self, base_data, parent=None):
         self.phase_type = None
         self.turn_sets = None

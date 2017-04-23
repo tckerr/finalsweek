@@ -1,4 +1,3 @@
-from util import guid
 from game.document.documents.document_base import DocumentBase
 
 

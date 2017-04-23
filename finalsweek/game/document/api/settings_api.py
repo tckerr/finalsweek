@@ -2,7 +2,6 @@ from game.scripting.api.base import ProgramChildApi
 
 
 class SettingsApi(ProgramChildApi):
-
     def get_game_definition(self):
         return self.data.rules.game_definition
 

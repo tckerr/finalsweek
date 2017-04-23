@@ -1,4 +1,4 @@
-from game.exceptions import TurnPermissionException, GameOverException
+from game.exceptions import TurnPermissionException
 from game.gameflow.process.action_autocomplete_manager import ActionAutocompleteManager
 from game.gameflow.process.game_state_manager import GameStateManager
 from game.interface.digest import DigestProvider

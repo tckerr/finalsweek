@@ -1,11 +1,9 @@
-from random import shuffle
-
 from util import guid
 
 
-class AfterSchoolCardDeckSeedFactory(object):
+class DisciplineCardDeckSeedFactory(object):
     @staticmethod
-    def _afterschool_card_deck(cards):
+    def create(cards):
         return {
             "id":    guid(),
             "cards": []

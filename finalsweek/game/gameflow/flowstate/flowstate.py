@@ -12,6 +12,7 @@ class Flowstate(object):
     def game_over(self):
         return self.stage_type is None
 
+
 class CompletedFlowstate(object):
     def __init__(self):
         self.pending = False

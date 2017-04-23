@@ -3,7 +3,6 @@ from game.scripting.api.base import ProgramChildApi
 
 
 class StudentApi(ProgramChildApi):
-
     @receives_operation
     def list_students(self):
         for seat in self.data.seats:

@@ -1,3 +1,4 @@
+from game.document.api.actor_api import ActorApi
 from game.document.api.card_template_api import CardTemplateApi
 from game.document.api.game_deck_api import GameDeckApi
 from game.document.api.phase_api import PhaseApi
@@ -6,10 +7,8 @@ from game.document.api.settings_api import SettingsApi
 from game.document.api.stage_api import StageApi
 from game.document.api.student_api import StudentApi
 from game.document.api.turn_api import TurnApi
-
-from game.document.api.actor_api import ActorApi
 from game.document.game_document_cache import GameDocumentCache
-from game.document.seed_generators import GameSeedGenerator
+from game.document.seeding.game_seed_factory import GameSeedFactory
 
 
 class ProgramApi(object):
@@ -23,7 +22,7 @@ class ProgramApi(object):
 
     @classmethod
     def new(cls, player_count):
-        generator = GameSeedGenerator()
+        generator = GameSeedFactory()
         game_seed = generator.generate(player_count=player_count)
         cache = GameDocumentCache()
         cache.load_from_seed(game_seed)

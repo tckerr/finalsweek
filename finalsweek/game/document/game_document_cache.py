@@ -1,7 +1,5 @@
-from game.document.persistence import GamePersistence
 from game.document.documents.game import Game
-from pprint import pprint
-import json
+from game.document.persistence import GamePersistence
 
 
 class GameDocumentCache(object):

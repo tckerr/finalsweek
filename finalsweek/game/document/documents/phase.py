@@ -1,8 +1,8 @@
 from datetime import datetime
 
+from game.document.documents.document_base import DocumentBase
 from game.document.documents.prompt import Prompt
 from game.document.documents.turn import Turn
-from game.document.documents.document_base import DocumentBase
 from util import guid
 
 

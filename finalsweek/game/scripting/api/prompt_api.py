@@ -60,7 +60,7 @@ class PromptApi(SandboxApi):
 
         return {
             "closed": self.prompt.closed,
-            "open": {
+            "open":   {
                 answer_key: options
             }
         }

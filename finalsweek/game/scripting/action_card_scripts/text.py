@@ -8,5 +8,5 @@ else:
 
 if selected_actor.student.seat.row == 0:
     ActorApi.add_trouble(selected_actor, 1)
-    
+
 ActorApi.add_trouble(requestor, 2)

@@ -1,14 +1,15 @@
+from random import choice
+
 from django.core.management.base import BaseCommand
+from game.interface.actions import UseActionCardAction
 #
 from game.interface.routers import GameRouter
-from game.interface.actions import UseActionCardAction
-from random import choice
 
 player_count = 4
 router = GameRouter()
 
-class Command(BaseCommand):
 
+class Command(BaseCommand):
     def handle(self, *args, **options):
         game_info = router.create(player_count)
         actors = [a for a in game_info.actors]
@@ -36,7 +37,7 @@ class Command(BaseCommand):
                         print("Options:")
                         for option in prompt_options:
                             print("   - {}: {}".format(option["display"], option["id"]))
-                        #selection = input()
+                        # selection = input()
                         if not prompt_options:
                             print("Skipping card", random_choice, "... no options")
                             keep_going = False
@@ -49,4 +50,3 @@ class Command(BaseCommand):
                 router.take_turn(current_actor_id, None)
 
         print("Game over!")
-

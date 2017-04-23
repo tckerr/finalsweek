@@ -1,5 +1,5 @@
-from game.gameflow.flowstate.flowstate import Flowstate, CompletedFlowstate
 from game.gameflow.flowstate.base_flowstate_resolver import BaseFlowstateResolver
+from game.gameflow.flowstate.flowstate import Flowstate, CompletedFlowstate
 
 
 class FlowstateTurnResolver(BaseFlowstateResolver):

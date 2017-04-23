@@ -10,7 +10,6 @@ class AttributeModifier(object):
 
 
 class StatusEffect(object):
-
     def __init__(self, attribute_modifiers):
         self.attribute_modifiers = {}
         for mod in attribute_modifiers:
@@ -25,9 +24,12 @@ class StatusEffect(object):
                 return modifier.modify(val)
         return val
 
-    def filter_target_eligiblity(self, target, targeting_criteria): pass
+    def filter_target_eligiblity(self, target, targeting_criteria):
+        pass
 
-    def generate_action(self, turn_type): pass
+    def generate_action(self, turn_type):
+        pass
 
     # call each turn?
-    def expire_if_complete(self): pass
+    def expire_if_complete(self):
+        pass

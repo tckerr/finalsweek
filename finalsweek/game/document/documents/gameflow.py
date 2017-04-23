@@ -1,6 +1,6 @@
-from util import guid
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.stage import Stage
+from util import guid
 
 
 class Gameflow(DocumentBase):

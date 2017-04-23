@@ -9,7 +9,7 @@ class ActionExecutor(object):
     def execute(self, turn, action, api):
         phase_definition = api.phases.get_phase_definition(turn.phase.phase_type)
         self._execute(api, action, turn, phase_definition)
-        return self._next_actor_turn(api) # this may be same turn if prompt=true
+        return self._next_actor_turn(api)  # this may be same turn if prompt=true
 
     def _next_actor_turn(self, api):
         while True:

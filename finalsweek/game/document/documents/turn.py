@@ -27,8 +27,8 @@ class Turn(DocumentBase):
 
     def refresh(self):
         self.prompt = Prompt({
-            "_id": self.prompt._id,
-            "id": self.prompt.id,
+            "_id":    self.prompt._id,
+            "id":     self.prompt.id,
             "closed": {},
-            "open": {}
+            "open":   {}
         }, parent=self)

@@ -1,15 +1,29 @@
-from random import shuffle, choice
+import names
 
 from util import guid
 
 
-class StudentSeedFactory(object):
-
-    def create(self, student_infos, as_actor=False):
-        student_info_id = choice(student_infos)["id"]
-        actor = self._actor() if as_actor else None
+class ActorSeedFactory(object):
+    @staticmethod
+    def create():
         return {
-            "id":              guid(),
-            "student_info_id": student_info_id,
-            "actor":           actor
+            "id":                    guid(),
+            "name":                  names.get_full_name(),
+            "user_id":               None,
+            "action_card_hand":      {
+                "id":    guid(),
+                "cards": []
+            },
+            "afterschool_card_hand": {
+                "id":    guid(),
+                "cards": []
+            },
+            "discipline_card_hand":  {
+                "id":    guid(),
+                "cards": []
+            },
+            "grades":                0,
+            "popularity":            0,
+            "torment":               0,
+            "trouble":               0
         }

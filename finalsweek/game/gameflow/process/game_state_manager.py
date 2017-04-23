@@ -1,5 +1,4 @@
 from game.document.program_api import ProgramApi
-from game.exceptions import GameOverException
 
 
 class GameStateManager(object):

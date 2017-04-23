@@ -2,7 +2,6 @@ from game.scripting.api.sandbox_api import SandboxApi
 
 
 class StudentApi(SandboxApi):
-
     def get_students(self):
         return self.repo.students()
 

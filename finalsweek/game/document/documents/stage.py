@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from util import guid
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.phase import Phase
+from util import guid
 
 
 class Stage(DocumentBase):

@@ -3,7 +3,6 @@ from game.scripting.api.base import ProgramChildApi
 
 
 class ActorApi(ProgramChildApi):
-
     def _actor(self, actor_id):
         for actor in self._actors():
             if actor.id == actor_id:

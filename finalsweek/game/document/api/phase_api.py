@@ -4,7 +4,6 @@ from game.scripting.api.base import ProgramChildApi
 
 
 class PhaseApi(ProgramChildApi):
-
     def create_phase(self, stage_id, phase_type):
         for stage in self.data.gameflow.stages:
             if stage.id == stage_id:

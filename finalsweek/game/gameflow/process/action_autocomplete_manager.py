@@ -1,4 +1,3 @@
-from game.exceptions import GameOverException
 from game.gameflow.process.action_executor import ActionExecutor
 from game.gameflow.process.action_factories import AutomatedActionFactory
 

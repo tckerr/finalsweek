@@ -11,6 +11,14 @@ class CardTypeName:
     ActionCard = "Action Card"
 
 
+base_settings = {
+    "hand_size":      6,
+    "total_cards":    1000,
+    "seat_rows":      5,
+    "seat_columns":   4,
+    "total_students": 16
+}
+
 default_game_definition = [
     {
         "stage_type": "GameStart",
