@@ -1,4 +1,4 @@
-from game.document.program_api import ProgramApi
+from game.program_api.program_api import ProgramApi
 
 
 class GameStateManager(object):

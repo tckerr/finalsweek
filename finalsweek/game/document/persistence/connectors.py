@@ -1,12 +1,12 @@
 from mongo import MongoDbConnector
 
 
-class GamePersistence(object):
-    """GamePersistence is a wrapper around MongoDbConnector specifically for games"""
+class GameDbConnector(object):
+    """GameDbConnector is a wrapper around MongoDbConnector specifically for Games"""
     _doc_name = "game"
 
     def __init__(self):
-        super(GamePersistence, self).__init__()
+        super(GameDbConnector, self).__init__()
         self.mongo_db_connector = MongoDbConnector("finalsweek")
 
     def load(self, game_id):
