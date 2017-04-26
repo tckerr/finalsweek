@@ -5,6 +5,7 @@ from util import floor_at_zero
 
 
 class ActorApi(ProgramChildApi):
+
     def _actor(self, actor_id):
         for actor in self._actors():
             if actor.id == actor_id:
@@ -62,9 +63,6 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self.get_actor(operation.actor_id)
         actor.grades = floor_at_zero(actor.grades + operation.value)
-
-    def _mutate(self, operation):
-        return self.program_api.mutate(operation)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)

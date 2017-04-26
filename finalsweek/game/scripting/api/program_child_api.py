@@ -6,3 +6,6 @@ class ProgramChildApi(object):
     @property
     def data(self):
         return self.program_api.data
+
+    def _mutate(self, operation):
+        return self.program_api.mutations.mutate(operation)
