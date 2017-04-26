@@ -27,6 +27,7 @@ class GameSeedFactory(object):
             "afterschool_card_deck": afterschool_card_deck,
             "discipline_card_deck":  discipline_card_deck,
             "seats":                 seats,
+            "mutations":             [],
             "metadata":              {}
         }
         return data

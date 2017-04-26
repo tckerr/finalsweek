@@ -1,2 +1,2 @@
-./../../.venv/Scripts/activate.ps1
-python ..\finalsweek\manage.py load_single "58fc9c3b529bc22758c41c78" "77e056ab-5e70-4cdc-8dae-215c3373fee0"
+& "$($PSScriptRoot)/../../.venv/Scripts/activate.ps1"
+python $PSScriptRoot/../../finalsweek/manage.py load_single "58fff0b3529bc228f0504d5d" "8a71bce0-8ca6-47af-ba38-9923309bb2be"

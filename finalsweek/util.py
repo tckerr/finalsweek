@@ -1,9 +1,3 @@
-class JsonLoader(object):
-    def load(self, path):
-        with open(path, 'r', encoding='utf-8') as jsonfile:
-            return json.loads(jsonfile.read())
-
-
 import uuid
 
 
@@ -11,7 +5,14 @@ class I:
     integer = -1
 
 
+def integer_id():
+    I.integer += 1
+    return I.integer
+
+
 def guid():
     return str(uuid.uuid4())
-    #I.integer += 1
-    #return I.integer
+
+
+def floor_at_zero(val):
+    return max(0, val)

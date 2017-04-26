@@ -1,4 +1,4 @@
-from game.operation.metadata import OperationMetadata
+from game.document.documents.operation_metadata import OperationMetadata
 
 
 class ActionCardScriptContextRepository(object):
@@ -16,13 +16,13 @@ class ActionCardScriptContextRepository(object):
         return metadata
 
     def actors(self):
-        return list(self.program_api.actors.list_actors(metadata=self.metadata))
+        return list(self.program_api.actors.list_actors())
 
     def students(self):
-        return list(self.program_api.students.list_students(metadata=self.metadata))
+        return list(self.program_api.students.list_students())
 
     def requestor(self):
-        return self.program_api.actors.get_actor(self.requestor_id, metadata=self.metadata)
+        return self.program_api.actors.get_actor(self.requestor_id)
 
     def seats(self):
-        return list(self.program_api.seats.list_seats(metadata=self.metadata))
+        return list(self.program_api.seats.list_seats())

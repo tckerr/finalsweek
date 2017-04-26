@@ -1,5 +1,6 @@
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.gameflow import Gameflow
+from game.document.documents.mutation import Mutation
 from game.document.documents.pile import Pile
 from game.document.documents.rules import Rules
 from game.document.documents.seat import Seat
@@ -13,6 +14,7 @@ class Game(DocumentBase):
         "afterschool_card_deck": Pile,
         "discipline_card_deck":  Pile,
         "seats":                 Seat,
+        "mutations":             Mutation,
         "metadata":              dict
     }
 

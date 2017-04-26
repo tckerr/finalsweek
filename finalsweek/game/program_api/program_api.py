@@ -1,3 +1,5 @@
+from game.document.documents.mutation import Mutation
+from game.document.documents.operation_metadata import OperationMetadata
 from game.document.persistence.caching import GameDocumentCache
 from game.document.seeding.game_seed_factory import GameSeedFactory
 from game.program_api.actor_api import ActorApi
@@ -9,6 +11,7 @@ from game.program_api.settings_api import SettingsApi
 from game.program_api.stage_api import StageApi
 from game.program_api.student_api import StudentApi
 from game.program_api.turn_api import TurnApi
+from util import guid
 
 
 class ProgramApi(object):
@@ -52,3 +55,20 @@ class ProgramApi(object):
         if key not in self.data.metadata:
             self.data.metadata[key] = 0
         self.data.metadata[key] += value
+
+    # TODO: move this to API
+    def register_mutation(self, priority=0, **kwargs):
+        criteria = OperationMetadata.default_data()
+        criteria.update(kwargs)
+        mutation_data = {
+            "id": guid(),
+            "priority": priority,
+            "criteria": criteria
+        }
+        self.data.mutations.append(Mutation(mutation_data))
+        self.data.mutations = sorted(self.data.mutations, key=lambda m: m.priority)
+
+    def mutate(self, operation):
+        for mutation in self.data.mutations:
+            operation = mutation.mutate_on_match(operation)
+        return operation

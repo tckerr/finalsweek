@@ -1,5 +1,7 @@
-from game.operation.operator_eligible import receives_operation
+from game.operation.decorators import accepts_operation, accepts_operator
+from game.operation.operation import OperationType, OperatorType
 from game.scripting.api.program_child_api import ProgramChildApi
+from util import floor_at_zero
 
 
 class ActorApi(ProgramChildApi):
@@ -22,26 +24,21 @@ class ActorApi(ProgramChildApi):
                 return card
         raise Exception("Card not found: {}, actor id: {}".format(card_id, actor_id))
 
-    @receives_operation
     def list_actors(self):
         return self._actors()
 
-    @receives_operation
     def list_actors_sorted_by_seat(self):
         actors = list(self._actors())
         actors.sort(key=lambda s: (s.seat.row, s.seat.column))
         for actor in actors:
             yield actor
 
-    @receives_operation
     def get_actor(self, actor_id):
         return self._actor(actor_id)
 
-    @receives_operation
     def get_action_card_by_actor(self, actor_id, card_id):
         return self._action_card_by_actor(actor_id, card_id)
 
-    @receives_operation
     def expend_action_card(self, actor_id, card_id):
         # TODO: kinda ugly, this line...
         card = self._action_card_by_actor(actor_id, card_id)
@@ -52,50 +49,61 @@ class ActorApi(ProgramChildApi):
             raise Exception("Card not found: {}, actor id: {}".format(card_id, actor_id))
         self.program_api.increment_metadata("expended_action_cards", 1)
 
-    @receives_operation
-    def set_grades(self, actor_id, value):
-        actor = self.get_actor(actor_id)
-        actor.grades = value
-        actor.grades = max(0, actor.grades)
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Set)
+    def set_grades(self, operation):
+        operation = self._mutate(operation)
+        actor = self.get_actor(operation.actor_id)
+        actor.grades = floor_at_zero(operation.value)
 
-    @receives_operation
-    def add_grades(self, actor_id, value):
-        actor = self.get_actor(actor_id)
-        actor.grades += value
-        actor.grades = max(0, actor.grades)
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Add)
+    def add_grades(self, operation):
+        operation = self._mutate(operation)
+        actor = self.get_actor(operation.actor_id)
+        actor.grades = floor_at_zero(actor.grades + operation.value)
 
-    @receives_operation
-    def set_popularity(self, actor_id, value):
-        actor = self._actor(actor_id)
-        actor.popularity = value
-        actor.popularity = max(0, actor.popularity)
+    def _mutate(self, operation):
+        return self.program_api.mutate(operation)
 
-    @receives_operation
-    def add_popularity(self, actor_id, value):
-        actor = self._actor(actor_id)
-        actor.popularity += value
-        actor.popularity = max(0, actor.popularity)
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Set)
+    def set_popularity(self, operation):
+        operation = self._mutate(operation)
+        actor = self.get_actor(operation.actor_id)
+        actor.popularity = floor_at_zero(operation.value)
 
-    @receives_operation
-    def set_trouble(self, actor_id, value):
-        actor = self._actor(actor_id)
-        actor.trouble = value
-        actor.trouble = max(0, actor.trouble)
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Add)
+    def add_popularity(self, operation):
+        operation = self._mutate(operation)
+        actor = self.get_actor(operation.actor_id)
+        actor.popularity = floor_at_zero(actor.popularity + operation.value)
 
-    @receives_operation
-    def add_trouble(self, actor_id, value):
-        actor = self._actor(actor_id)
-        actor.trouble += value
-        actor.trouble = max(0, actor.trouble)
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Set)
+    def set_trouble(self, operation):
+        operation = self._mutate(operation)
+        actor = self.get_actor(operation.actor_id)
+        actor.trouble = floor_at_zero(operation.value)
 
-    @receives_operation
-    def set_torment(self, actor_id, value):
-        actor = self._actor(actor_id)
-        actor.torment = value
-        actor.torment = max(0, actor.torment)
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Add)
+    def add_trouble(self, operation):
+        operation = self._mutate(operation)
+        actor = self.get_actor(operation.actor_id)
+        actor.trouble = floor_at_zero(actor.trouble + operation.value)
 
-    @receives_operation
-    def add_torment(self, actor_id, value):
-        actor = self._actor(actor_id)
-        actor.torment += value
-        actor.torment = max(0, actor.torment)
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Set)
+    def set_torment(self, operation):
+        operation = self._mutate(operation)
+        actor = self.get_actor(operation.actor_id)
+        actor.torment = floor_at_zero(operation.value)
+
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Add)
+    def add_torment(self, operation):
+        operation = self._mutate(operation)
+        actor = self.get_actor(operation.actor_id)
+        actor.torment = floor_at_zero(actor.torment + operation.value)
