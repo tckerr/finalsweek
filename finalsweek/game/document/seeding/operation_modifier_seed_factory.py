@@ -1,6 +1,3 @@
-from game.models import OperationModifier
-
-
 class OperationModifierAdapter(object):
     @staticmethod
     def adapt(data):

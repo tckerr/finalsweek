@@ -1,6 +1,7 @@
-from game.configuration.definitions import OperatorType, Tag
+from game.configuration.definitions import OperatorType, Tag, GameflowMessageType
 from game.gameflow.actions.base import ActionBase
 from game.operation.operations.modify_attribute import ModifyAttribute
+from game.program_api.message_api import GameflowMessage
 from game.scripting.action_card_script_runner import ActionCardScriptRunner
 
 
@@ -29,12 +30,15 @@ class ActionCardAction(ActionBase):
 
     def resolve_card_completion(self, actor_id, api, card, result):
         self._apply_trouble(api, actor_id,  card)
+        exclusions = []
         if card.generates_mutation:
             mutation_template = card.template.mutation_template
             mutation = api.mutations.create_and_register(mutation_template, source_actor_id=actor_id, **result.exports)
             api.actors.transfer_card_to_in_play(actor_id, card.id, mutation.id)
+            exclusions.append(mutation.id)
         else:
             api.actors.expend_action_card(actor_id, self.card_id)
+        api.messenger.dispatch(GameflowMessage(GameflowMessageType.Action, actor_id=actor_id), exclude=exclusions)
 
     def _apply_trouble(self, api, actor_id, card):
         operation = ModifyAttribute(

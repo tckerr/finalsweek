@@ -1,4 +1,4 @@
-from util import guid
+from util.util import guid
 
 
 class AfterSchoolCardDeckSeedFactory(object):

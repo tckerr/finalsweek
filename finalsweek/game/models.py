@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from multiselectfield import MultiSelectField
 
-from game.configuration.definitions import Tag
+from game.configuration.definitions import Tag, MutationExpiryType
 
 
 class DefaultModel(models.Model):
@@ -88,10 +88,6 @@ class OperationModifier(DefaultModel):
     active = models.BooleanField(default=True)
 
 
-class MutationExpiryCriteria(DefaultModel):
-    id = models.AutoField(primary_key=True)
-
-
 class OperationTag(DefaultModel):
     def __str__(self):
         return self.name
@@ -107,15 +103,14 @@ class MutationTemplate(DefaultModel):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, default="")
-    tags = MultiSelectField(choices=Tag.tag_list())
+    tags = MultiSelectField(choices=Tag.prop_list())
     priority = models.IntegerField(default=0)
-    uses = models.IntegerField(null=True)
 
     # can be used if we want
     match_all = models.BooleanField(default=False)
 
     # need to create this on the mutation class
-    expiry_criteria = models.ForeignKey(MutationExpiryCriteria, null=True)  # null = permanent
+    expiry_criteria = MultiSelectField(choices=MutationExpiryType.prop_list())
 
     # currently mutation_effect_id on the resulting Mutation (we're renaming mutation effect to OperationModifier)
     operation_modifier = models.ForeignKey(OperationModifier)

@@ -1,5 +1,5 @@
 from game.document.seeding.student_seed_factory import StudentSeedFactory
-from util import guid
+from util.util import guid
 
 
 class SeatSeedFactory(object):

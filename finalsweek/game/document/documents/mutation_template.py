@@ -8,7 +8,6 @@ class MutationTemplate(DocumentBase):
         "tags":               str,
         "priority":           int,
         "match_all":          bool,
-        "expiry_criteria":    str,
-        "operation_modifier": OperationModifier,
-        "uses":               int,
+        "expiry_criteria":    list,
+        "operation_modifier": OperationModifier
     }

@@ -1,4 +1,24 @@
-from game.configuration.definitions import PhaseTypeName, StageTypeName
+from game.configuration.definitions import PhaseTypeName, StageTypeName, LogLevel, LogType
+import random
+
+logging = {
+    "as_file": True,
+    "print_output": True,
+    "log_level": LogLevel.Verbose,
+    "disabled": {
+        LogType.NoOp,
+        LogType.DocumentConversion
+    }
+}
+
+random_seed = "fVTtJui5Ym"
+seeded_random = random.Random(random_seed)
+
+generation = {
+    "seed":   random_seed,
+    "id_len": 16,
+    "random": seeded_random
+}
 
 base_settings = {
     "hand_size":      6,
@@ -58,3 +78,4 @@ default_game_definition = [
         ]
     }
 ]
+

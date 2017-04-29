@@ -1,12 +1,11 @@
-from random import shuffle
-
-from util import guid
+from game.configuration.settings import generation
+from util.util import guid
 
 
 class ActionCardDeckSeedFactory(object):
     @staticmethod
     def create(templates, settings):
-        template_list = templates.values()
+        template_list = sorted(templates.values(), key=lambda t: t["id"])
         filtered_templates = list(filter(lambda c: c["card_type"] == "Action", template_list))
         total_cards = settings["total_cards"]
         cards_per_type = int(total_cards / len(filtered_templates))
@@ -17,7 +16,7 @@ class ActionCardDeckSeedFactory(object):
                     "id":                       guid(),
                     "card_template_id": template["id"]
                 })
-        shuffle(card_list)
+        generation["random"].shuffle(card_list)
         return {
             "id":    guid(),
             "cards": card_list

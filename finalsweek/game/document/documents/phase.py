@@ -3,7 +3,7 @@ from datetime import datetime
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.prompt import Prompt
 from game.document.documents.turn import Turn
-from util import guid
+from util.util import guid
 
 
 class Phase(DocumentBase):

@@ -1,3 +1,6 @@
+from util.listable_class import ListableClass
+
+
 class StageTypeName:
     GameStart = "Game Start"
     Play = "Play"
@@ -19,14 +22,17 @@ class CardTypeName:
     AfterSchoolCard = "After School Card"
 
 
-class Tag:
-    @staticmethod
-    def tag_list():
-        return [
-            (getattr(Tag, k), getattr(Tag, k))
-            for k in Tag.__dict__
-            if not k.startswith("__") and k is not "tag_list"]
+class MutationExpiryType(ListableClass):
+    Permanent = "Permanent"
+    UntilRemoved = "Until Removed"
+    ActionBound = "Action Bound"  # effect source will be gone after next action
+    TurnBound = "Turn Bound"  # effect source will be gone after next turn
+    PhaseBound = "Phase Bound"  # effect source will be gone after next phase
+    StageBound = "Stage Bound"  # effect source will be gone after next stage
+    UseBound = "Use Bound"  # effect source will be gone after next use
 
+
+class Tag(ListableClass):
     System = "System"  # came from system (usually don't F with this...)
     ActorAction = "Actor Action"  # came from an actor action
     StatusEffect = "Status Effect"  # came from a status effect
@@ -75,3 +81,26 @@ class OperatorType(object):
     Add = "Add"
     Set = "Set"
     Get = "Get"
+
+
+class GameflowMessageType:
+    Use = "Use"
+    Action = "Action"
+    Turn = "Turn"
+    Phase = "Phase"
+    Stage = "Stage"
+
+
+class LogLevel:
+    Verbose = 1
+    Debug = 2
+    Info = 3
+    Warning = 4
+    Error = 5
+    Off = 6
+
+
+class LogType:
+    DocumentConversion = "DocumentConversion"
+    NoOp = "NoOp"
+    General = "General"

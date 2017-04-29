@@ -1,7 +1,5 @@
-from random import choice
-
-
 from game.configuration.definitions import PhaseTypeName
+from game.configuration.settings import generation
 from game.gameflow.actions.action_card import ActionCardAction
 from game.gameflow.actions.base import ActionBase
 from logger import log
@@ -57,6 +55,11 @@ class AiActor(object):
         return self.__build_classtime_action(digest)
 
     def __build_classtime_action(self, digest):
+        # cards in play:
+        cards_in_play = digest.in_play_effects.cards_in_play
+        cards_in_play_names = ", ".join(["'{}'".format(c.template.name) for c in cards_in_play])
+        self.__think("My cards in play: {}".format(cards_in_play_names))
+
         turn = digest.turn
         card_id = self.__get_card_id(turn)
         prompt = turn.prompt
@@ -66,7 +69,7 @@ class AiActor(object):
                 self.__think("Skipping prompt", prompt.id, "for card", card_id, "... no options")
                 self.__set_card_prompt_map(prompt.id, None)
                 return
-            selection = choice([o["id"] for o in prompt_options])
+            selection = generation["random"].choice([o["id"] for o in prompt_options])
             prompt.answer(answer_key, selection)
         return ActionCardAction(card_id, prompt)
 
@@ -87,7 +90,7 @@ class AiActor(object):
         hand = turn.hand.action_cards
         card_names = ", ".join(["'{}'".format(c.template.name) for c in hand])
         self.__think("My hand: {}".format(card_names))
-        card_id = choice([ac.id for ac in turn.hand.action_cards])
+        card_id = generation["random"].choice([ac.id for ac in turn.hand.action_cards])
         self.__think("I choose card:", self.__get_card_details(card_id, turn))
         return card_id
 

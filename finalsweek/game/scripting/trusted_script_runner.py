@@ -4,7 +4,7 @@ from game.scripting.api.seat_api import SeatApi
 from game.scripting.api.student_api import StudentApi
 from game.scripting.repositories import ScriptContextRepository
 from logger import log
-from util import set_in_dict
+from util.util import set_in_dict
 
 
 class ScriptResult(object):

@@ -1,3 +1,7 @@
+from game.configuration.definitions import LogLevel, LogType
+from logger import Logger
+
+
 class IdDict(dict):
     cls = dict
 
@@ -70,7 +74,8 @@ class DocumentBase(object):
             return cls(*args)
         except TypeError as e:
             # TODO: some concept of nullables
-            pass  # print("Warning: could not convert {}: {}".format(cls.__name__ if cls else "NONE?", e))
+            message = "Warning: could not convert {}: {}".format(cls.__name__ if cls else "NONE?", e)
+            Logger.log(message, log_level=LogLevel.Warning, log_type=LogType.DocumentConversion)
 
     def _assert_validation(self, base_data):
         if self._field_definitions is None:

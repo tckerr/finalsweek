@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from game.configuration.definitions import GameflowMessageType
+from game.program_api.message_api import GameflowMessage
 from game.scripting.api.program_child_api import ProgramChildApi
 
 
@@ -13,5 +15,8 @@ class StageApi(ProgramChildApi):
     def complete_stage(self, stage_id):
         for stage in self.data.gameflow.stages:
             if stage.id == stage_id:
-                stage.completed = datetime.utcnow()
-                return
+                return self._complete(stage)
+
+    def _complete(self, stage):
+        stage.completed = datetime.utcnow()
+        self.program_api.messenger.dispatch(GameflowMessage(GameflowMessageType.Stage))

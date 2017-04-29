@@ -20,7 +20,7 @@ class CardAdmin(admin.ModelAdmin):
         return bool(obj.script)
 
 
-class MutationEffectAdmin(admin.ModelAdmin):
+class OperationModifierAdmin(admin.ModelAdmin):
     list_display = ("id", "active", "has_script",)
     list_display_links = ("id",)
     list_editable = ('active',)
@@ -32,9 +32,12 @@ class MutationEffectAdmin(admin.ModelAdmin):
         return bool(obj.script)
 
 
+class MutationTemplateAdmin(admin.ModelAdmin):
+    model = MutationTemplate
+
+
 admin.site.register(Card, CardAdmin)
-admin.site.register(OperationModifier, MutationEffectAdmin)
+admin.site.register(OperationModifier, OperationModifierAdmin)
 admin.site.register(StudentInfo)
-admin.site.register(MutationTemplate)
-admin.site.register(MutationExpiryCriteria)
+admin.site.register(MutationTemplate, MutationTemplateAdmin)
 admin.site.register(OperationTag)

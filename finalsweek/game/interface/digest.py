@@ -51,11 +51,20 @@ class TurnDigest(GameDigest):
         self.id = turn.id
 
 
+class InPlayEffectDigest(GameDigest):
+    def __init__(self, requesting_actor_id, api):
+        super().__init__()
+        requesting_actor = api.actors.get_actor(requesting_actor_id)
+        cards_in_play = requesting_actor.cards_in_play
+        self.cards_in_play = [CardInfoDigest(ipe.card) for ipe in cards_in_play]
+
+
 class GeneralDigest(GameDigest):
-    def __init__(self, game_info_digest, turn_digest=None):
+    def __init__(self, game_info_digest, turn_digest=None, in_play_effect_digest=None):
         super().__init__()
         self.game_info = game_info_digest
         self.turn = turn_digest
+        self.in_play_effects = in_play_effect_digest
 
 
 class GameOverDigest(object):
@@ -77,4 +86,5 @@ class DigestProvider(object):
         if not turn:
             return GameOverDigest(game_info_digest)
         turn_digest = TurnDigest(requesting_actor_id, turn, api)
-        return GeneralDigest(game_info_digest, turn_digest=turn_digest)
+        in_play_effect_digest = InPlayEffectDigest(requesting_actor_id, api)
+        return GeneralDigest(game_info_digest, turn_digest=turn_digest, in_play_effect_digest=in_play_effect_digest)

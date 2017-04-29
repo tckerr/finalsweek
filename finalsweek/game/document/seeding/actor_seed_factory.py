@@ -1,6 +1,9 @@
 import names
 
-from util import guid
+from game.configuration.settings import generation
+from util.util import guid
+
+names.random = generation["random"]
 
 
 class ActorSeedFactory(object):

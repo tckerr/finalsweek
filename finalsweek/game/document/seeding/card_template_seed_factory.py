@@ -21,7 +21,7 @@ class CardTemplateSeedFactory(object):
         self.card_template_adapter = CardTemplateAdapter()
 
     def create(self):
-        default_card_templates = list(Card.objects.filter(active=True))
+        default_card_templates = list(Card.objects.filter(active=True).order_by("id"))
         templates = {}
         for template in default_card_templates:
             adapted = self.card_template_adapter.adapt(template)

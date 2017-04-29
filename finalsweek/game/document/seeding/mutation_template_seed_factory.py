@@ -13,7 +13,6 @@ class MutationTemplateAdapter(object):
             "priority":           data.priority,
             "match_all":          data.match_all,
             "expiry_criteria":    data.expiry_criteria,
-            "uses":               data.uses,
             "operation_modifier": self.operation_modifier_seed_factory.create(data.operation_modifier)
         }
 
@@ -24,9 +23,17 @@ class MutationTemplateSeedFactory(object):
         self.mutation_template_adapter = MutationTemplateAdapter()
 
     def create(self):
-        loaded = list(MutationTemplate.objects.prefetch_related("operation_modifier").all())
+        loaded = list(self.get_mutations())
         operation_modifiers = {}
         for mutation_effect in loaded:
             adapted = self.mutation_template_adapter.adapt(mutation_effect)
             operation_modifiers[adapted["id"]] = adapted
         return operation_modifiers
+
+    @staticmethod
+    def get_mutations():
+        return MutationTemplate\
+            .objects\
+            .prefetch_related("operation_modifier")\
+            .order_by("id")\
+            .all()

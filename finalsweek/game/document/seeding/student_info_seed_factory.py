@@ -22,5 +22,5 @@ class StudentInfoSeedFactory(object):
         self.student_info_adapter = StudentInfoAdapter()
 
     def create(self):
-        default_student_info = list(StudentInfo.objects.all())
+        default_student_info = list(StudentInfo.objects.order_by("id").all())
         return [self.student_info_adapter.adapt(card) for card in default_student_info]

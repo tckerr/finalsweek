@@ -1,7 +1,6 @@
-from random import choice
-
+from game.configuration.settings import generation
 from game.document.seeding.actor_seed_factory import ActorSeedFactory
-from util import guid
+from util.util import guid
 
 
 class StudentSeedFactory(object):
@@ -10,7 +9,7 @@ class StudentSeedFactory(object):
         self.actor_seed_factory = ActorSeedFactory()
 
     def create(self, student_info, as_actor=False):
-        student_info_id = choice(student_info)["id"]
+        student_info_id = generation["random"].choice(student_info)["id"]
         actor = self.actor_seed_factory.create() if as_actor else None
         return {
             "id":              guid(),

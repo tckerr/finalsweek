@@ -3,7 +3,7 @@ from game.operation.decorators import accepts_operation, accepts_operator
 from game.configuration.definitions import OperationType, OperatorType
 from game.scripting.api.program_child_api import ProgramChildApi
 from logger import log
-from util import floor_at_zero, guid
+from util.util import floor_at_zero, guid
 
 
 class ActorApi(ProgramChildApi):
@@ -63,6 +63,7 @@ class ActorApi(ProgramChildApi):
         self.program_api.increment_metadata("expended_action_cards", 1)
 
     # TODO: system operation
+    # TODO: make an in_play API
 
     def transfer_card_to_in_play(self, actor_id, card_id, mutation_id):
         card = self._action_card_by_actor(actor_id, card_id)
@@ -89,6 +90,12 @@ class ActorApi(ProgramChildApi):
                 actor.cards_in_play.remove(card_to_remove)
                 log("Removed mutation from play...")
             return
+
+    def get_by_mutation(self, mutation_id):
+        for actor in self._actors():
+            for card_in_play in actor.cards_in_play:
+                if card_in_play.mutation_id == mutation_id:
+                    return actor
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)

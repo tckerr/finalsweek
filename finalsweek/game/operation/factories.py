@@ -1,6 +1,6 @@
 from game.document.documents.mutation import Mutation
 from game.exceptions import ExportException
-from util import guid
+from util.util import guid
 
 
 class MutationFactory(object):
@@ -15,8 +15,7 @@ class MutationFactory(object):
             "priority":           template.priority,
             "match_all":          template.match_all,
             "expiry_criteria":    template.expiry_criteria,
-            "operation_modifier": template.operation_modifier,
-            "uses":               template.uses
+            "operation_modifier": template.operation_modifier
         }
         mutation_data.update(exports)
         return Mutation(mutation_data)

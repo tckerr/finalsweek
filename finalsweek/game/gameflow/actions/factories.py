@@ -1,11 +1,17 @@
 from game.configuration.definitions import PhaseTypeName
 from game.gameflow.actions.base import ActionBase
 from game.gameflow.actions.redraw import RedrawAction
+from game.gameflow.actions.score import ScoreAction
 
 
 class ActionFactory(object):
     def create(self):
         return ActionBase()
+
+
+class ScoreActionFactory(object):
+    def create(self):
+        return ScoreAction()
 
 
 class AccumulationActionFactory(ActionFactory):
@@ -18,7 +24,7 @@ class AutomatedActionFactory(object):
     factories = {
         PhaseTypeName.ChooseSeats:  ActionFactory,
         PhaseTypeName.Accumulation: AccumulationActionFactory,
-        PhaseTypeName.Score:        ActionFactory
+        PhaseTypeName.Score:        ScoreActionFactory
     }
 
     def create(self, phase_definition):

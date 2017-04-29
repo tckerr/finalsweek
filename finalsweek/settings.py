@@ -96,6 +96,8 @@ REST_FRAMEWORK = {
     )
 }
 
+FINALSWEEK_LOG_DIR = BASE_DIR + "/log/games/"
+
 LOGGING = {
     'version': 1,
     'filters': {

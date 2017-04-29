@@ -3,6 +3,7 @@ from game.document.seeding.game_seed_factory import GameSeedFactory
 from game.program_api.actor_api import ActorApi
 from game.program_api.card_template_api import CardTemplateApi
 from game.program_api.game_deck_api import GameDeckApi
+from game.program_api.message_api import MessageApi
 from game.program_api.mutation_api import MutationApi
 from game.program_api.phase_api import PhaseApi
 from game.program_api.seat_api import SeatApi
@@ -41,6 +42,7 @@ class ProgramApi(object):
         self.students = StudentApi(self)
         self.actors = ActorApi(self)
         self.mutations = MutationApi(self)
+        self.messenger = MessageApi(self)
 
     @property
     def data(self):

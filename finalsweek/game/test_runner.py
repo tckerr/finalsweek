@@ -1,7 +1,7 @@
 from datetime import datetime
-from random import choice
 
 from ai.interface_ai import AiActor
+from game.configuration.settings import generation
 from game.interface.game_interface import GameInterface
 from logger import log
 
@@ -26,7 +26,7 @@ class TestRunner(object):
             actors = self.__generate_actors(digest)
             log("Starting game", digest.game_info.game_id)
 
-            actor = choice(actors)
+            actor = generation["random"].choice(actors)
             while True:
                 actor_id = actor.take_turn_if_possible()
                 if not actor_id:

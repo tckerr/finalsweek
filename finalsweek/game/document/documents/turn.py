@@ -22,9 +22,6 @@ class Turn(DocumentBase):
     def phase(self):
         return self._parent
 
-    def set_complete(self):
-        self.completed = datetime.utcnow()
-
     def refresh(self):
         self.prompt = Prompt({
             "_id":    self.prompt._id,
