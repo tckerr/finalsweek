@@ -23,7 +23,7 @@ class Tag:
     @staticmethod
     def tag_list():
         return [
-            (k, getattr(Tag, k))
+            (getattr(Tag, k), getattr(Tag, k))
             for k in Tag.__dict__
             if not k.startswith("__") and k is not "tag_list"]
 
@@ -42,6 +42,7 @@ class Tag:
 
     # cost related
     AfterSchoolCardCost = "After School Card Cost"  # effect was caused by purchasing AS card
+    ActionCardCost = "Action Card Cost"  # effect was caused by purchasing AS card
     CardCost = "Card Cost"  # effect was caused by purchasing any card
 
     # special

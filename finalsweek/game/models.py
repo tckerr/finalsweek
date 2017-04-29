@@ -109,6 +109,7 @@ class MutationTemplate(DefaultModel):
     name = models.CharField(max_length=255, default="")
     tags = MultiSelectField(choices=Tag.tag_list())
     priority = models.IntegerField(default=0)
+    uses = models.IntegerField(null=True)
 
     # can be used if we want
     match_all = models.BooleanField(default=False)

@@ -15,17 +15,18 @@ class ScriptResult(object):
 
 class TrustedScriptRunner(object):
     @staticmethod
-    def exec(script, _locals, _globals):
-        exec(script, _locals, _globals)
+    def exec(script, _scope_vars):
+        exec(script, _scope_vars, _scope_vars)
 
     def run(self, api, script):
         repository = self.build_repo(api)
         scope_vars, exports = self.build_scope(api, repository)
-        self.log_script_start(api)
+        self.log_script_start(api=api, scope_vars=scope_vars, exports=exports)
         try:
-            self.exec(script, scope_vars, scope_vars)
-            self.log_script_end(api)
-            return self.get_result(exports)
+            self.exec(script, scope_vars)
+            results = self.get_result(exports)
+            self.log_script_end(api=api, results=results)
+            return results
         # TODO: this shouldn't be handled in the base class
         except PromptException as e:
             self.log_script_halt()

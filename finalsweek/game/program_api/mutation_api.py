@@ -9,6 +9,11 @@ class MutationApi(ProgramChildApi):
         self.mutation_factory = MutationFactory()
         self.operation_mutator = OperationMutator(program_api)
 
+    def remove_mutation(self, mutation_id):
+        new_mutations = [m for m in self.data.mutations if m.id != mutation_id]
+        assert(len(new_mutations) == len(self.data.mutations) - 1)
+        self.data.mutations = new_mutations
+
     def create_and_register(self, mutation_template, **exports):
         mutation = self.mutation_factory.create_from_template(mutation_template, **exports)
         self.data.mutations.append(mutation)

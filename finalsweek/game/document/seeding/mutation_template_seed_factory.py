@@ -13,6 +13,7 @@ class MutationTemplateAdapter(object):
             "priority":           data.priority,
             "match_all":          data.match_all,
             "expiry_criteria":    data.expiry_criteria,
+            "uses":               data.uses,
             "operation_modifier": self.operation_modifier_seed_factory.create(data.operation_modifier)
         }
 

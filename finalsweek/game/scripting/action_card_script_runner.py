@@ -31,7 +31,7 @@ class ActionCardScriptRunner(TrustedScriptRunner):
         prompt = exception.prompt if exception else None
         return ActionCardScriptResult(exports, prompt=prompt)
 
-    def log_script_start(self, api, *a, **k):
+    def log_script_start(self, *a, api, **k):
         super().log_script_start(self.actor_id, api, self.turn_prompt)
         actor = api.actors.get_actor(self.actor_id)
         log("   +--- Prior to running script, requester:", actor.name, self.actor_id)

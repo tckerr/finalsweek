@@ -8,4 +8,4 @@ export = __locals.get('export')
 # +- END ACTION CARD BOILERPLATE -------+
 
 requestor = ActorApi.get_requestor()
-ActorApi.add_grades(requestor, 12)
+export("targeted_actor_id", requestor.id)

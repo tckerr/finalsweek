@@ -15,11 +15,11 @@ class MutationFactory(object):
             "priority":           template.priority,
             "match_all":          template.match_all,
             "expiry_criteria":    template.expiry_criteria,
-            "operation_modifier": template.operation_modifier
+            "operation_modifier": template.operation_modifier,
+            "uses":               template.uses
         }
         mutation_data.update(exports)
-        mutation = Mutation(mutation_data)
-        return mutation
+        return Mutation(mutation_data)
 
     @classmethod
     def _validate_exports(cls, exports):
