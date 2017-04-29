@@ -29,6 +29,7 @@ class ActionCardAction(ActionBase):
             self.resolve_card_completion(actor_id, api, card, result)
         return result.prompt
 
+    # TODO: this is getting big
     def resolve_card_completion(self, actor_id, api, card, result):
         actor = api.actors.get_actor(actor_id)
         self._apply_trouble(api, actor, card)
@@ -55,7 +56,11 @@ class ActionCardAction(ActionBase):
             tags=self._card_trouble_tags
         )
         api.actors.add_trouble(operation=operation)
-        message = "Assigning {} {} trouble from action card {}".format(actor.label, card.template.trouble_cost, self.card_id)
+        self._log_trouble_application(actor, card)
+
+    def _log_trouble_application(self, actor, card):
+        template = "Assigning {} {} trouble from action card {}"
+        message = template.format(actor.label, card.template.trouble_cost, self.card_id)
         Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
 
     @property
