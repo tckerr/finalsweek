@@ -104,6 +104,7 @@ class LogLevel:
 
 
 class LogType:
+    TestRunner = "TestRunner"
     Ai = "Ai"
     GameLogic = "GameLogic"
     Gameflow = "Gameflow"

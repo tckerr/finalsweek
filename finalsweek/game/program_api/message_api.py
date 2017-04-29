@@ -1,3 +1,4 @@
+from game.operation.mutation_message_receiver import MutationMessageReceiver
 from game.scripting.api.program_child_api import ProgramChildApi
 
 
@@ -9,6 +10,10 @@ class GameflowMessage(object):
 
 
 class MessageApi(ProgramChildApi):
+    def __init__(self, program_api):
+        super().__init__(program_api)
+        self.mutation_message_receiver = MutationMessageReceiver()
+
     def dispatch(self, message, mutation_id=None, exclude=None):
         for mutation in self.data.mutations:
             if mutation_id and mutation.id != mutation_id:
@@ -16,4 +21,4 @@ class MessageApi(ProgramChildApi):
             # TODO: kind of a hack
             if exclude and mutation.id in exclude:
                 continue
-            mutation.message(self.program_api, message)
+            self.mutation_message_receiver.message(self.program_api, message, mutation)

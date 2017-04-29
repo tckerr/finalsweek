@@ -73,7 +73,6 @@ class DocumentBase(object):
                 args.append(self)
             return cls(*args)
         except TypeError as e:
-            # TODO: some concept of nullables
             message = "Warning: could not convert {}: {}".format(cls.__name__ if cls else "NONE?", e)
             Logger.log(message, log_level=LogLevel.Warning, log_type=LogType.DocumentConversion)
 

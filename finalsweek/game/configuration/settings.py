@@ -17,10 +17,10 @@ logging = {
     "print_output":      True,
     "log_level":         LogLevel.Verbose,
     "disabled":          {
-        LogType.NoOp,
-        LogType.DocumentConversion
+        LogType.NoOp
     },
     "log_type_prefixes": {
+        LogType.TestRunner:         "#",
         LogType.GameLogic:          "++",
         LogType.Ai:                 ">>",
         LogType.DocumentConversion: "!!",
@@ -28,6 +28,7 @@ logging = {
         LogType.Gameflow:           "+-",
     },
     "log_type_colors": {
+        LogType.TestRunner:         bcolors.BOLD,
         LogType.GameLogic:          "",
         LogType.Ai:                 bcolors.OKGREEN,
         LogType.DocumentConversion: bcolors.FAIL,
@@ -37,7 +38,7 @@ logging = {
 }
 
 generation = {
-    "seed":   "fVTtJuasdi5Ym2",
+    "seed":   "fVTtJuAsDi5Ym2",
     "id_len": 16
 }
 

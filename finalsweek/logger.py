@@ -6,8 +6,6 @@ import sys
 import settings as django_settings
 from game.configuration import settings
 from game.configuration.definitions import LogType, LogLevel
-# TODO: make this game ID
-# TODO: make game only write at end
 from game.configuration.settings import bcolors
 
 
@@ -20,14 +18,15 @@ def write_to_disk(file_name):
         file.write(global_vars["log_txt"])
 
 
+def register_exit_hook(session_id):
+    if settings.logging["as_file"]:
+        logger_file_name = django_settings.FINALSWEEK_LOG_DIR + (session_id or str(uuid.uuid4())) + ".txt"
+        atexit.register(write_to_disk, logger_file_name)
+
+
 global_vars = {
     "log_txt": ""
 }
-
-if settings.logging["as_file"]:
-    session_guid = str(uuid.uuid4())
-    logger_file_name = django_settings.FINALSWEEK_LOG_DIR + session_guid + ".txt"
-    atexit.register(write_to_disk, logger_file_name)
 
 
 class LogOptions(object):
