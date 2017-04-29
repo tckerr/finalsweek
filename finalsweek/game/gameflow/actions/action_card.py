@@ -1,15 +1,10 @@
-from game.configuration.definitions import OperatorType, Tag, GameflowMessageType, LogType, LogLevel
+from game.configuration.definitions import GameflowMessageType
 from game.gameflow.actions.base import ActionBase
-from game.operation.operations.modify_attribute import ModifyAttribute
 from game.program_api.message_api import GameflowMessage
 from game.scripting.action_card_script_runner import ActionCardScriptRunner
-from logger import Logger
-
-
-class ActionCardScriptRunnerFactory(object):
-    @staticmethod
-    def create(actor_id, turn_prompt):
-        return ActionCardScriptRunner(actor_id, turn_prompt)
+from game.systems.action_card_expender import ActionCardExpender
+from game.systems.action_card_mutation_generator import ActionCardMutationGenerator
+from game.systems.action_card_trouble_applier import ActionCardTroubleApplier
 
 
 class ActionCardAction(ActionBase):
@@ -17,56 +12,35 @@ class ActionCardAction(ActionBase):
         super().__init__()
         self.prompt = prompt
         self.card_id = card_id
-        self.trusted_script_runner_factory = ActionCardScriptRunnerFactory()
+        self.action_card_trouble_applier = ActionCardTroubleApplier()
+        self.action_card_mutation_generator = ActionCardMutationGenerator()
+        self.action_card_expender = ActionCardExpender()
 
     def execute(self, actor_id, api):
         super().execute(actor_id, api)
         card = api.actors.get_action_card_by_actor(actor_id, self.card_id)
-        script = card.template.script
-        runner = self.trusted_script_runner_factory.create(actor_id, self.prompt)
-        result = runner.run(api, script)
+        result = self._run_script(actor_id, api, card)
         if result.complete:
-            self.resolve_card_completion(actor_id, api, card, result)
+            self._resolve_card_completion(actor_id, api, card, result)
         return result.prompt
 
-    # TODO: this is getting big
-    def resolve_card_completion(self, actor_id, api, card, result):
+    def _run_script(self, actor_id, api, card):
+        script = card.template.script
+        runner = ActionCardScriptRunner(actor_id, self.prompt)
+        result = runner.run(api, script)
+        return result
+
+    def _resolve_card_completion(self, actor_id, api, card, result):
         actor = api.actors.get(actor_id)
-        self._apply_trouble(api, actor, card)
+        self.action_card_trouble_applier.apply(api, actor, card)
         exclusions = []
         if card.generates_mutation:
-            mutation_template = card.template.mutation_template
-            mutation = api.mutations.create_and_register(mutation_template, source_actor_id=actor_id, **result.exports)
-            api.actors.transfer_card_to_in_play(
-                source_actor_id=actor_id,
-                targeted_actor_id=result.exports["targeted_actor_id"],
-                card_id=card.id,
-                mutation_id=mutation.id)
-            exclusions.append(mutation.id)
+            exclusion = self.action_card_mutation_generator.generate(actor_id, api, card, result)
+            exclusions.append(exclusion)
         else:
-            self._log_card_expense(actor)
-            api.actors.expend_action_card(actor_id, self.card_id)
+            self.action_card_expender.expend(actor, api, self.card_id)
+        self._dispatch_action_message(actor_id, api, exclusions)
+
+    @staticmethod
+    def _dispatch_action_message(actor_id, api, exclusions):
         api.messenger.dispatch(GameflowMessage(GameflowMessageType.Action, actor_id=actor_id), exclude=exclusions)
-
-    def _log_card_expense(self, actor):
-        message = "Expending action card {} for actor {}".format(self.card_id, actor.label)
-        Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
-
-    def _apply_trouble(self, api, actor, card):
-        operation = ModifyAttribute(
-            operator=OperatorType.Add,
-            value=card.template.trouble_cost,
-            targeted_actor_id=actor.id,
-            tags=self._card_trouble_tags
-        )
-        api.actors.add_trouble(operation=operation)
-        self._log_trouble_application(actor, card)
-
-    def _log_trouble_application(self, actor, card):
-        template = "Assigning {} {} trouble from action card {}"
-        message = template.format(actor.label, card.template.trouble_cost, self.card_id)
-        Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
-
-    @property
-    def _card_trouble_tags(self):
-        return {Tag.Trouble, Tag.CardCost, Tag.ActionCardCost}
