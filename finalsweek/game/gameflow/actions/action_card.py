@@ -38,7 +38,7 @@ class ActionCardAction(ActionBase):
             api.actors.transfer_card_to_in_play(actor_id, card.id, mutation.id)
             exclusions.append(mutation.id)
         else:
-            message = "Expending action card {} for actor {}".format(actor_id, self.card_id)
+            message = "Expending action card {} for actor {}".format(self.card_id, actor_id)
             Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
             api.actors.expend_action_card(actor_id, self.card_id)
         api.messenger.dispatch(GameflowMessage(GameflowMessageType.Action, actor_id=actor_id), exclude=exclusions)

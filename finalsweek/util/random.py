@@ -15,7 +15,7 @@ def random_id():
 
 
 def random_name():
-    return __names.get_full_name()
+    return __names.get_full_name(gender="female")
 
 
 def shuffle(lst):
