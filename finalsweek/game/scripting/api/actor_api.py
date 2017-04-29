@@ -59,6 +59,10 @@ class ActorApi(SandboxApi):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Add, tags={Tag.Torment})
         self.program_api.actors.add_torment(operation=operation)
 
+    def refresh_hand(self, actor):
+        # TODO: should this be an operation or does it not matter?
+        self.program_api.actors.refresh_hand(actor.id)
+
     def _build_mod_attribute_operation(self, actor, value, operator, tags=None):
         default_tags = self.repo.default_tags
         return ModifyAttribute(

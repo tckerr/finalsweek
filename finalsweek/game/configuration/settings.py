@@ -21,6 +21,7 @@ logging = {
         LogType.NoOp
     },
     "log_type_prefixes": {
+        LogType.IndexError:         "!!",
         LogType.Operational:        " $",
         LogType.TestRunner:         "#",
         LogType.GameLogic:          "++",
@@ -30,6 +31,7 @@ logging = {
         LogType.Gameflow:           "+-",
     },
     "log_type_colors":   {
+        LogType.IndexError:         bcolors.FAIL,
         LogType.Operational:        bcolors.TRACE,
         LogType.TestRunner:         bcolors.BOLD,
         LogType.GameLogic:          "",

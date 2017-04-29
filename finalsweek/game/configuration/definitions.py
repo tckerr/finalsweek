@@ -57,7 +57,9 @@ class Tag(ListableClass):
 
     # special
     ProximateEffect = "Proximate Effect"  # effect was caused by something in a seat
-    OnDraw = "On Draw"  # effect was caused as soon as a card was drawn
+    Draw = "Draw"  # effect was caused as soon as a card was drawn
+    DrawActionCard = "Draw Action Card"
+    DrawAfterSchoolCard = "Draw After School Card"
 
     # temporal
     TurnBound = "Turn Bound"  # effect source will be gone after turn
@@ -76,6 +78,7 @@ class Tag(ListableClass):
 
 class OperationType(object):
     # mod types
+    Draw = "Draw"
     DefineEligibility = "DefineEligibility"  # target is being selected for something
     ModifyAttribute = "ModifyAttribute"  # target has already been selected and is getting some change
     ExtractInfo = "ExtractInfo"  # target is being selected for non-public info
@@ -85,6 +88,7 @@ class OperatorType(object):
     Add = "Add"
     Set = "Set"
     Get = "Get"
+    RefillActionCardHand = "RefillActionCardHand"
 
 
 class GameflowMessageType:
@@ -105,6 +109,7 @@ class LogLevel:
 
 
 class LogType:
+    IndexError = "IndexError"
     Operational = "Operational"
     TestRunner = "TestRunner"
     Ai = "Ai"

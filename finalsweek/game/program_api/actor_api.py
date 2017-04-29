@@ -2,12 +2,17 @@ from game.document.documents.in_play_effect import InPlayEffect
 from game.operation.decorators import accepts_operation, accepts_operator
 from game.configuration.definitions import OperationType, OperatorType, LogLevel, LogType
 from game.scripting.api.program_child_api import ProgramChildApi
+from game.systems.hand_refiller import DrawManager
 from logger import Logger
 from util.random import random_id
 from util.helpers import floor_at_zero
 
 
 class ActorApi(ProgramChildApi):
+    def __init__(self, program_api) -> None:
+        super().__init__(program_api)
+        self.draw_manager = DrawManager()
+
     def _get(self, actor_id):
         for actor in self._actors():
             if actor.id == actor_id:
@@ -20,7 +25,7 @@ class ActorApi(ProgramChildApi):
             if actor is not None:
                 yield actor
 
-    def _operation_targeted_actor(self, operation):
+    def _get_targeted_actor(self, operation):
         return self.get(operation.targeted_actor_id)
 
     def _action_card_by_actor(self, actor_id, card_id):
@@ -31,7 +36,7 @@ class ActorApi(ProgramChildApi):
         message = "Card not found: {}, actor id: {}".format(card_id, actor_id)
         message_warning = "Ensure card was moved to inPlay ({})".format(
             [c.card.id for c in actor.cards_in_play])
-        print("WARNING:", message, message_warning)
+        Logger.log("WARNING:", message, message_warning, level=LogLevel.Warning, log_type=LogType.IndexError)
         # raise Exception("Card not found: {}, actor id: {}".format(card_id, actor_id))
 
     def list(self):
@@ -60,7 +65,7 @@ class ActorApi(ProgramChildApi):
             actor.action_card_hand.cards.remove(card)
         except ValueError:
             message = "Card not found: {}, actor id: {}".format(card_id, actor_id)
-            raise Exception(message)
+            Logger.log(message, level=LogLevel.Error, log_type=LogType.IndexError)
         self.program_api.increment_metadata("expended_action_cards", 1)
 
     # TODO: system operation
@@ -104,7 +109,7 @@ class ActorApi(ProgramChildApi):
     @accepts_operator(OperatorType.Set)
     def set_grades(self, operation):
         operation = self._mutate(operation)
-        actor = self._operation_targeted_actor(operation)
+        actor = self._get_targeted_actor(operation)
         actor.grades = floor_at_zero(operation.value)
         self._log_mod_operation(actor, "grades", operation)
         return operation
@@ -113,7 +118,7 @@ class ActorApi(ProgramChildApi):
     @accepts_operator(OperatorType.Add)
     def add_grades(self, operation):
         operation = self._mutate(operation)
-        actor = self._operation_targeted_actor(operation)
+        actor = self._get_targeted_actor(operation)
         actor.grades = floor_at_zero(actor.grades + operation.value)
         self._log_mod_operation(actor, "grades", operation)
         return operation
@@ -122,7 +127,7 @@ class ActorApi(ProgramChildApi):
     @accepts_operator(OperatorType.Set)
     def set_popularity(self, operation):
         operation = self._mutate(operation)
-        actor = self._operation_targeted_actor(operation)
+        actor = self._get_targeted_actor(operation)
         actor.popularity = floor_at_zero(operation.value)
         self._log_mod_operation(actor, "popularity", operation)
         return operation
@@ -131,7 +136,7 @@ class ActorApi(ProgramChildApi):
     @accepts_operator(OperatorType.Add)
     def add_popularity(self, operation):
         operation = self._mutate(operation)
-        actor = self._operation_targeted_actor(operation)
+        actor = self._get_targeted_actor(operation)
         actor.popularity = floor_at_zero(actor.popularity + operation.value)
         self._log_mod_operation(actor, "popularity", operation)
         return operation
@@ -140,7 +145,7 @@ class ActorApi(ProgramChildApi):
     @accepts_operator(OperatorType.Set)
     def set_trouble(self, operation):
         operation = self._mutate(operation)
-        actor = self._operation_targeted_actor(operation)
+        actor = self._get_targeted_actor(operation)
         actor.trouble = floor_at_zero(operation.value)
         self._log_mod_operation(actor, "trouble", operation)
         return operation
@@ -149,7 +154,7 @@ class ActorApi(ProgramChildApi):
     @accepts_operator(OperatorType.Add)
     def add_trouble(self, operation):
         operation = self._mutate(operation)
-        actor = self._operation_targeted_actor(operation)
+        actor = self._get_targeted_actor(operation)
         actor.trouble = floor_at_zero(actor.trouble + operation.value)
         self._log_mod_operation(actor, "trouble", operation)
         return operation
@@ -158,7 +163,7 @@ class ActorApi(ProgramChildApi):
     @accepts_operator(OperatorType.Set)
     def set_torment(self, operation):
         operation = self._mutate(operation)
-        actor = self._operation_targeted_actor(operation)
+        actor = self._get_targeted_actor(operation)
         actor.torment = floor_at_zero(operation.value)
         self._log_mod_operation(actor, "torment", operation)
         return operation
@@ -167,10 +172,17 @@ class ActorApi(ProgramChildApi):
     @accepts_operator(OperatorType.Add)
     def add_torment(self, operation):
         operation = self._mutate(operation)
-        actor = self._operation_targeted_actor(operation)
+        actor = self._get_targeted_actor(operation)
         actor.torment = floor_at_zero(actor.torment + operation.value)
         self._log_mod_operation(actor, "torment", operation)
         return operation
+
+    def refresh_hand(self, actor_id):
+        actor = self._get(actor_id)
+        # TODO: actual discard effect
+        actor.action_card_hand.cards.clear()
+        self._log_refresh_hand(actor)
+        self.draw_manager.refill_hand(actor, self.program_api)
 
     @staticmethod
     def _log_mod_operation(actor, stat, operation):
@@ -182,3 +194,8 @@ class ActorApi(ProgramChildApi):
             value=operation.value,
             current_value=getattr(actor, stat)
         ), level=LogLevel.Debug, log_type=LogType.Operational)
+
+    @staticmethod
+    def _log_refresh_hand(actor):
+        template = "Actor {actor} is refilling hand."
+        Logger.log(template.format(actor=actor.label), level=LogLevel.Debug, log_type=LogType.Operational)
