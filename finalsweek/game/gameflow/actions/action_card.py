@@ -1,8 +1,9 @@
-from game.configuration.definitions import OperatorType, Tag, GameflowMessageType
+from game.configuration.definitions import OperatorType, Tag, GameflowMessageType, LogType, LogLevel
 from game.gameflow.actions.base import ActionBase
 from game.operation.operations.modify_attribute import ModifyAttribute
 from game.program_api.message_api import GameflowMessage
 from game.scripting.action_card_script_runner import ActionCardScriptRunner
+from logger import Logger
 
 
 class ActionCardScriptRunnerFactory(object):
@@ -37,6 +38,8 @@ class ActionCardAction(ActionBase):
             api.actors.transfer_card_to_in_play(actor_id, card.id, mutation.id)
             exclusions.append(mutation.id)
         else:
+            message = "Expending action card {} for actor {}".format(actor_id, self.card_id)
+            Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
             api.actors.expend_action_card(actor_id, self.card_id)
         api.messenger.dispatch(GameflowMessage(GameflowMessageType.Action, actor_id=actor_id), exclude=exclusions)
 
@@ -48,6 +51,8 @@ class ActionCardAction(ActionBase):
             tags=self._card_trouble_tags
         )
         api.actors.add_trouble(operation=operation)
+        message = "Assigning {} trouble from action card {}".format(card.template.trouble_cost, self.card_id)
+        Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
 
     @property
     def _card_trouble_tags(self):

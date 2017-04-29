@@ -1,6 +1,6 @@
 from game.document.documents.mutation import Mutation
 from game.exceptions import ExportException
-from util.util import guid
+from util.random import random_id
 
 
 class MutationFactory(object):
@@ -10,7 +10,7 @@ class MutationFactory(object):
     def create_from_template(cls, template, **exports):
         cls._validate_exports(exports)
         mutation_data = {
-            "id":                 guid(),
+            "id":                 random_id(),
             "tags":               template.tags,
             "priority":           template.priority,
             "match_all":          template.match_all,

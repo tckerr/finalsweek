@@ -1,5 +1,4 @@
-from game.configuration.settings import generation
-from util.util import guid
+from util.random import random_id, shuffle
 
 
 class ActionCardDeckSeedFactory(object):
@@ -13,11 +12,11 @@ class ActionCardDeckSeedFactory(object):
         for template in filtered_templates:
             for _ in range(0, cards_per_type):
                 card_list.append({
-                    "id":                       guid(),
+                    "id":               random_id(),
                     "card_template_id": template["id"]
                 })
-        generation["random"].shuffle(card_list)
+        shuffle(card_list)
         return {
-            "id":    guid(),
+            "id":    random_id(),
             "cards": card_list
         }

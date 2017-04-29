@@ -1,6 +1,8 @@
+from game.configuration.definitions import LogLevel, LogType
 from game.operation.factories import MutationFactory
 from game.operation.operation_mutator import OperationMutator
 from game.scripting.api.program_child_api import ProgramChildApi
+from logger import Logger
 
 
 class MutationApi(ProgramChildApi):
@@ -18,6 +20,8 @@ class MutationApi(ProgramChildApi):
         mutation = self.mutation_factory.create_from_template(mutation_template, **exports)
         self.data.mutations.append(mutation)
         self._sort_mutations()
+        message = "Creating mutation {}".format(mutation.id)
+        Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
         return mutation
 
     def mutate(self, operation):

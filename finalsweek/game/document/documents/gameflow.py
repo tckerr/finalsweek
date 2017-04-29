@@ -1,6 +1,6 @@
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.stage import Stage
-from util.util import guid
+from util.random import random_id
 
 
 class Gameflow(DocumentBase):
@@ -14,7 +14,7 @@ class Gameflow(DocumentBase):
 
     def add_stage(self, stage_type):
         stage_data = {
-            "id":         guid(),
+            "id":         random_id(),
             "stage_type": stage_type,
             "completed":  None,
             "phases":     []

@@ -1,8 +1,9 @@
 from datetime import datetime
 
-from game.configuration.definitions import GameflowMessageType
+from game.configuration.definitions import GameflowMessageType, LogLevel, LogType
 from game.program_api.message_api import GameflowMessage
 from game.scripting.api.program_child_api import ProgramChildApi
+from logger import Logger
 
 
 class PhaseApi(ProgramChildApi):
@@ -27,4 +28,12 @@ class PhaseApi(ProgramChildApi):
     def _complete(self, phase):
         phase.completed = datetime.utcnow()
         self.program_api.messenger.dispatch(GameflowMessage(GameflowMessageType.Phase))
+        self.log_phase_complete(phase)
+
+    @staticmethod
+    def log_phase_complete(phase):
+        message = "\n========================"
+        message += "\nPhase Complete: {phase_type}".format(phase_type=phase.phase_type)
+        message += "\n========================"
+        Logger.log(message, level=LogLevel.Info, log_type=LogType.Gameflow)
 

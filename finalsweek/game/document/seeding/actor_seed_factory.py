@@ -1,28 +1,23 @@
-import names
-
-from game.configuration.settings import generation
-from util.util import guid
-
-names.random = generation["random"]
+from util.random import random_id, random_name
 
 
 class ActorSeedFactory(object):
     @staticmethod
     def create():
         return {
-            "id":                    guid(),
-            "name":                  names.get_full_name(),
+            "id":                    random_id(),
+            "name":                  random_name(),
             "user_id":               None,
             "action_card_hand":      {
-                "id":    guid(),
+                "id":    random_id(),
                 "cards": []
             },
             "afterschool_card_hand": {
-                "id":    guid(),
+                "id":    random_id(),
                 "cards": []
             },
             "discipline_card_hand":  {
-                "id":    guid(),
+                "id":    random_id(),
                 "cards": []
             },
             "cards_in_play":         [],

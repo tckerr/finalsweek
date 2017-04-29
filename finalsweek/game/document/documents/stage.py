@@ -2,7 +2,7 @@ from datetime import datetime
 
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.phase import Phase
-from util.util import guid
+from util.random import random_id
 
 
 class Stage(DocumentBase):
@@ -19,7 +19,7 @@ class Stage(DocumentBase):
 
     def add_phase(self, phase_type):
         phase_data = {
-            "id":         guid(),
+            "id":         random_id(),
             "phase_type": phase_type,
             "completed":  None,
             "turns":      []

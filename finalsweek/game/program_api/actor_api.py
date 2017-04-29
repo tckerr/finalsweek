@@ -1,9 +1,10 @@
 from game.document.documents.in_play_effect import InPlayEffect
 from game.operation.decorators import accepts_operation, accepts_operator
-from game.configuration.definitions import OperationType, OperatorType
+from game.configuration.definitions import OperationType, OperatorType, LogLevel, LogType
 from game.scripting.api.program_child_api import ProgramChildApi
-from logger import log
-from util.util import floor_at_zero, guid
+from logger import Logger
+from util.random import random_id
+from util.helpers import floor_at_zero
 
 
 class ActorApi(ProgramChildApi):
@@ -71,7 +72,7 @@ class ActorApi(ProgramChildApi):
         actor.action_card_hand.cards.remove(card)
         # todo: move to factory
         in_play_effect_seed = {
-            "id":          guid(),
+            "id":          random_id(),
             "mutation_id": mutation_id,
             "card":        card
         }
@@ -88,7 +89,8 @@ class ActorApi(ProgramChildApi):
                     break
             if card_to_remove is not None:
                 actor.cards_in_play.remove(card_to_remove)
-                log("Removed mutation from play...")
+                message = "Removed mutation {} from play".format(mutation_id)
+                Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
             return
 
     def get_by_mutation(self, mutation_id):

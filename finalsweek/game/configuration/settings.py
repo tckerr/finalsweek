@@ -1,5 +1,4 @@
 from game.configuration.definitions import PhaseTypeName, StageTypeName, LogLevel, LogType
-import random
 
 logging = {
     "as_file": True,
@@ -11,13 +10,9 @@ logging = {
     }
 }
 
-random_seed = "fVTtJui5Ym"
-seeded_random = random.Random(random_seed)
-
 generation = {
-    "seed":   random_seed,
-    "id_len": 16,
-    "random": seeded_random
+    "seed":   "fVTtJui5Ym",
+    "id_len": 16
 }
 
 base_settings = {

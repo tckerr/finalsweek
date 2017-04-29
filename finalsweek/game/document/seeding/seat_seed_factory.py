@@ -1,5 +1,5 @@
 from game.document.seeding.student_seed_factory import StudentSeedFactory
-from util.util import guid
+from util.random import random_id
 
 
 class SeatSeedFactory(object):
@@ -13,7 +13,7 @@ class SeatSeedFactory(object):
         for row in range(0, settings["seat_rows"]):
             for column in range(0, settings["seat_columns"]):
                 seat = {
-                    "id":      guid(),
+                    "id":      random_id(),
                     "row":     row,
                     "column":  column,
                     "student": None

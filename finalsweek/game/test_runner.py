@@ -4,6 +4,7 @@ from ai.interface_ai import AiActor
 from game.configuration.settings import generation
 from game.interface.game_interface import GameInterface
 from logger import log
+from util.random import choice
 
 
 class TestRunner(object):
@@ -26,7 +27,7 @@ class TestRunner(object):
             actors = self.__generate_actors(digest)
             log("Starting game", digest.game_info.game_id)
 
-            actor = generation["random"].choice(actors)
+            actor = choice(actors)
             while True:
                 actor_id = actor.take_turn_if_possible()
                 if not actor_id:

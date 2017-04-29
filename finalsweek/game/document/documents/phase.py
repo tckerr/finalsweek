@@ -3,7 +3,7 @@ from datetime import datetime
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.prompt import Prompt
 from game.document.documents.turn import Turn
-from util.util import guid
+from util.random import random_id
 
 
 class Phase(DocumentBase):
@@ -20,7 +20,7 @@ class Phase(DocumentBase):
 
     def create_turn(self, actor_id):
         turn_data = {
-            "id":        guid(),
+            "id":        random_id(),
             "actor_id":  actor_id,
             "log":       [],
             "completed": None,
@@ -34,7 +34,7 @@ class Phase(DocumentBase):
     @staticmethod
     def create_prompt():
         return Prompt({
-            "id":     guid(),
+            "id":     random_id(),
             "open":   {},
             "closed": {}
         })

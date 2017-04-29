@@ -101,6 +101,8 @@ class LogLevel:
 
 
 class LogType:
+    GameLogic = "GameLogic"
+    Gameflow = "Gameflow"
     DocumentConversion = "DocumentConversion"
     NoOp = "NoOp"
     General = "General"
