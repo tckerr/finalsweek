@@ -3,10 +3,15 @@ from datetime import datetime
 from game.configuration.definitions import GameflowMessageType, LogLevel, LogType
 from game.program_api.message_api import GameflowMessage
 from game.scripting.api.program_child_api import ProgramChildApi
+from game.systems.phase_grade_scorer import PhaseGradeScorer
 from logger import Logger
 
 
 class PhaseApi(ProgramChildApi):
+    def __init__(self, program_api):
+        super().__init__(program_api)
+        self.phase_grade_scorer = PhaseGradeScorer(program_api)
+
     def create_phase(self, stage_id, phase_type):
         for stage in self.data.gameflow.stages:
             if stage.id == stage_id:
@@ -27,6 +32,7 @@ class PhaseApi(ProgramChildApi):
 
     def _complete(self, phase):
         phase.completed = datetime.utcnow()
+        self.phase_grade_scorer.score()
         self.program_api.messenger.dispatch(GameflowMessage(GameflowMessageType.Phase))
         self.log_phase_complete(phase)
 

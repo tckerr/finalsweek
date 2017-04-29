@@ -11,7 +11,7 @@ logging = {
 }
 
 generation = {
-    "seed":   "fVTtJui5Ym",
+    "seed":   "fVTtJuasdi5Ym2",
     "id_len": 16
 }
 
@@ -20,7 +20,8 @@ base_settings = {
     "total_cards":    1000,
     "seat_rows":      5,
     "seat_columns":   4,
-    "total_students": 16
+    "total_students": 16,
+    "grades_per_row": 2
 }
 
 default_game_definition = [

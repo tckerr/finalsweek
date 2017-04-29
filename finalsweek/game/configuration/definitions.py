@@ -46,6 +46,9 @@ class Tag(ListableClass):
     PlayedCard = "Played Card"  # a user played a card to trigger this effect
     AutomaticCard = "Automatic Card"  # came from a card, but was not played
 
+    # game logic
+    GradesPerTurn = "Grades per Turn"
+
     # cost related
     AfterSchoolCardCost = "After School Card Cost"  # effect was caused by purchasing AS card
     ActionCardCost = "Action Card Cost"  # effect was caused by purchasing AS card

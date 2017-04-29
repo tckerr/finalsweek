@@ -8,4 +8,5 @@ class Settings(DocumentBase):
         "seat_rows":      int,
         "seat_columns":   int,
         "total_students": int,
+        "grades_per_row": int,
     }

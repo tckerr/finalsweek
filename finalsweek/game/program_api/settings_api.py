@@ -7,3 +7,6 @@ class SettingsApi(ProgramChildApi):
 
     def get_hand_size(self):
         return self.data.rules.settings.hand_size
+
+    def get_grades_per_row(self):
+        return self.data.rules.settings.grades_per_row

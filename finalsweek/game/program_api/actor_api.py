@@ -34,6 +34,7 @@ class ActorApi(ProgramChildApi):
         print("WARNING:", message, message_warning)
         # raise Exception("Card not found: {}, actor id: {}".format(card_id, actor_id))
 
+    # TODO: rename to list
     def list_actors(self):
         return self._actors()
 
@@ -43,13 +44,14 @@ class ActorApi(ProgramChildApi):
         for actor in actors:
             yield actor
 
+    # TODO: rename to get
     def get_actor(self, actor_id):
         return self._actor(actor_id)
 
     def get_action_card_by_actor(self, actor_id, card_id):
         return self._action_card_by_actor(actor_id, card_id)
 
-    # TODO: system operation
+    # TODO: make these fn's system operations
 
     def expend_action_card(self, actor_id, card_id):
         # TODO: kinda ugly, this line...
@@ -112,6 +114,7 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.grades = floor_at_zero(actor.grades + operation.value)
+        return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)

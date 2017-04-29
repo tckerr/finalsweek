@@ -4,7 +4,7 @@ from game.exceptions import OperationException
 def get_operation(kwargs):
     operation = kwargs.get("operation", None)
     if not operation:
-        raise OperationException("Operation receiver received no operation.")
+        raise OperationException("Operation receiver received no operation. Did you pass it as a named parameter?")
     return operation
 
 
