@@ -16,3 +16,7 @@ def guid():
 
 def floor_at_zero(val):
     return max(0, val)
+
+
+def set_in_dict(dct, k, v):
+    dct[k] = v

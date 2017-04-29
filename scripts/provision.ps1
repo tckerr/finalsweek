@@ -48,6 +48,7 @@ pip install django-filter
 pip install wheel
 pip install names
 pip install siftpy -U --no-cache-dir
+pip install django-multiselectfield
 
 write-host "Running initial migration..." -ForegroundColor Cyan
 ./migrate.ps1

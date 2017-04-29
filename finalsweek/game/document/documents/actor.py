@@ -1,3 +1,4 @@
+from game.document.documents.in_play_effect import InPlayEffect
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.pile import Pile
 
@@ -10,6 +11,7 @@ class Actor(DocumentBase):
         "action_card_hand":      Pile,
         "afterschool_card_hand": Pile,
         "discipline_card_hand":  Pile,
+        "cards_in_play":         InPlayEffect,
         "grades":                int,
         "popularity":            int,
         "torment":               int,

@@ -1,58 +1,46 @@
-from game.scripting.api.actor_api import ActorApi
-from game.scripting.api.prompt_api import PromptException, PromptApi
-from game.scripting.api.seat_api import SeatApi
-from game.scripting.api.student_api import StudentApi
+from game.scripting.api.prompt_api import PromptApi
 from game.scripting.repositories import ActionCardScriptContextRepository
-from game.scripting.trusted_script_runner import TrustedScriptRunner
+from game.scripting.trusted_script_runner import TrustedScriptRunner, ScriptResult
 from logger import log
 
 
+class ActionCardScriptResult(ScriptResult):
+    def __init__(self, exports, prompt) -> None:
+        super().__init__(exports)
+        self.prompt = prompt
+        self.complete = prompt is None
+
+
 class ActionCardScriptRunner(TrustedScriptRunner):
-    def __init__(self):
-        pass
+    def __init__(self, actor_id, turn_prompt) -> None:
+        super().__init__()
+        self.turn_prompt = turn_prompt
+        self.actor_id = actor_id
 
-    def run(self, actor_id, api, script, turn_prompt):
+    def build_repo(self, api):
+        return ActionCardScriptContextRepository(api, self.actor_id)
 
-        scope_vars = self.build_scope(actor_id, api, turn_prompt)
-        self.log_script_start(actor_id, api, turn_prompt)
-        try:
-            self.exec(script, scope_vars, scope_vars)
-            self.log_script_end(api)
-        except PromptException as e:
-            self.log_script_halt()
-            return e.prompt
+    def build_scope(self, api, repository, **additional_scope_vars):
+        prompt_api = PromptApi(self.turn_prompt, repository, api)
+        return super().build_scope(api, repository, PromptApi=prompt_api, **additional_scope_vars)
 
-    @staticmethod
-    def build_scope(actor_id, api, turn_prompt):
-        repository = ActionCardScriptContextRepository(actor_id, api)
-        student_api = StudentApi(repository, api)
-        actor_api = ActorApi(repository, api)
-        seat_api = SeatApi(repository, api)
-        prompt_api = PromptApi(turn_prompt, repository, api)
-        scope_vars = dict(locals(), **globals())
-        scope_vars.update({
-            'StudentApi': student_api,
-            'ActorApi':   actor_api,
-            'SeatApi':    seat_api,
-            'PromptApi':  prompt_api
-        })
-        return scope_vars
-
-    @staticmethod
-    def log_script_halt():
+    def log_script_halt(self, *a, **k):
         log("   +--- Did not complete! Prompt must be resolved.")
 
-    @staticmethod
-    def log_script_start(actor_id, api, turn_prompt):
-        actor = api.actors.get_actor(actor_id)
-        log("Beginning script block:")
-        log("   +--- Prior to running script, requester:", actor.name, actor_id)
+    def get_result(self, exports, exception=None, **kwargs):
+        prompt = exception.prompt if exception else None
+        return ActionCardScriptResult(exports, prompt=prompt)
+
+    def log_script_start(self, api, *a, **k):
+        super().log_script_start(self.actor_id, api, self.turn_prompt)
+        actor = api.actors.get_actor(self.actor_id)
+        log("   +--- Prior to running script, requester:", actor.name, self.actor_id)
         for actor in api.actors.list_actors():
             log("   +------ {}: {}".format(actor.id, actor.summary))
-        log("   +--- Executing with answers:", turn_prompt.closed)
+        log("   +--- Executing with answers:", self.turn_prompt.closed)
 
     @staticmethod
-    def log_script_end(api):
+    def log_script_end(api, *a, **k):
         log("   +--- After running script:")
         for actor in api.actors.list_actors():
             log("   +------ {}: {}".format(actor.id, actor.summary))

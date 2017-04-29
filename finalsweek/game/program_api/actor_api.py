@@ -1,7 +1,8 @@
+from game.document.documents.in_play_effect import InPlayEffect
 from game.operation.decorators import accepts_operation, accepts_operator
-from game.operation.operation import OperationType, OperatorType
+from game.configuration.definitions import OperationType, OperatorType
 from game.scripting.api.program_child_api import ProgramChildApi
-from util import floor_at_zero
+from util import floor_at_zero, guid
 
 
 class ActorApi(ProgramChildApi):
@@ -18,12 +19,19 @@ class ActorApi(ProgramChildApi):
             if actor is not None:
                 yield actor
 
+    def _operation_targeted_actor(self, operation):
+        return self.get_actor(operation.targeted_actor_id)
+
     def _action_card_by_actor(self, actor_id, card_id):
         actor = self.get_actor(actor_id)
         for card in actor.action_card_hand.cards:
             if card.id == card_id:
                 return card
-        raise Exception("Card not found: {}, actor id: {}".format(card_id, actor_id))
+        message = "Card not found: {}, actor id: {}".format(card_id, actor_id)
+        message_warning = "Ensure card was moved to inPlay ({})".format(
+            [c.card.id for c in actor.cards_in_play])
+        print("WARNING:", message, message_warning)
+        #raise Exception("Card not found: {}, actor id: {}".format(card_id, actor_id))
 
     def list_actors(self):
         return self._actors()
@@ -39,69 +47,86 @@ class ActorApi(ProgramChildApi):
 
     def get_action_card_by_actor(self, actor_id, card_id):
         return self._action_card_by_actor(actor_id, card_id)
+    # TODO: system operation
 
     def expend_action_card(self, actor_id, card_id):
         # TODO: kinda ugly, this line...
         card = self._action_card_by_actor(actor_id, card_id)
         actor = self._actor(actor_id)
-        existing = len(actor.action_card_hand.cards)
-        actor.action_card_hand.cards.remove(card)
-        if existing == len(actor.action_card_hand.cards):
-            raise Exception("Card not found: {}, actor id: {}".format(card_id, actor_id))
+        # TODO: discard
+        try:
+            actor.action_card_hand.cards.remove(card)
+        except ValueError:
+            message = "Card not found: {}, actor id: {}".format(card_id, actor_id)
+            raise Exception(message)
         self.program_api.increment_metadata("expended_action_cards", 1)
+    # TODO: system operation
+
+    def transfer_card_to_in_play(self, actor_id, card_id, mutation_id):
+        card = self._action_card_by_actor(actor_id, card_id)
+        actor = self._actor(actor_id)
+        actor.action_card_hand.cards.remove(card)
+        # todo: move to factory
+        in_play_effect_seed = {
+            "id": guid(),
+            "mutation_id": mutation_id,
+            "card": card
+        }
+        in_play_effect = InPlayEffect(in_play_effect_seed, actor)
+        actor.cards_in_play.append(in_play_effect)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)
     def set_grades(self, operation):
         operation = self._mutate(operation)
-        actor = self.get_actor(operation.actor_id)
+        actor = self._operation_targeted_actor(operation)
         actor.grades = floor_at_zero(operation.value)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
     def add_grades(self, operation):
         operation = self._mutate(operation)
-        actor = self.get_actor(operation.actor_id)
+        actor = self._operation_targeted_actor(operation)
         actor.grades = floor_at_zero(actor.grades + operation.value)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)
     def set_popularity(self, operation):
         operation = self._mutate(operation)
-        actor = self.get_actor(operation.actor_id)
+        actor = self._operation_targeted_actor(operation)
         actor.popularity = floor_at_zero(operation.value)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
     def add_popularity(self, operation):
         operation = self._mutate(operation)
-        actor = self.get_actor(operation.actor_id)
+        actor = self._operation_targeted_actor(operation)
         actor.popularity = floor_at_zero(actor.popularity + operation.value)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)
     def set_trouble(self, operation):
         operation = self._mutate(operation)
-        actor = self.get_actor(operation.actor_id)
+        actor = self._operation_targeted_actor(operation)
         actor.trouble = floor_at_zero(operation.value)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
     def add_trouble(self, operation):
         operation = self._mutate(operation)
-        actor = self.get_actor(operation.actor_id)
+        actor = self._operation_targeted_actor(operation)
         actor.trouble = floor_at_zero(actor.trouble + operation.value)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)
     def set_torment(self, operation):
         operation = self._mutate(operation)
-        actor = self.get_actor(operation.actor_id)
+        actor = self._operation_targeted_actor(operation)
         actor.torment = floor_at_zero(operation.value)
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
     def add_torment(self, operation):
         operation = self._mutate(operation)
-        actor = self.get_actor(operation.actor_id)
+        actor = self._operation_targeted_actor(operation)
         actor.torment = floor_at_zero(actor.torment + operation.value)

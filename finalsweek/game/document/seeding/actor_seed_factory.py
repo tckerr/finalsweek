@@ -22,6 +22,7 @@ class ActorSeedFactory(object):
                 "id":    guid(),
                 "cards": []
             },
+            "cards_in_play":         [],
             "grades":                0,
             "popularity":            0,
             "torment":               0,

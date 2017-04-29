@@ -61,6 +61,8 @@ class DocumentBase(object):
         setattr(self, key, data)
 
     def _cast_or_none(self, cls, data):
+        if data is None:
+            return None
         try:
             args = [data]
             if issubclass(cls, DocumentBase):
@@ -75,7 +77,8 @@ class DocumentBase(object):
             raise Exception("Classes that derive from DocumentBase must implement '_field_definitions'")
         for key in self._field_definitions.keys():
             if key not in base_data:
-                raise Exception("Key '{}'' missing from data".format(key))
+                message = "Key '{}'' missing from data".format(key)
+                raise Exception(message)
 
     @property
     def data(self):

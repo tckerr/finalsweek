@@ -1,23 +1,22 @@
-from game.document.documents.mutation import Mutation
-from game.document.documents.operation_metadata import OperationMetadata
+from game.operation.factories import MutationFactory
+from game.operation.operation_mutator import OperationMutator
 from game.scripting.api.program_child_api import ProgramChildApi
-from util import guid
 
 
 class MutationApi(ProgramChildApi):
+    def __init__(self, program_api) -> None:
+        super().__init__(program_api)
+        self.mutation_factory = MutationFactory()
+        self.operation_mutator = OperationMutator(program_api)
 
-    def register(self, priority=0, **kwargs):
-        criteria = OperationMetadata.default_data()
-        criteria.update(kwargs)
-        mutation_data = {
-            "id": guid(),
-            "priority": priority,
-            "criteria": criteria
-        }
-        self.data.mutations.append(Mutation(mutation_data))
-        self.data.mutations = sorted(self.data.mutations, key=lambda m: m.priority)
+    def create_and_register(self, mutation_template, **exports):
+        mutation = self.mutation_factory.create_from_template(mutation_template, **exports)
+        self.data.mutations.append(mutation)
+        self._sort_mutations()
+        return mutation
 
     def mutate(self, operation):
-        for mutation in self.data.mutations:
-            operation = mutation.mutate_on_match(operation)
-        return operation
+        return self.operation_mutator.mutate(operation, self.data.mutations)
+
+    def _sort_mutations(self):
+        self.data.mutations = sorted(self.data.mutations, key=lambda m: m.priority)

@@ -21,3 +21,7 @@ class Card(DocumentBase):
         if self.card_template_id not in card_templates:
             raise Exception("Card card_template_id is not present in card template list!")
         return card_templates.get(self.card_template_id)
+
+    @property
+    def generates_mutation(self):
+        return self.template.mutation_template_id is not None

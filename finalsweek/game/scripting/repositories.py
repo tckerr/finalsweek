@@ -1,19 +1,13 @@
-from game.document.documents.operation_metadata import OperationMetadata
+from game.configuration.definitions import Tag
 
 
-class ActionCardScriptContextRepository(object):
-    def __init__(self, requestor_id, program_api):
-        self.requestor_id = requestor_id
+class ScriptContextRepository(object):
+    def __init__(self, program_api):
         self.program_api = program_api
 
     @property
-    def metadata(self):
-        metadata = OperationMetadata()
-        metadata.ActionCard = True
-        metadata.ActorAction = True
-        metadata.Card = True
-        metadata.PlayedCard = True
-        return metadata
+    def default_tags(self):
+        return set()
 
     def actors(self):
         return list(self.program_api.actors.list_actors())
@@ -21,8 +15,18 @@ class ActionCardScriptContextRepository(object):
     def students(self):
         return list(self.program_api.students.list_students())
 
-    def requestor(self):
-        return self.program_api.actors.get_actor(self.requestor_id)
-
     def seats(self):
         return list(self.program_api.seats.list_seats())
+
+
+class ActionCardScriptContextRepository(ScriptContextRepository):
+    def __init__(self, program_api, requestor_id):
+        super().__init__(program_api)
+        self.requestor_id = requestor_id
+
+    @property
+    def default_tags(self):
+        return {Tag.ActionCard, Tag.ActorAction, Tag.Card, Tag.PlayedCard}
+
+    def requestor(self):
+        return self.program_api.actors.get_actor(self.requestor_id)
