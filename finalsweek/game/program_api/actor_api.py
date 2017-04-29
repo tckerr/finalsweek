@@ -8,7 +8,7 @@ from util.helpers import floor_at_zero
 
 
 class ActorApi(ProgramChildApi):
-    def _actor(self, actor_id):
+    def _get(self, actor_id):
         for actor in self._actors():
             if actor.id == actor_id:
                 return actor
@@ -21,10 +21,10 @@ class ActorApi(ProgramChildApi):
                 yield actor
 
     def _operation_targeted_actor(self, operation):
-        return self.get_actor(operation.targeted_actor_id)
+        return self.get(operation.targeted_actor_id)
 
     def _action_card_by_actor(self, actor_id, card_id):
-        actor = self.get_actor(actor_id)
+        actor = self.get(actor_id)
         for card in actor.action_card_hand.cards:
             if card.id == card_id:
                 return card
@@ -34,8 +34,7 @@ class ActorApi(ProgramChildApi):
         print("WARNING:", message, message_warning)
         # raise Exception("Card not found: {}, actor id: {}".format(card_id, actor_id))
 
-    # TODO: rename to list
-    def list_actors(self):
+    def list(self):
         return self._actors()
 
     def list_actors_sorted_by_seat(self):
@@ -44,9 +43,8 @@ class ActorApi(ProgramChildApi):
         for actor in actors:
             yield actor
 
-    # TODO: rename to get
-    def get_actor(self, actor_id):
-        return self._actor(actor_id)
+    def get(self, actor_id):
+        return self._get(actor_id)
 
     def get_action_card_by_actor(self, actor_id, card_id):
         return self._action_card_by_actor(actor_id, card_id)
@@ -56,7 +54,7 @@ class ActorApi(ProgramChildApi):
     def expend_action_card(self, actor_id, card_id):
         # TODO: kinda ugly, this line...
         card = self._action_card_by_actor(actor_id, card_id)
-        actor = self._actor(actor_id)
+        actor = self._get(actor_id)
         # TODO: discard
         try:
             actor.action_card_hand.cards.remove(card)
@@ -68,18 +66,19 @@ class ActorApi(ProgramChildApi):
     # TODO: system operation
     # TODO: make an in_play API
 
-    def transfer_card_to_in_play(self, actor_id, card_id, mutation_id):
-        card = self._action_card_by_actor(actor_id, card_id)
-        actor = self._actor(actor_id)
-        actor.action_card_hand.cards.remove(card)
+    def transfer_card_to_in_play(self, source_actor_id, targeted_actor_id, card_id, mutation_id):
+        card = self._action_card_by_actor(source_actor_id, card_id)
+        source_actor = self._get(source_actor_id)
+        source_actor.action_card_hand.cards.remove(card)
+        target_actor = source_actor if source_actor_id == targeted_actor_id else self._get(targeted_actor_id)
         # todo: move to factory
         in_play_effect_seed = {
             "id":          random_id(),
             "mutation_id": mutation_id,
             "card":        card
         }
-        in_play_effect = InPlayEffect(in_play_effect_seed, actor)
-        actor.cards_in_play.append(in_play_effect)
+        in_play_effect = InPlayEffect(in_play_effect_seed, target_actor)
+        target_actor.cards_in_play.append(in_play_effect)
 
     def remove_mutation_and_card_in_play(self, mutation_id):
         self.program_api.mutations.remove_mutation(mutation_id)
@@ -107,6 +106,8 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.grades = floor_at_zero(operation.value)
+        self._log_mod_operation(actor, "grades", operation)
+        return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
@@ -114,6 +115,7 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.grades = floor_at_zero(actor.grades + operation.value)
+        self._log_mod_operation(actor, "grades", operation)
         return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
@@ -122,6 +124,8 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.popularity = floor_at_zero(operation.value)
+        self._log_mod_operation(actor, "popularity", operation)
+        return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
@@ -129,6 +133,8 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.popularity = floor_at_zero(actor.popularity + operation.value)
+        self._log_mod_operation(actor, "popularity", operation)
+        return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)
@@ -136,6 +142,8 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.trouble = floor_at_zero(operation.value)
+        self._log_mod_operation(actor, "trouble", operation)
+        return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
@@ -143,6 +151,8 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.trouble = floor_at_zero(actor.trouble + operation.value)
+        self._log_mod_operation(actor, "trouble", operation)
+        return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)
@@ -150,6 +160,8 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.torment = floor_at_zero(operation.value)
+        self._log_mod_operation(actor, "torment", operation)
+        return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
@@ -157,3 +169,16 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._operation_targeted_actor(operation)
         actor.torment = floor_at_zero(actor.torment + operation.value)
+        self._log_mod_operation(actor, "torment", operation)
+        return operation
+
+    @staticmethod
+    def _log_mod_operation(actor, stat, operation):
+        template = "Modified actor {actor} '{stat}' via '{operator}' with value of '{value}'. Now is: {current_value}"
+        Logger.log(template.format(
+            actor=actor.label,
+            stat=stat,
+            operator=operation.operator,
+            value=operation.value,
+            current_value=getattr(actor, stat)
+        ), level=LogLevel.Debug, log_type=LogType.Operational)

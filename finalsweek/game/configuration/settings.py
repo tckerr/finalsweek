@@ -10,6 +10,7 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+    TRACE = '\033[38;5;243m'
 
 
 logging = {
@@ -20,6 +21,7 @@ logging = {
         LogType.NoOp
     },
     "log_type_prefixes": {
+        LogType.Operational:        " $",
         LogType.TestRunner:         "#",
         LogType.GameLogic:          "++",
         LogType.Ai:                 ">>",
@@ -27,7 +29,8 @@ logging = {
         LogType.General:            "",
         LogType.Gameflow:           "+-",
     },
-    "log_type_colors": {
+    "log_type_colors":   {
+        LogType.Operational:        bcolors.TRACE,
         LogType.TestRunner:         bcolors.BOLD,
         LogType.GameLogic:          "",
         LogType.Ai:                 bcolors.OKGREEN,
@@ -43,12 +46,13 @@ generation = {
 }
 
 base_settings = {
-    "hand_size":      6,
-    "total_cards":    1000,
-    "seat_rows":      5,
-    "seat_columns":   4,
-    "total_students": 16,
-    "grades_per_row": 2
+    "hand_size":       6,
+    "total_cards":     1000,
+    "seat_rows":       5,
+    "seat_columns":    4,
+    "total_students":  16,
+    "grades_per_row":  2,
+    "trouble_per_row": -1
 }
 
 default_game_definition = [

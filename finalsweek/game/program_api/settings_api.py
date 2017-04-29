@@ -10,3 +10,6 @@ class SettingsApi(ProgramChildApi):
 
     def get_grades_per_row(self):
         return self.data.rules.settings.grades_per_row
+
+    def get_trouble_per_row(self):
+        return self.data.rules.settings.trouble_per_row

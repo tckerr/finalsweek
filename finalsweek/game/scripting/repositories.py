@@ -10,7 +10,7 @@ class ScriptContextRepository(object):
         return set()
 
     def actors(self):
-        return list(self.program_api.actors.list_actors())
+        return list(self.program_api.actors.list())
 
     def students(self):
         return list(self.program_api.students.list_students())
@@ -29,4 +29,4 @@ class ActionCardScriptContextRepository(ScriptContextRepository):
         return {Tag.ActionCard, Tag.ActorAction, Tag.Card, Tag.PlayedCard}
 
     def requestor(self):
-        return self.program_api.actors.get_actor(self.requestor_id)
+        return self.program_api.actors.get(self.requestor_id)

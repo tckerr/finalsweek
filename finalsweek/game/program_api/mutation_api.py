@@ -28,4 +28,4 @@ class MutationApi(ProgramChildApi):
         return self.operation_mutator.mutate(operation, self.data.mutations)
 
     def _sort_mutations(self):
-        self.data.mutations = sorted(self.data.mutations, key=lambda m: m.priority)
+        self.data.mutations = sorted(self.data.mutations, key=lambda m: m.priority, reverse=True)

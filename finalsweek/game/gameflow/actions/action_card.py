@@ -31,13 +31,17 @@ class ActionCardAction(ActionBase):
 
     # TODO: this is getting big
     def resolve_card_completion(self, actor_id, api, card, result):
-        actor = api.actors.get_actor(actor_id)
+        actor = api.actors.get(actor_id)
         self._apply_trouble(api, actor, card)
         exclusions = []
         if card.generates_mutation:
             mutation_template = card.template.mutation_template
             mutation = api.mutations.create_and_register(mutation_template, source_actor_id=actor_id, **result.exports)
-            api.actors.transfer_card_to_in_play(actor_id, card.id, mutation.id)
+            api.actors.transfer_card_to_in_play(
+                source_actor_id=actor_id,
+                targeted_actor_id=result.exports["targeted_actor_id"],
+                card_id=card.id,
+                mutation_id=mutation.id)
             exclusions.append(mutation.id)
         else:
             self._log_card_expense(actor)

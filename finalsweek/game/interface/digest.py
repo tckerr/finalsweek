@@ -31,13 +31,13 @@ class GameInfoDigest(GameDigest):
     def __init__(self, game_id, api):
         super().__init__()
         self.game_id = game_id
-        self.actors = [ActorDigest(actor) for actor in api.actors.list_actors()]
+        self.actors = [ActorDigest(actor) for actor in api.actors.list()]
 
 
 class HandDigest(GameDigest):
     def __init__(self, requesting_actor_id, api):
         super().__init__()
-        requesting_actor = api.actors.get_actor(requesting_actor_id)
+        requesting_actor = api.actors.get(requesting_actor_id)
         action_card_hand = requesting_actor.action_card_hand
         self.action_cards = [CardInfoDigest(card) for card in action_card_hand.cards]
 
@@ -56,7 +56,7 @@ class TurnDigest(GameDigest):
 class InPlayEffectDigest(GameDigest):
     def __init__(self, requesting_actor_id, api):
         super().__init__()
-        requesting_actor = api.actors.get_actor(requesting_actor_id)
+        requesting_actor = api.actors.get(requesting_actor_id)
         cards_in_play = requesting_actor.cards_in_play
         self.cards_in_play = [CardInfoDigest(ipe.card) for ipe in cards_in_play]
 

@@ -48,6 +48,7 @@ class Tag(ListableClass):
 
     # game logic
     GradesPerTurn = "Grades per Turn"
+    TroublePerTurn = "Trouble per Turn"
 
     # cost related
     AfterSchoolCardCost = "After School Card Cost"  # effect was caused by purchasing AS card
@@ -104,6 +105,7 @@ class LogLevel:
 
 
 class LogType:
+    Operational = "Operational"
     TestRunner = "TestRunner"
     Ai = "Ai"
     GameLogic = "GameLogic"

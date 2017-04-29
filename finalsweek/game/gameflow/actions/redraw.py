@@ -8,5 +8,5 @@ class RedrawAction(ActionBase):
         self.hand_refiller = HandRefiller()
 
     def execute(self, actor_id, api):
-        actor = api.actors.get_actor(actor_id)
+        actor = api.actors.get(actor_id)
         self.hand_refiller.refill_hand(actor, api)

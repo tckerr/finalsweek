@@ -44,8 +44,7 @@ class Actor(DocumentBase):
 
     @property
     def summary(self):
-        return "[ Name: {name}, " \
-               "Grades: {grades}, " \
+        return "[ Grades: {grades}, " \
                "Pop: {popularity}, " \
                "Trouble: {trouble}, " \
                "Tor: {torment}, " \

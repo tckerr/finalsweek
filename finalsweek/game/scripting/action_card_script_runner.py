@@ -1,7 +1,8 @@
+from game.configuration.definitions import LogLevel, LogType
 from game.scripting.api.prompt_api import PromptApi
 from game.scripting.repositories import ActionCardScriptContextRepository
 from game.scripting.trusted_script_runner import TrustedScriptRunner, ScriptResult
-from logger import log
+from logger import log, Logger
 
 
 class ActionCardScriptResult(ScriptResult):
@@ -25,7 +26,7 @@ class ActionCardScriptRunner(TrustedScriptRunner):
         return super().build_scope(api, repository, PromptApi=prompt_api, **additional_scope_vars)
 
     def log_script_halt(self, *a, **k):
-        log("   +--- Did not complete! Prompt must be resolved.")
+        log("Script did not complete! Prompt must be resolved.")
 
     def get_result(self, exports, exception=None, **kwargs):
         prompt = exception.prompt if exception else None
@@ -33,14 +34,5 @@ class ActionCardScriptRunner(TrustedScriptRunner):
 
     def log_script_start(self, *a, api, **k):
         super().log_script_start(self.actor_id, api, self.turn_prompt)
-        actor = api.actors.get_actor(self.actor_id)
-        log("   +--- Prior to running script, requester:", actor.name, self.actor_id)
-        for actor in api.actors.list_actors():
-            log("   +------ {}: {}".format(actor.id, actor.summary))
-        log("   +--- Executing with answers:", self.turn_prompt.closed)
+        Logger.log("Executing with answers:", self.turn_prompt.closed, level=LogLevel.Info, log_type=LogType.Operational)
 
-    @staticmethod
-    def log_script_end(api, *a, **k):
-        log("   +--- After running script:")
-        for actor in api.actors.list_actors():
-            log("   +------ {}: {}".format(actor.id, actor.summary))

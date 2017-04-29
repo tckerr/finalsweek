@@ -39,10 +39,12 @@ class ActionExecutor(object):
 
     @staticmethod
     def _log_turn_details(api, action, actor_id, phase_type):
-        actor = api.actors.get_actor(actor_id)
+        actor = api.actors.get(actor_id)
         action_class_name = type(action).__name__
-        message = "Executing phase: '{phase}' with action '{action}' for actor '{actor}'".format(
+        template = "Executing phase: '{phase}' with action '{action}' for actor '{actor}': {summary}"
+        message = template.format(
             phase=phase_type,
             action=action_class_name,
-            actor=actor.label)
+            actor=actor.label,
+            summary=actor.summary)
         Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
