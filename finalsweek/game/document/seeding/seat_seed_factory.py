@@ -1,5 +1,5 @@
 from game.document.seeding.student_seed_factory import StudentSeedFactory
-from util.random import random_id
+from util.random import random_id, shuffle
 
 
 class SeatSeedFactory(object):
@@ -12,15 +12,18 @@ class SeatSeedFactory(object):
         total = settings["total_students"]
         for row in range(0, settings["seat_rows"]):
             for column in range(0, settings["seat_columns"]):
-                seat = {
+                seats.append({
                     "id":      random_id(),
                     "row":     row,
                     "column":  column,
                     "student": None
-                }
-                if total > 0:
-                    seat["student"] = self.student_seed_factory.create(student_info, player_count > 0)
-                    total -= 1
-                    player_count -= 1
-                seats.append(seat)
+                })
+        shuffle(seats)
+        for seat in seats:
+            if total == 0:
+                break
+            seat["student"] = self.student_seed_factory.create(student_info, player_count > 0)
+            total -= 1
+            player_count -= 1
+
         return seats

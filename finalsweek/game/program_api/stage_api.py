@@ -25,7 +25,5 @@ class StageApi(ProgramChildApi):
 
     @staticmethod
     def log_stage_complete(stage):
-        message = "\n========================"
-        message += "\nStage Complete: {stage_type}".format(stage_type=stage.stage_type)
-        message += "\n========================"
+        message = "Stage Complete: {stage_type}".format(stage_type=stage.stage_type)
         Logger.log(message, level=LogLevel.Info, log_type=LogType.Gameflow)

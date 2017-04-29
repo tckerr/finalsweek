@@ -104,6 +104,7 @@ class LogLevel:
 
 
 class LogType:
+    Ai = "Ai"
     GameLogic = "GameLogic"
     Gameflow = "Gameflow"
     DocumentConversion = "DocumentConversion"

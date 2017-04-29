@@ -27,3 +27,7 @@ class Seat(DocumentBase):
     @property
     def coordinates_str(self):
         return "({}, {})".format(self.column, self.row)
+
+    @property
+    def coordinates_str_readable(self):
+        return "(Column: {}, Row: {})".format(self.column, self.row)

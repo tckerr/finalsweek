@@ -36,5 +36,6 @@ class PhaseGradeScorer(object):
 
     @staticmethod
     def _log_process(actor, value):
-        message = "Actor {} scored {} grades at the end of the phase.".format(actor.id, value)
+        template = "Actor {} scored {} grades at the end of the phase for being in seat {}."
+        message = template.format(actor.label, value, actor.seat.coordinates_str_readable)
         Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)

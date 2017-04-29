@@ -1,5 +1,6 @@
+from game.configuration.definitions import LogType, LogLevel
 from game.gameflow.actions.factories import AutomatedActionFactory
-from logger import log
+from logger import log, Logger
 
 
 class ActionExecutor(object):
@@ -27,7 +28,7 @@ class ActionExecutor(object):
                 return turn
 
     def _execute(self, api, action, turn, phase_definition):
-        self.print_turn_details(action, turn.actor_id, phase_definition.phase_type)
+        self._log_turn_details(api, action, turn.actor_id, phase_definition.phase_type)
         # Todo: save prompt if it exists
         prompt_data = action.execute(turn.actor_id, api)
         if prompt_data:
@@ -37,9 +38,11 @@ class ActionExecutor(object):
             api.turns.complete_turn(turn.id)
 
     @staticmethod
-    def print_turn_details(action, actor_id, phase_type):
+    def _log_turn_details(api, action, actor_id, phase_type):
+        actor = api.actors.get_actor(actor_id)
         action_class_name = type(action).__name__
-        log("Executing phase: '{phase}' with action '{action}' for actor '{actor}'".format(
+        message = "Executing phase: '{phase}' with action '{action}' for actor '{actor}'".format(
             phase=phase_type,
             action=action_class_name,
-            actor=actor_id))
+            actor=actor.label)
+        Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)

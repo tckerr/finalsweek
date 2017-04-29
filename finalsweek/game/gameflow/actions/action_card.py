@@ -30,7 +30,8 @@ class ActionCardAction(ActionBase):
         return result.prompt
 
     def resolve_card_completion(self, actor_id, api, card, result):
-        self._apply_trouble(api, actor_id,  card)
+        actor = api.actors.get_actor(actor_id)
+        self._apply_trouble(api, actor, card)
         exclusions = []
         if card.generates_mutation:
             mutation_template = card.template.mutation_template
@@ -38,20 +39,23 @@ class ActionCardAction(ActionBase):
             api.actors.transfer_card_to_in_play(actor_id, card.id, mutation.id)
             exclusions.append(mutation.id)
         else:
-            message = "Expending action card {} for actor {}".format(self.card_id, actor_id)
-            Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
+            self._log_card_expense(actor)
             api.actors.expend_action_card(actor_id, self.card_id)
         api.messenger.dispatch(GameflowMessage(GameflowMessageType.Action, actor_id=actor_id), exclude=exclusions)
 
-    def _apply_trouble(self, api, actor_id, card):
+    def _log_card_expense(self, actor):
+        message = "Expending action card {} for actor {}".format(self.card_id, actor.label)
+        Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
+
+    def _apply_trouble(self, api, actor, card):
         operation = ModifyAttribute(
             operator=OperatorType.Add,
             value=card.template.trouble_cost,
-            targeted_actor_id=actor_id,
+            targeted_actor_id=actor.id,
             tags=self._card_trouble_tags
         )
         api.actors.add_trouble(operation=operation)
-        message = "Assigning {} trouble from action card {}".format(card.template.trouble_cost, self.card_id)
+        message = "Assigning {} {} trouble from action card {}".format(actor.label, card.template.trouble_cost, self.card_id)
         Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
 
     @property

@@ -23,6 +23,8 @@ class ActorDigest(GameDigest):
     def __init__(self, actor):
         super().__init__()
         self.id = actor.id
+        self.label = actor.label
+        self.name = actor.name
 
 
 class GameInfoDigest(GameDigest):

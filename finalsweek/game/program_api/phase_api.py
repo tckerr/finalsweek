@@ -38,8 +38,6 @@ class PhaseApi(ProgramChildApi):
 
     @staticmethod
     def log_phase_complete(phase):
-        message = "\n========================"
-        message += "\nPhase Complete: {phase_type}".format(phase_type=phase.phase_type)
-        message += "\n========================"
+        message = "Phase Complete: {phase_type}".format(phase_type=phase.phase_type)
         Logger.log(message, level=LogLevel.Info, log_type=LogType.Gameflow)
 

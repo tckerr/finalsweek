@@ -39,6 +39,10 @@ class Actor(DocumentBase):
         return seat
 
     @property
+    def label(self):
+        return "{} ({})".format(self.name, self.id)
+
+    @property
     def summary(self):
         return "[ Name: {name}, " \
                "Grades: {grades}, " \

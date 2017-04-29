@@ -1,24 +1,23 @@
-from game.configuration.definitions import PhaseTypeName
-from game.configuration.settings import generation
+from game.configuration.definitions import PhaseTypeName, LogType, LogLevel
 from game.gameflow.actions.action_card import ActionCardAction
 from game.gameflow.actions.base import ActionBase
-from logger import log
+from logger import Logger
 from util.random import choice
 
 
 class AiActor(object):
-    def __init__(self, _id, game_id, interface) -> None:
+    def __init__(self, _id, game_id, interface, label) -> None:
         super().__init__()
         self.game_id = game_id
         self.interface = interface
         self.id = _id
+        self.label = label
         self.prompt_card_map = dict()
 
     def take_turn_if_possible(self):
         digest = self.__get_game_info()
         if self.__is_it_my_turn(digest):
-            log("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            self.__think("Starting new turn for actor: {}".format(self.id))
+            self.__think("Starting new turn for actor: {}".format(self.label))
         while True:
             if digest.complete:
                 return
@@ -34,7 +33,7 @@ class AiActor(object):
             if digest.complete:
                 return
             if digest.turn.id != old_turn_id and digest.turn.current_turn_actor_id != self.id:
-                self.__think("My turn is complete!")
+                self.__think("My turn is complete!\n")
                 return digest.turn.current_turn_actor_id
 
     def __commit_action(self, digest, action):
@@ -97,7 +96,7 @@ class AiActor(object):
 
     @staticmethod
     def __think(*a):
-        log(">", *a)
+        Logger.log(*a, level=LogLevel.Info, log_type=LogType.Ai)
 
     @staticmethod
     def __get_card_details(card_id, turn):

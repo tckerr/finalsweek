@@ -1,11 +1,14 @@
 import atexit
 import uuid
 
+import sys
+
 import settings as django_settings
 from game.configuration import settings
 from game.configuration.definitions import LogType, LogLevel
 # TODO: make this game ID
 # TODO: make game only write at end
+from game.configuration.settings import bcolors
 
 
 def log(*a, **k):
@@ -34,6 +37,8 @@ class LogOptions(object):
         self.print_output = options["print_output"]
         self.log_level = options["log_level"]
         self.disabled = options["disabled"]
+        self.log_type_prefixes = options["log_type_prefixes"]
+        self.log_type_colors = options["log_type_colors"]
 
 
 class Logger(object):
@@ -48,10 +53,13 @@ class Logger(object):
 
     def _log(self, *args, level=LogLevel.Verbose, log_type=LogType.General):
         if self.should_log(level, log_type):
+            prefix = self.get_log_type_prefix(log_type)
+            color = self.get_log_type_color(log_type)
             if self.options.as_file:
-                self.queue_for_write("\n" + " ".join([str(arg) for arg in args]))
+                self.queue_for_write("\n" + prefix + " ".join([str(arg) for arg in args]))
             if self.options.print_output:
-                print(*args)
+                sys.stdout.write(color + prefix)
+                print(*(args + (bcolors.ENDC,)))
 
     def should_log(self, level, log_type):
         return self.options.log_level <= level \
@@ -59,3 +67,9 @@ class Logger(object):
 
     def queue_for_write(self, string):
         self.global_vars["log_txt"] += string
+
+    def get_log_type_prefix(self, log_type):
+        return self.options.log_type_prefixes.get(log_type, "") + " "
+
+    def get_log_type_color(self, log_type):
+        return self.options.log_type_colors.get(log_type, "")

@@ -39,7 +39,7 @@ class TestRunner(object):
 
     def __generate_actors(self, digest):
         game_actors = digest.game_info.actors
-        return [AiActor(actor.id, digest.game_info.game_id, self.interface) for actor in game_actors]
+        return [AiActor(actor.id, digest.game_info.game_id, self.interface, actor.label) for actor in game_actors]
 
     @staticmethod
     def get_actor_by_id(actor_id, actors):

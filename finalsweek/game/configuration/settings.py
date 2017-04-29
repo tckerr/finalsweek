@@ -1,12 +1,38 @@
 from game.configuration.definitions import PhaseTypeName, StageTypeName, LogLevel, LogType
 
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
 logging = {
-    "as_file": True,
-    "print_output": True,
-    "log_level": LogLevel.Verbose,
-    "disabled": {
+    "as_file":           True,
+    "print_output":      True,
+    "log_level":         LogLevel.Verbose,
+    "disabled":          {
         LogType.NoOp,
         LogType.DocumentConversion
+    },
+    "log_type_prefixes": {
+        LogType.GameLogic:          "++",
+        LogType.Ai:                 ">>",
+        LogType.DocumentConversion: "!!",
+        LogType.General:            "",
+        LogType.Gameflow:           "+-",
+    },
+    "log_type_colors": {
+        LogType.GameLogic:          "",
+        LogType.Ai:                 bcolors.OKGREEN,
+        LogType.DocumentConversion: bcolors.FAIL,
+        LogType.General:            "",
+        LogType.Gameflow:           bcolors.WARNING,
     }
 }
 
@@ -74,4 +100,3 @@ default_game_definition = [
         ]
     }
 ]
-
