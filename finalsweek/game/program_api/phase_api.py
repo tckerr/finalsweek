@@ -1,20 +1,18 @@
-from datetime import datetime
-
-from game.configuration.definitions import GameflowMessageType, LogLevel, LogType, PhaseTypeName
-from game.program_api.message_api import GameflowMessage
 from game.scripting.api.program_child_api import ProgramChildApi
-from game.systems.phase_grade_scorer import PhaseGradeScorer
-from game.systems.phase_trouble_scorer import PhaseTroubleScorer
-from logger import Logger
+from game.systems.phase_handlers.phase_handler_resolver import PhaseHandlerResolver
 
 
 class PhaseApi(ProgramChildApi):
+
+    def __init__(self, program_api) -> None:
+        super().__init__(program_api)
+        self.phase_handler_resolver = PhaseHandlerResolver(self.program_api)
 
     def create_phase(self, stage_id, phase_type):
         for stage in self.data.gameflow.stages:
             if stage.id == stage_id:
                 new_phase = stage.add_phase(phase_type)
-                new_phase.on_create(self.program_api)
+                self.phase_handler_resolver.on_create(new_phase)
                 return new_phase
 
     def get_phase_definition(self, phase_type):
@@ -28,5 +26,5 @@ class PhaseApi(ProgramChildApi):
         for stage in self.data.gameflow.stages:
             for phase in stage.phases:
                 if phase.id == phase_id:
-                    return phase.on_complete(self.program_api)
+                    self.phase_handler_resolver.on_complete(phase)
 
