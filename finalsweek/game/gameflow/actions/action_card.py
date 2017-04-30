@@ -1,7 +1,7 @@
 from game.configuration.definitions import GameflowMessageType
 from game.gameflow.actions.base import ActionBase
 from game.program_api.message_api import GameflowMessage
-from game.scripting.action_card_script_runner import ActionCardScriptRunner
+from game.scripting.played_card_script_runner import PlayedCardScriptRunner
 from game.systems.action_card_expender import ActionCardExpender
 from game.systems.action_card_mutation_generator import ActionCardMutationGenerator
 from game.systems.action_card_trouble_applier import ActionCardTroubleApplier
@@ -26,7 +26,7 @@ class ActionCardAction(ActionBase):
 
     def _run_script(self, actor_id, api, card):
         script = card.template.script
-        runner = ActionCardScriptRunner(actor_id, self.prompt)
+        runner = PlayedCardScriptRunner(actor_id, self.prompt)
         result = runner.run(api, script)
         return result
 
