@@ -15,3 +15,4 @@ class DrawManager(object):
             tags={Tag.Draw, Tag.DrawActionCard}
         )
         api.game_decks.draw_action_cards(operation=operation)
+

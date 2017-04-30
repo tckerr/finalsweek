@@ -48,13 +48,15 @@ generation = {
 }
 
 base_settings = {
-    "hand_size":       6,
-    "total_cards":     1000,
-    "seat_rows":       5,
-    "seat_columns":    4,
-    "total_students":  16,
-    "grades_per_row":  2,
-    "trouble_per_row": -1
+    "hand_size":                  6,
+    "action_card_deck_size":      1000,
+    "discipline_card_deck_size":  100,
+    "afterschool_card_deck_size": 100,
+    "seat_rows":                  5,
+    "seat_columns":               4,
+    "total_students":             16,
+    "grades_per_row":             2,
+    "trouble_per_row":            -1
 }
 
 default_game_definition = [
@@ -85,7 +87,7 @@ default_game_definition = [
             },
             {
                 "phase_type": PhaseTypeName.Dismissal,
-                "turn_sets":  0,
+                "turn_sets":  1,
                 "automatic":  False
             },
             {

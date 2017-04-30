@@ -1,3 +1,4 @@
+from game.configuration.definitions import CardTypeName
 from util.random import random_id, shuffle
 
 
@@ -5,8 +6,8 @@ class ActionCardDeckSeedFactory(object):
     @staticmethod
     def create(templates, settings):
         template_list = sorted(templates.values(), key=lambda t: t["id"])
-        filtered_templates = list(filter(lambda c: c["card_type"] == "Action", template_list))
-        total_cards = settings["total_cards"]
+        filtered_templates = list(filter(lambda c: c["card_type"] == CardTypeName.ActionCard, template_list))
+        total_cards = settings["action_card_deck_size"]
         cards_per_type = int(total_cards / len(filtered_templates))
         card_list = []
         for template in filtered_templates:

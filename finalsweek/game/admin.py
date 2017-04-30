@@ -4,11 +4,11 @@ from game.models import *
 
 
 class CardAdmin(admin.ModelAdmin):
-    list_display = ("id", "active", "name", "has_script", "trouble_cost", "description")
+    list_display = ("active", "name", "card_type", "trouble_cost", "description")
     list_display_links = ("name",)
     list_editable = ('active',)
     model = Card
-    ordering = ('name',)
+    ordering = ('-card_type', 'name')
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(CardAdmin, self).get_form(request, obj, **kwargs)

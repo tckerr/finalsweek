@@ -168,6 +168,7 @@ class ActorApi(ProgramChildApi):
         self._log_mod_operation(actor, "torment", operation)
         return operation
 
+    # TODO: subtract needs to be different than add otherwise mutations will trigger
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
     def add_torment(self, operation):

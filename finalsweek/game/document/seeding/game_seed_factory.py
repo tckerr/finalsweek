@@ -18,7 +18,7 @@ class GameSeedFactory(object):
         rules = self.rules_seed_factory.create()
         action_card_deck = self.action_card_deck_seed_factory.create(rules["card_templates"], rules["settings"])
         afterschool_card_deck = self.afterschool_card_deck_seed_factory.create(rules["card_templates"])
-        discipline_card_deck = self.discipline_card_deck_seed_factory.create(rules["card_templates"])
+        discipline_card_deck = self.discipline_card_deck_seed_factory.create(rules["card_templates"], rules["settings"])
         seats = self.seat_seed_factory.create(rules["settings"], rules["student_infos"], player_count)
         data = {
             "rules":                  rules,

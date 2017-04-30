@@ -18,7 +18,7 @@ class PhaseTypeName:
 
 class CardTypeName:
     ActionCard = "Action Card"
-    DismissalCard = "Dismissal Card"
+    DisciplineCard = "Discipline Card"
     AfterSchoolCard = "After School Card"
 
 
