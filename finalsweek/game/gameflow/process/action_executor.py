@@ -22,16 +22,17 @@ class ActionExecutor(object):
             phase_definition = api.phases.get_phase_definition(turn.phase.phase_type)
             if phase_definition.automatic:
                 action = self.automated_action_factory.create(phase_definition)
-                # ASSUMPTION: no prompts from automated turns
+                # TODO: ASSUMPTION: no prompts from automated turns?
                 self._execute(api, action, turn, phase_definition)
             else:
                 return turn
 
     def _execute(self, api, action, turn, phase_definition):
         self._log_turn_details(api, action, turn.actor_id, phase_definition.phase_type)
-        # Todo: save prompt if it exists
+
         prompt_data = action.execute(turn.actor_id, api)
         if prompt_data:
+            # Todo: move these operations to a PromptApi
             turn.prompt.open = prompt_data["open"]
             turn.prompt.closed = prompt_data["closed"]
         else:
