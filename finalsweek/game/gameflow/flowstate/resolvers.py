@@ -1,5 +1,5 @@
 from game.gameflow.flowstate.base_flowstate_resolver import BaseFlowstateResolver
-from game.gameflow.flowstate.flowstate import Flowstate, CompletedFlowstate
+from game.gameflow.flowstate.flowstate import Flowstate, CompletedFlowstate, AutocompletingPhaseFlowstate
 
 
 class FlowstateTurnResolver(BaseFlowstateResolver):
@@ -35,6 +35,8 @@ class FlowstatePhaseResolver(BaseFlowstateResolver):
                                                                  phase_type, turn_set, api)
                 if flowstate.pending:
                     return flowstate
+            if not actual_phase:
+                return AutocompletingPhaseFlowstate(stage_type, actual_stage, phase_type)
             self._complete_phase(actual_phase, api)
         return CompletedFlowstate()
 

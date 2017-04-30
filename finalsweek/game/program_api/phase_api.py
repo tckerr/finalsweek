@@ -28,16 +28,5 @@ class PhaseApi(ProgramChildApi):
         for stage in self.data.gameflow.stages:
             for phase in stage.phases:
                 if phase.id == phase_id:
-                    return self._complete(phase)
-
-    def _complete(self, phase):
-        phase.completed = datetime.utcnow()
-        phase.on_complete(self.program_api)
-        self.program_api.messenger.dispatch(GameflowMessage(GameflowMessageType.Phase))
-        self.log_phase_complete(phase)
-
-    @staticmethod
-    def log_phase_complete(phase):
-        message = "Phase Complete: {phase_type}".format(phase_type=phase.phase_type)
-        Logger.log(message, level=LogLevel.Info, log_type=LogType.Gameflow)
+                    return phase.on_complete(self.program_api)
 

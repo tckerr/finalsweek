@@ -11,7 +11,9 @@ class StageApi(ProgramChildApi):
         return self.data.gameflow.stages
 
     def create_stage(self, stage_type):
-        return self.data.gameflow.add_stage(stage_type)
+        stage = self.data.gameflow.add_stage(stage_type)
+        self.log_stage_created(stage)
+        return stage
 
     def complete_stage(self, stage_id):
         for stage in self.data.gameflow.stages:
@@ -26,4 +28,9 @@ class StageApi(ProgramChildApi):
     @staticmethod
     def log_stage_complete(stage):
         message = "Stage Complete: {stage_type}".format(stage_type=stage.stage_type)
+        Logger.log(message, level=LogLevel.Info, log_type=LogType.Gameflow)
+
+    @staticmethod
+    def log_stage_created(stage):
+        message = "Stage Created: {stage_type}".format(stage_type=stage.stage_type)
         Logger.log(message, level=LogLevel.Info, log_type=LogType.Gameflow)

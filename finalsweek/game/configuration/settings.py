@@ -71,11 +71,11 @@ default_game_definition = [
     },
     {
         "stage_type": StageTypeName.Play,
-        "phase_sets": 8,
+        "phase_sets": 4,
         "phases":     [
             {
                 "phase_type": PhaseTypeName.Accumulation,
-                "turn_sets":  1,
+                "turn_sets":  0,
                 "automatic":  True
             },
             {
@@ -85,7 +85,7 @@ default_game_definition = [
             },
             {
                 "phase_type": PhaseTypeName.Dismissal,
-                "turn_sets":  1,
+                "turn_sets":  0,
                 "automatic":  False
             },
             {

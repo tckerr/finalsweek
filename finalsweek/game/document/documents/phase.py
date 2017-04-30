@@ -1,11 +1,14 @@
 from datetime import datetime
 
-from game.configuration.definitions import PhaseTypeName
+from game.configuration.definitions import PhaseTypeName, GameflowMessageType, LogLevel, LogType
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.prompt import Prompt
 from game.document.documents.turn import Turn
+from game.program_api.message_api import GameflowMessage
+from game.systems.draw_manager import DrawManager
 from game.systems.phase_grade_scorer import PhaseGradeScorer
 from game.systems.phase_trouble_scorer import PhaseTroubleScorer
+from logger import Logger
 from util.random import random_id
 
 
@@ -15,10 +18,34 @@ class PhaseHandlerBase(object):
         self.api = api
 
     def on_create(self, phase):
-        pass
+        self._log_phase_created(phase)
 
     def on_complete(self, phase):
-        pass
+        phase.completed = datetime.utcnow()
+        self.api.messenger.dispatch(GameflowMessage(GameflowMessageType.Phase))
+        self._log_phase_complete(phase)
+
+    @staticmethod
+    def _log_phase_created(phase):
+        message = "Phase Created: {phase_type}".format(phase_type=phase.phase_type)
+        Logger.log(message, level=LogLevel.Info, log_type=LogType.Gameflow)
+
+    @staticmethod
+    def _log_phase_complete(phase):
+        message = "Phase Complete: {phase_type}".format(phase_type=phase.phase_type)
+        Logger.log(message, level=LogLevel.Info, log_type=LogType.Gameflow)
+
+
+class AccumulationPhaseHandler(PhaseHandlerBase):
+    def __init__(self, api) -> None:
+        super().__init__(api)
+        self.draw_manager = DrawManager()
+
+    def on_create(self, phase):
+        super().on_create(phase)
+        actors = self.api.actors.list()
+        for actor in actors:
+            self.draw_manager.refill_hand(actor, self.api)
 
 
 class ClasstimePhaseHandler(PhaseHandlerBase):
@@ -31,14 +58,15 @@ class ClasstimePhaseHandler(PhaseHandlerBase):
         super().on_create(phase)
 
     def on_complete(self, phase):
-        super().on_complete(phase)
         self.phase_grade_scorer.score()
         self.phase_trouble_scorer.score()
+        super().on_complete(phase)
 
 
 class PhaseHandlerResolver(object):
     _map = {
-        PhaseTypeName.Classtime: ClasstimePhaseHandler
+        PhaseTypeName.Classtime:    ClasstimePhaseHandler,
+        PhaseTypeName.Accumulation: AccumulationPhaseHandler
     }
 
     def resolve(self, phase_type, api):

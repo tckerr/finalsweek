@@ -14,17 +14,24 @@ class TurnFactory(object):
             return
         stage = flowstate.stage or self.__create_stage(api, flowstate.stage_type)
         phase = flowstate.phase or self.__create_phase(api, stage, flowstate.phase_type)
+        if flowstate.autocomplete_phase:
+            return self._handle_autocomplete(api, phase)
         result = flowstate.turn or self.__create_turn(api, phase, flowstate.actor)
         return result
 
-    @staticmethod
-    def __create_stage(api, stage_type):
+    def _handle_autocomplete(self, api, phase):
+        self.__dirty = True
+        api.phases.complete_phase(phase)
+        return self.get_or_create(api)
+
+    def __create_stage(self, api, stage_type):
+        self.__dirty = True
         return api.stages.create_stage(stage_type)
 
-    @staticmethod
-    def __create_phase(api, stage, phase_type):
+    def __create_phase(self, api, stage, phase_type):
+        self.__dirty = True
         return api.phases.create_phase(stage.id, phase_type)
 
-    @staticmethod
-    def __create_turn(api, phase, actor):
+    def __create_turn(self, api, phase, actor):
+        self.__dirty = True
         return api.turns.create_turn(phase.id, actor.id)
