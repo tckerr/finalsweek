@@ -1,4 +1,4 @@
-class ActionCardMutationGenerator(object):
+class CardMutationGenerator(object):
     @staticmethod
     def generate(actor_id, api, card, result):
         mutation_template = card.template.mutation_template

@@ -3,12 +3,25 @@ from django.contrib import admin
 from game.models import *
 
 
+def deactivate(modeladmin, request, queryset):
+    queryset.update(active=False)
+
+
+def activate(modeladmin, request, queryset):
+    queryset.update(active=True)
+
+
+deactivate.short_description = "Deactivate"
+activate.short_description = "Activate"
+
+
 class CardAdmin(admin.ModelAdmin):
     list_display = ("active", "name", "card_type", "trouble_cost", "description")
     list_display_links = ("name",)
     list_editable = ('active',)
     model = Card
     ordering = ('-card_type', 'name')
+    actions = [activate, deactivate]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(CardAdmin, self).get_form(request, obj, **kwargs)

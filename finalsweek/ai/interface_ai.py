@@ -1,6 +1,7 @@
 from game.configuration.definitions import PhaseTypeName, LogType, LogLevel
 from game.gameflow.actions.action_card import ActionCardAction
 from game.gameflow.actions.base import ActionBase
+from game.gameflow.actions.discipline import DisciplineAction
 from logger import Logger
 from util.random import choice
 
@@ -50,9 +51,11 @@ class AiActor(object):
 
     def __get_action(self, digest):
         turn = digest.turn
-        if turn.phase_type != PhaseTypeName.Classtime:
-            return ActionBase()
-        return self.__build_classtime_action(digest)
+        if turn.phase_type == PhaseTypeName.Classtime:
+            return self.__build_classtime_action(digest)
+        elif turn.phase_type == PhaseTypeName.Dismissal:
+            return self.__build_dismissal_action(digest)
+        return ActionBase()
 
     def __build_classtime_action(self, digest):
         # cards in play:
@@ -103,3 +106,16 @@ class AiActor(object):
         for card in turn.hand.action_cards:
             if card.id == card_id:
                 return "{}".format(card.template.name)
+
+    def __build_dismissal_action(self, digest):
+        # TODO: implement prompts
+        turn = digest.turn
+        prompt = turn.prompt
+        for answer_key, prompt_options in prompt.pending:
+            self.__enumerate_options(answer_key, prompt_options)
+            if not prompt_options:
+                self.__think("Skipping discipline prompt", prompt.id, "... no options")
+                return
+            selection = choice([o["id"] for o in prompt_options])
+            prompt.answer(answer_key, selection)
+        return DisciplineAction(prompt)

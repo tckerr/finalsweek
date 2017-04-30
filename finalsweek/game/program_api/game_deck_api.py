@@ -23,6 +23,9 @@ class GameDeckApi(ProgramChildApi):
         self._log_discipline_card_draw(discipline_card, phase.phase_type)
         return discipline_card
 
+    def get_discipline_card_for_phase(self, phase_id):
+        return self.data.phase_discipline_cards[phase_id]
+
     def _draw_action_card(self, action_card_deck, actor):
         card = action_card_deck.cards.pop()
         actor.action_card_hand.cards.append(card)

@@ -9,6 +9,15 @@ class Student(DocumentBase):
         "actor":           Actor
     }
 
+    def __init__(self, base_data, parent=None):
+        self.id = None
+        self.actor = None
+        super().__init__(base_data, parent)
+
+    @property
+    def actor_info(self):
+        return self.id + " " + ("" if not self.actor else self.actor.label)
+
     @property
     def seat(self):
         return self._parent

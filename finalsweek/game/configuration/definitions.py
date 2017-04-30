@@ -74,6 +74,7 @@ class Tag(ListableClass):
     Grades = "Grades"  # affects Grades
     Trouble = "Trouble"  # affects Trouble
     Torment = "Torment"  # affects Torment
+    Seat = "Seat"
 
 
 class OperationType(object):
@@ -82,6 +83,7 @@ class OperationType(object):
     DefineEligibility = "DefineEligibility"  # target is being selected for something
     ModifyAttribute = "ModifyAttribute"  # target has already been selected and is getting some change
     ExtractInfo = "ExtractInfo"  # target is being selected for non-public info
+    ModifySeat = "ModifyRelationship"
 
 
 class OperatorType(object):
@@ -97,6 +99,7 @@ class GameflowMessageType:
     Turn = "Turn"
     Phase = "Phase"
     Stage = "Stage"
+    Discipline = "Discipline"
 
 
 class LogLevel:

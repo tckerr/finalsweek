@@ -73,7 +73,7 @@ default_game_definition = [
     },
     {
         "stage_type": StageTypeName.Play,
-        "phase_sets": 4,
+        "phase_sets": 5,
         "phases":     [
             {
                 "phase_type": PhaseTypeName.Accumulation,

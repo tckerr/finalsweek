@@ -1,3 +1,5 @@
+from game.configuration.definitions import Tag
+from game.operation.operations.modify_seat import ModifySeat
 from game.scripting.api.sandbox_api import SandboxApi
 
 
@@ -32,7 +34,19 @@ class StudentApi(SandboxApi):
         return results
 
     def move_to_empty_seat(self, student, seat):
-        self.program_api.students.move_student_to_empty_seat(student.id, seat.id)
+        default_tags = self.repo.default_tags
+        operation = ModifySeat(
+            destination_seat_id=seat.id,
+            targeted_student_id=student.id,
+            tags=default_tags.union({Tag.Seat})
+        )
+        self.program_api.students.move_student_to_empty_seat(operation=operation)
 
     def swap_seat(self, student, seat):
-        self.program_api.students.swap_seat(student.id, seat.id)
+        default_tags = self.repo.default_tags
+        operation = ModifySeat(
+            destination_seat_id=seat.id,
+            targeted_student_id=student.id,
+            tags=default_tags.union({Tag.Seat})
+        )
+        self.program_api.students.swap_seat(operation=operation)
