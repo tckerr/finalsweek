@@ -1,7 +1,6 @@
 import atexit
-import uuid
-
 import sys
+import uuid
 
 import settings as django_settings
 from game.configuration import settings

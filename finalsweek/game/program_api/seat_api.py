@@ -2,7 +2,6 @@ from game.scripting.api.program_child_api import ProgramChildApi
 
 
 class SeatApi(ProgramChildApi):
-
     def list_seats(self):
         return self.data.seats
 

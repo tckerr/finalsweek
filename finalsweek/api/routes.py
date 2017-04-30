@@ -1,5 +1,5 @@
-from django.conf.urls import url, include
 from rest_framework import routers
+
 #
 from api.model_apis.users.routes import router as user_router
 from api.routing.RouteRegister import RouteRegister

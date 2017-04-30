@@ -21,9 +21,9 @@ class RulesSeedFactory(object):
         student_info = self.student_info_seed_factory.create()
         game_definition = self.game_definition_seed_factory.create()
         return {
-            "settings":             settings,
-            "card_templates":       card_templates,
-            "mutation_templates":   mutation_templates,
-            "student_infos":        student_info,
-            "game_definition":      game_definition
+            "settings":           settings,
+            "card_templates":     card_templates,
+            "mutation_templates": mutation_templates,
+            "student_infos":      student_info,
+            "game_definition":    game_definition
         }

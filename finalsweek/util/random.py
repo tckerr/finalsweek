@@ -1,9 +1,9 @@
-import string
-import names as __names
 import random as __random
+import string
+
+import names as __names
 
 from game.configuration.settings import generation
-
 
 __seeded_random = __random.Random(generation["seed"])
 __random.random = __seeded_random.random

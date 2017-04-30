@@ -3,7 +3,6 @@ from logger import Logger
 
 
 class ScoreAction(ActionBase):
-
     def execute(self, actor_id, api):
         super().execute(actor_id, api)
         actor = api.actors.get(actor_id)

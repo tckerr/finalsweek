@@ -1,6 +1,7 @@
-import settings
-from pymongo import MongoClient
 from bson.objectid import ObjectId
+from pymongo import MongoClient
+
+import settings
 
 
 class MongoDbConnector(object):

@@ -3,7 +3,6 @@ from game.systems.phase_handlers.phase_handler_resolver import PhaseHandlerResol
 
 
 class PhaseApi(ProgramChildApi):
-
     def __init__(self, program_api) -> None:
         super().__init__(program_api)
         self.phase_handler_resolver = PhaseHandlerResolver(self.program_api)
@@ -27,4 +26,3 @@ class PhaseApi(ProgramChildApi):
             for phase in stage.phases:
                 if phase.id == phase_id:
                     self.phase_handler_resolver.on_complete(phase)
-

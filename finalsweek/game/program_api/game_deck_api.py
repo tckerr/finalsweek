@@ -5,7 +5,6 @@ from logger import Logger
 
 
 class GameDeckApi(ProgramChildApi):
-
     @accepts_operation(OperationType.Draw)
     @accepts_operator(OperatorType.Add)
     def draw_action_cards(self, operation):

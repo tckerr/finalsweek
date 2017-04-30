@@ -2,7 +2,6 @@ from game.scripting.api.program_child_api import ProgramChildApi
 
 
 class StudentApi(ProgramChildApi):
-
     def list_students(self):
         for seat in self.data.seats:
             student = seat.student

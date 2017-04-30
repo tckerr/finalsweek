@@ -1,11 +1,11 @@
+from game.configuration.definitions import OperationType, OperatorType, LogLevel, LogType
 from game.document.documents.in_play_effect import InPlayEffect
 from game.operation.decorators import accepts_operation, accepts_operator
-from game.configuration.definitions import OperationType, OperatorType, LogLevel, LogType
 from game.scripting.api.program_child_api import ProgramChildApi
 from game.systems.draw_manager import DrawManager
 from logger import Logger
-from util.random import random_id
 from util.helpers import floor_at_zero
+from util.random import random_id
 
 
 class ActorApi(ProgramChildApi):

@@ -12,7 +12,7 @@ class ActionCardDeckSeedFactory(object):
         for template in filtered_templates:
             for _ in range(0, cards_per_type):
                 card_list.append({
-                    "id":               random_id(),
+                    "id":                       random_id(),
                     "card_template_id": template["id"]
                 })
         shuffle(card_list)

@@ -32,8 +32,8 @@ class MutationTemplateSeedFactory(object):
 
     @staticmethod
     def get_mutations():
-        return MutationTemplate\
-            .objects\
-            .prefetch_related("operation_modifier")\
-            .order_by("id")\
+        return MutationTemplate \
+            .objects \
+            .prefetch_related("operation_modifier") \
+            .order_by("id") \
             .all()

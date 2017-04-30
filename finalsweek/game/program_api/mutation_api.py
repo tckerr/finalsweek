@@ -13,7 +13,7 @@ class MutationApi(ProgramChildApi):
 
     def remove_mutation(self, mutation_id):
         new_mutations = [m for m in self.data.mutations if m.id != mutation_id]
-        assert(len(new_mutations) == len(self.data.mutations) - 1)
+        assert (len(new_mutations) == len(self.data.mutations) - 1)
         self.data.mutations = new_mutations
 
     def create_and_register(self, mutation_template, **exports):

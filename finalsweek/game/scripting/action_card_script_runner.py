@@ -34,5 +34,5 @@ class ActionCardScriptRunner(TrustedScriptRunner):
 
     def log_script_start(self, *a, api, **k):
         super().log_script_start(self.actor_id, api, self.turn_prompt)
-        Logger.log("Executing with answers:", self.turn_prompt.closed, level=LogLevel.Info, log_type=LogType.Operational)
-
+        Logger.log("Executing with answers:", self.turn_prompt.closed, level=LogLevel.Info,
+                   log_type=LogType.Operational)

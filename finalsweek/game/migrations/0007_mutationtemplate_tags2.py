@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('game', '0006_auto_20170427_1956'),
     ]
@@ -15,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mutationtemplate',
             name='tags2',
-            field=models.CharField(choices=[('actor_action', 'Actor Action'), ('card', 'Card')], default='actor_action', max_length=255),
+            field=models.CharField(choices=[('actor_action', 'Actor Action'), ('card', 'Card')], default='actor_action',
+                                   max_length=255),
             preserve_default=False,
         ),
     ]

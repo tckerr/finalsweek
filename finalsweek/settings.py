@@ -1,4 +1,5 @@
 import os
+
 import finalsweek_auth as credentials
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,10 +35,10 @@ ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'BACKEND':  'django.template.backends.django.DjangoTemplates',
+        'DIRS':     [],
         'APP_DIRS': True,
-        'OPTIONS': {
+        'OPTIONS':  {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -50,15 +51,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wsgi.application'
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': credentials.app_db_name,
-        'USER': credentials.app_username,
+        'ENGINE':   'django.db.backends.mysql',
+        'NAME':     credentials.app_db_name,
+        'USER':     credentials.app_username,
         'PASSWORD': credentials.app_password,
-        'HOST': credentials.db_connection_host,
-        'PORT': credentials.db_connection_port,
+        'HOST':     credentials.db_connection_host,
+        'PORT':     credentials.db_connection_port,
     }
 }
 
@@ -85,9 +85,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_PERMISSION_CLASSES':     [
         'rest_framework.permissions.DjangoModelPermissions',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -99,24 +98,24 @@ REST_FRAMEWORK = {
 FINALSWEEK_LOG_DIR = BASE_DIR + "/log/games/"
 
 LOGGING = {
-    'version': 1,
-    'filters': {
+    'version':  1,
+    'filters':  {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
         }
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level':   'DEBUG',
             'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
+            'class':   'logging.StreamHandler',
         }
     },
-    'loggers': {
+    'loggers':  {
         'django.db.backends': {
-            'level': 'DEBUG',
+            'level':    'DEBUG',
             'handlers': [
-                #'console',
+                # 'console',
             ],
         }
     }

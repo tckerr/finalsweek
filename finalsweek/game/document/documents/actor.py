@@ -1,5 +1,5 @@
-from game.document.documents.in_play_effect import InPlayEffect
 from game.document.documents.document_base import DocumentBase
+from game.document.documents.in_play_effect import InPlayEffect
 from game.document.documents.pile import Pile
 
 
