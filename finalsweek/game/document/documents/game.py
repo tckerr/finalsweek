@@ -1,3 +1,4 @@
+from game.document.documents.card import CardIdDict
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.gameflow import Gameflow
 from game.document.documents.mutation import Mutation
@@ -8,14 +9,15 @@ from game.document.documents.seat import Seat
 
 class Game(DocumentBase):
     _field_definitions = {
-        "rules":                 Rules,
-        "gameflow":              Gameflow,
-        "action_card_deck":      Pile,
-        "afterschool_card_deck": Pile,
-        "discipline_card_deck":  Pile,
-        "seats":                 Seat,
-        "mutations":             Mutation,
-        "metadata":              dict
+        "rules":                  Rules,
+        "gameflow":               Gameflow,
+        "action_card_deck":       Pile,
+        "afterschool_card_deck":  Pile,
+        "discipline_card_deck":   Pile,
+        "phase_discipline_cards": CardIdDict,
+        "seats":                  Seat,
+        "mutations":              Mutation,
+        "metadata":               dict
     }
 
     def __init__(self, base_data, parent=None):

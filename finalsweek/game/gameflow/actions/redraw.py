@@ -1,5 +1,5 @@
 from game.gameflow.actions.base import ActionBase
-from game.systems.hand_refiller import DrawManager
+from game.systems.draw_manager import DrawManager
 
 
 class RedrawAction(ActionBase):

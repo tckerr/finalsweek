@@ -4,7 +4,6 @@ from game.scripting.api.sandbox_api import SandboxApi
 
 
 class ActorApi(SandboxApi):
-    # TODO: merge with program API
     def __init__(self, *args, **kwargs):
         super(ActorApi, self).__init__(*args, **kwargs)
 

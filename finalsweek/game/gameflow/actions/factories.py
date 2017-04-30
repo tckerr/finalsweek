@@ -10,7 +10,8 @@ class ActionFactory(object):
 
 
 class ScoreActionFactory(object):
-    def create(self):
+    @staticmethod
+    def create():
         return ScoreAction()
 
 

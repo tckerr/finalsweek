@@ -15,6 +15,7 @@ class GameInterface(object):
         return self.digest_provider.game_info_digest(game_id, api)
 
     # TODO: requesting_actor_id should be generated from auth user, may need to pull ProgramApi up a level to check this
+    # TODO: action shouldn't be passed in, but data to build an action should
     def take_turn(self, game_id, requesting_actor_id, action):
         api, turn = self.game_manager.load(game_id)
         if turn.actor_id != requesting_actor_id:

@@ -21,13 +21,14 @@ class GameSeedFactory(object):
         discipline_card_deck = self.discipline_card_deck_seed_factory.create(rules["card_templates"])
         seats = self.seat_seed_factory.create(rules["settings"], rules["student_infos"], player_count)
         data = {
-            "rules":                 rules,
-            "gameflow":              {"stages": []},
-            "action_card_deck":      action_card_deck,
-            "afterschool_card_deck": afterschool_card_deck,
-            "discipline_card_deck":  discipline_card_deck,
-            "seats":                 seats,
-            "mutations":             [],
-            "metadata":              {}
+            "rules":                  rules,
+            "gameflow":               {"stages": []},
+            "action_card_deck":       action_card_deck,
+            "afterschool_card_deck":  afterschool_card_deck,
+            "discipline_card_deck":   discipline_card_deck,
+            "phase_discipline_cards": {},
+            "seats":                  seats,
+            "mutations":              [],
+            "metadata":               {}
         }
         return data

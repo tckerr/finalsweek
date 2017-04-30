@@ -1,4 +1,4 @@
-from game.document.documents.document_base import DocumentBase
+from game.document.documents.document_base import DocumentBase, IdDict
 
 
 class Card(DocumentBase):
@@ -25,3 +25,7 @@ class Card(DocumentBase):
     @property
     def generates_mutation(self):
         return self.template.mutation_template_id is not None
+
+
+class CardIdDict(IdDict):
+    cls = Card
