@@ -6,10 +6,9 @@ SeatApi = __locals.get('SeatApi')
 export = __locals.get('export')
 # +- END DISCIPLINE CARD BOILERPLATE -------+
 
-for actor in ActorApi.get_actors():
-    trouble = min(actor.trouble, 5)
-    if trouble < 2:
-        continue
+actor = ActorApi.get_requestor()
+trouble = min(actor.trouble, 5)
+if trouble >= 2:
     ActorApi.add_torment(actor, 1)
     if trouble == 4:
         ActorApi.add_popularity(actor, -3)

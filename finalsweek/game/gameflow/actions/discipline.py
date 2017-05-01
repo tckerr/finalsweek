@@ -22,7 +22,7 @@ class DisciplineAction(ScriptCardAction):
     def _resolve_completion(self, actor_id, api, card, result):
         exclusions = []
         if card.generates_mutation:
-            exclusion = self.card_mutation_generator.generate(actor_id, api, card, result)
+            exclusion = self.card_mutation_generator.generate_without_transfer(actor_id, api, card, result)
             exclusions.append(exclusion)
         self._dispatch_discipline_message(actor_id, api, exclusions)
 

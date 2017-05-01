@@ -6,7 +6,7 @@ SeatApi = __locals.get('SeatApi')
 export = __locals.get('export')
 # +- END DISCIPLINE CARD BOILERPLATE -------+
 
-for actor in ActorApi.get_actors():
-    trouble = actor.trouble
-    ActorApi.add_grades(actor, -trouble)
-    ActorApi.add_popularity(actor, -trouble)
+actor = ActorApi.get_requestor()
+trouble = actor.trouble
+ActorApi.add_grades(actor, -trouble)
+ActorApi.add_popularity(actor, -trouble)

@@ -12,9 +12,7 @@ penalties = {
     3: -4,
     4: -5
 }
-
-for actor in ActorApi.get_actors():
-    trouble = min(actor.trouble, 4)
-    if trouble == 0:
-        continue
+actor = ActorApi.get_requestor()
+trouble = min(actor.trouble, 4)
+if trouble > 0:
     ActorApi.add_grades(actor, penalties[trouble])

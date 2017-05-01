@@ -9,3 +9,9 @@ class CardMutationGenerator(object):
             card_id=card.id,
             mutation_id=mutation.id)
         return mutation.id
+
+    @staticmethod
+    def generate_without_transfer(actor_id, api, card, result):
+        mutation_template = card.template.mutation_template
+        mutation = api.mutations.create_and_register(mutation_template, source_actor_id=actor_id, **result.exports)
+        return mutation.id

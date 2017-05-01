@@ -14,6 +14,7 @@ class MutationApi(ProgramChildApi):
     def remove_mutation(self, mutation_id):
         new_mutations = [m for m in self.data.mutations if m.id != mutation_id]
         assert (len(new_mutations) == len(self.data.mutations) - 1)
+        self._log_remove_mutation(mutation_id)
         self.data.mutations = new_mutations
 
     def create_and_register(self, mutation_template, **exports):
@@ -29,3 +30,7 @@ class MutationApi(ProgramChildApi):
 
     def _sort_mutations(self):
         self.data.mutations = sorted(self.data.mutations, key=lambda m: m.priority, reverse=True)
+
+    @staticmethod
+    def _log_remove_mutation(mutation_id):
+        Logger.log("Removed mutation {}".format(mutation_id), level=LogLevel.Info, log_type=LogType.GameLogic)

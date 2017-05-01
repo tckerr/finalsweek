@@ -6,9 +6,9 @@ SeatApi = __locals.get('SeatApi')
 export = __locals.get('export')
 # +- END DISCIPLINE CARD BOILERPLATE -------+
 
-for actor in ActorApi.get_actors():
-    trouble = actor.trouble
-    if trouble == 0:
-        ActorApi.add_grades(actor, 4)
-    elif trouble > 3:
-        ActorApi.add_grades(actor, -2)
+actor = ActorApi.get_requestor()
+trouble = actor.trouble
+if trouble == 0:
+    ActorApi.add_grades(actor, 4)
+elif trouble > 3:
+    ActorApi.add_grades(actor, -2)
