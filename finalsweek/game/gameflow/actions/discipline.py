@@ -28,7 +28,7 @@ class DisciplineAction(ScriptCardAction):
 
     @staticmethod
     def _get_current_turn(actor_id, api):
-        turn = api.turns.get_current_turn()
+        turn = api.turns.get_or_create_current_turn()
         assert turn.actor_id == actor_id
         return turn
 

@@ -48,6 +48,16 @@ class OperationModifierAdmin(admin.ModelAdmin):
 class MutationTemplateAdmin(admin.ModelAdmin):
     model = MutationTemplate
 
+    list_display = ("name", "priority", "get_tags", "get_expiry_criteria")
+
+    @staticmethod
+    def get_expiry_criteria(obj):
+        return ", ".join(obj.expiry_criteria)
+
+    @staticmethod
+    def get_tags(obj):
+        return ", ".join(obj.tags)
+
 
 admin.site.register(Card, CardAdmin)
 admin.site.register(OperationModifier, OperationModifierAdmin)

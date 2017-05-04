@@ -11,8 +11,11 @@ class TurnApi(ProgramChildApi):
         super().__init__(program_api)
         self.current_turn_provider = CurrentTurnProvider()
 
-    def get_current_turn(self, fresh=False):
+    def get_or_create_current_turn(self, fresh=False):
         return self.current_turn_provider.get_or_create_turn(self.program_api, fresh)
+
+    def get_current_turn(self):
+        return self.current_turn_provider.get_current_turn(self.program_api)
 
     def create_turn(self, phase_id, actor_id):
         for stage in self.data.gameflow.stages:
@@ -38,6 +41,6 @@ class TurnApi(ProgramChildApi):
         self.program_api.messenger.dispatch(GameflowMessage(GameflowMessageType.Turn, actor_id=turn.actor_id))
 
     def refresh_current_turn(self, turn_id):
-        turn = self.get_current_turn()
+        turn = self.get_or_create_current_turn()
         assert turn.id == turn_id
         turn.refresh()

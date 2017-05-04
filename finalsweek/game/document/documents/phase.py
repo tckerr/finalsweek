@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from game.document.documents.document_base import DocumentBase
+from game.document.documents.mutation import Mutation
 from game.document.documents.prompt import Prompt
 from game.document.documents.turn import Turn
 from util.random import random_id
@@ -11,7 +12,8 @@ class Phase(DocumentBase):
         "id":         str,
         "phase_type": str,
         "completed":  datetime,
-        "turns":      Turn
+        "turns":      Turn,
+        "mutations":  Mutation
     }
 
     @property
@@ -28,7 +30,8 @@ class Phase(DocumentBase):
             "actor_id":  actor_id,
             "log":       [],
             "completed": None,
-            "prompt":    self.create_prompt()
+            "prompt":    self.create_prompt(),
+            "mutations":  []
         }
         cls = self._field_definitions["turns"]
         turn = cls(turn_data, parent=self)

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from game.document.documents.document_base import DocumentBase
+from game.document.documents.mutation import Mutation
 from game.document.documents.prompt import Prompt
 
 
@@ -10,7 +11,8 @@ class Turn(DocumentBase):
         "actor_id":  str,
         "completed": datetime,
         "log":       list,
-        "prompt":    Prompt
+        "prompt":    Prompt,
+        "mutations": Mutation
     }
 
     def __init__(self, base_data, parent=None):

@@ -21,7 +21,7 @@ class MutationMessageReceiver(object):
             if MutationExpiryType.StageBound in mutation.expiry_criteria:
                 mutation.completed = True
         if mutation.completed:
-            api.actors.remove_mutation_and_card_in_play(mutation.id)
+            api.actors.remove_card_in_play(mutation.id)
 
     @staticmethod
     def actor_match(api, message, mutation):

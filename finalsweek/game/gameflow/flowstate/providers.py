@@ -14,6 +14,10 @@ class CurrentTurnProvider(object):
             return pending_turn
         return self.__create(api)
 
+    def get_current_turn(self, api,):
+        """Returns current turn or None if game is over"""
+        return  self.__pending(api)
+
     @staticmethod
     def __pending(api):
         for turn in api.turns.list_turns():

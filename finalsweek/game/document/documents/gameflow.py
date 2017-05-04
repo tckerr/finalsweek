@@ -17,7 +17,8 @@ class Gameflow(DocumentBase):
             "id":         random_id(),
             "stage_type": stage_type,
             "completed":  None,
-            "phases":     []
+            "phases":     [],
+            "mutations":  []
         }
         cls = self._field_definitions["stages"]
         stage = cls(stage_data, parent=self)

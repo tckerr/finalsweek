@@ -15,7 +15,7 @@ class ActionExecutor(object):
 
     def _next_actor_turn(self, api):
         while True:
-            turn = api.turns.get_current_turn()
+            turn = api.turns.get_or_create_current_turn()
             if not turn:
                 return
 

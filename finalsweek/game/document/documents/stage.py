@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from game.document.documents.document_base import DocumentBase
+from game.document.documents.mutation import Mutation
 from game.document.documents.phase import Phase
 from util.random import random_id
 
@@ -11,6 +12,7 @@ class Stage(DocumentBase):
         "stage_type": str,
         "completed":  datetime,
         "phases":     Phase,
+        "mutations":  Mutation
     }
 
     def __init__(self, base_data, parent=None):
@@ -22,7 +24,8 @@ class Stage(DocumentBase):
             "id":         random_id(),
             "phase_type": phase_type,
             "completed":  None,
-            "turns":      []
+            "turns":      [],
+            "mutations":  []
         }
         cls = self._field_definitions["phases"]
         phase = cls(phase_data, parent=self)

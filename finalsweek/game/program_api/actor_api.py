@@ -85,8 +85,12 @@ class ActorApi(ProgramChildApi):
         in_play_effect = InPlayEffect(in_play_effect_seed, target_actor)
         target_actor.cards_in_play.append(in_play_effect)
 
+    # TODO: delete me, now
     def remove_mutation_and_card_in_play(self, mutation_id):
         self.program_api.mutations.remove_mutation(mutation_id)
+        self.remove_card_in_play(mutation_id)
+
+    def remove_card_in_play(self, mutation_id):
         card_to_remove = None
         for actor in self._actors():
             for card_in_play in actor.cards_in_play:
