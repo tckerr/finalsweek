@@ -24,7 +24,7 @@ class CardTypeName:
 
 class MutationGameflowBinding(ListableClass):
     Turn = "Turn"  # effect source will be gone after current turn
-    NextTurn = "NextTurn"  # effect source will be created next turn and gone after next turn
+    NextClasstimePhase = "Next Classtime Phase"
     Phase = "Phase"  # effect source will be gone after current phase
     Stage = "Stage"  # effect source will be gone after current stage
     Game = "Game"  # effect source is permanent

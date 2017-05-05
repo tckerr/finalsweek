@@ -17,6 +17,7 @@ class DisciplineAction(ScriptCardAction):
         return discipline_card_script_runner.run(api, script)
 
     # TODO: there's some duplication between this class and ActionCardAction
+    # TODO: discipline cards should probably get transferred into the board's "in play" hand
     def _resolve_completion(self, actor_id, api, card, result):
         if card.generates_mutation:
             self.card_mutation_generator.generate_without_transfer(actor_id, api, card, result)

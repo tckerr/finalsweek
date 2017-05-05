@@ -37,7 +37,7 @@ class MutationApi(ProgramChildApi):
 
     def _register(self, mutation):
         gameflow_binding = mutation.gameflow_binding
-        if gameflow_binding == MutationGameflowBinding.NextTurn:
+        if gameflow_binding == MutationGameflowBinding.NextClasstimePhase:
             self.data.queued_mutations.append(mutation)
         elif gameflow_binding == MutationGameflowBinding.Turn:
             self.program_api.turns.get_current_turn().mutations.append(mutation)

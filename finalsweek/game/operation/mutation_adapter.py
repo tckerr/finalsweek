@@ -11,8 +11,6 @@ class MutationAdapter(object):
 
     @staticmethod
     def __adapt(mutations, binding):
-        log_message = "Adding queued mutations (count: {}) to newly created turn.".format(len(mutations))
-        Logger.log(log_message, level=LogLevel.Debug, log_type=LogType.GameLogic)
         results = []
         for mutation in mutations:
             mutation.gameflow_binding = binding

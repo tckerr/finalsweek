@@ -1,3 +1,4 @@
+from game.configuration.definitions import PhaseTypeName
 from game.document.document_factories.phase_factory import PhaseFactory
 from game.operation.mutation_adapter import MutationAdapter
 from game.scripting.api.program_child_api import ProgramChildApi
@@ -14,7 +15,10 @@ class PhaseApi(ProgramChildApi):
     def create_phase(self, stage_id, phase_type):
         for stage in self.data.gameflow.stages:
             if stage.id == stage_id:
-                mutation_queue = self._pop_mutation_queue()
+                # TODO: new doc type to support a queue for each type
+                mutation_queue = []
+                if phase_type == PhaseTypeName.Classtime:
+                    mutation_queue = self._pop_mutation_queue()
                 new_phase = self.phase_factory.create(phase_type, stage, mutation_queue)
                 self.phase_handler_resolver.on_create(new_phase)
                 return new_phase
