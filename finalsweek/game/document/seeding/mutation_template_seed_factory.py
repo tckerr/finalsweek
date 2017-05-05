@@ -12,7 +12,8 @@ class MutationTemplateAdapter(object):
             "tags":               data.tags,
             "priority":           data.priority,
             "match_all":          data.match_all,
-            "expiry_criteria":    data.expiry_criteria,
+            "gameflow_binding":   data.gameflow_binding,
+            "uses":               data.uses,
             "operation_modifier": self.operation_modifier_seed_factory.create(data.operation_modifier)
         }
 

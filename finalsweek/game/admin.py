@@ -24,7 +24,7 @@ class CardAdmin(admin.ModelAdmin):
     actions = [activate, deactivate]
 
     def get_form(self, request, obj=None, **kwargs):
-        form = super(CardAdmin, self).get_form(request, obj, **kwargs)
+        form = super().get_form(request, obj, **kwargs)
         form.base_fields['mutation_template'].required = False
         return form
 
@@ -48,15 +48,16 @@ class OperationModifierAdmin(admin.ModelAdmin):
 class MutationTemplateAdmin(admin.ModelAdmin):
     model = MutationTemplate
 
-    list_display = ("name", "priority", "get_tags", "get_expiry_criteria")
-
-    @staticmethod
-    def get_expiry_criteria(obj):
-        return ", ".join(obj.expiry_criteria)
+    list_display = ("name", "priority", "get_tags", "gameflow_binding")
 
     @staticmethod
     def get_tags(obj):
         return ", ".join(obj.tags)
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['uses'].required = False
+        return form
 
 
 admin.site.register(Card, CardAdmin)

@@ -74,7 +74,8 @@ class DocumentBase(object):
             return cls(*args)
         except TypeError as e:
             message = "Warning: could not convert {}: {}".format(cls.__name__ if cls else "NONE?", e)
-            Logger.log(message, log_level=LogLevel.Warning, log_type=LogType.DocumentConversion)
+            Logger.log(message, level=LogLevel.Warning, log_type=LogType.DocumentConversion)
+            raise Exception(message)
 
     def _assert_validation(self, base_data):
         if self._field_definitions is None:

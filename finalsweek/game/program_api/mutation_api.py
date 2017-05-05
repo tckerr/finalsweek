@@ -1,4 +1,4 @@
-from game.configuration.definitions import LogLevel, LogType, MutationExpiryType
+from game.configuration.definitions import LogLevel, LogType, MutationGameflowBinding
 from game.operation.factories import MutationFactory
 from game.operation.operation_mutator import OperationMutator
 from game.scripting.api.program_child_api import ProgramChildApi
@@ -30,21 +30,25 @@ class MutationApi(ProgramChildApi):
     # TODO: support for lower lvl mutations
     def create_and_register(self, mutation_template, **exports):
         mutation = self.mutation_factory.create_from_template(mutation_template, **exports)
-        self.data.mutations.append(mutation)
+        self._register(mutation)
         message = "Creating mutation {}".format(mutation.id)
         Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
         return mutation
 
-    def _register(self, expiry_criteria, mutation):
-        turn = self.program_api.turns.get_current_turn()
-        if expiry_criteria == MutationExpiryType.TurnBound:
-            turn.mutations.append(mutation)
-        elif expiry_criteria == MutationExpiryType.PhaseBound:
-            turn.phase.mutations.append(mutation)
-        elif expiry_criteria == MutationExpiryType.StageBound:
-            turn.phase.stage.mutations.append(mutation)
-        else:
+    def _register(self, mutation):
+        gameflow_binding = mutation.gameflow_binding
+        if gameflow_binding == MutationGameflowBinding.NextTurn:
+            self.data.queued_mutations.append(mutation)
+        elif gameflow_binding == MutationGameflowBinding.Turn:
+            self.program_api.turns.get_current_turn().mutations.append(mutation)
+        elif gameflow_binding == MutationGameflowBinding.Phase:
+            self.program_api.turns.get_current_turn().phase.mutations.append(mutation)
+        elif gameflow_binding == MutationGameflowBinding.Stage:
+            self.program_api.turns.get_current_turn().phase.stage.mutations.append(mutation)
+        elif gameflow_binding == MutationGameflowBinding.Game:
             self.data.mutations.append(mutation)
+        else:
+            raise Exception("Invalid MutationGameflowBinding: {}".format(gameflow_binding))
 
     def mutate(self, operation):
         return self.operation_mutator.mutate(operation, self._mutations)

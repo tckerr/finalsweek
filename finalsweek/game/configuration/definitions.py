@@ -22,14 +22,12 @@ class CardTypeName:
     AfterSchoolCard = "After School Card"
 
 
-class MutationExpiryType(ListableClass):
-    Permanent = "Permanent"
-    UntilRemoved = "Until Removed"
-    ActionBound = "Action Bound"  # effect source will be gone after next action
-    TurnBound = "Turn Bound"  # effect source will be gone after next turn
-    PhaseBound = "Phase Bound"  # effect source will be gone after next phase
-    StageBound = "Stage Bound"  # effect source will be gone after next stage
-    UseBound = "Use Bound"  # effect source will be gone after next use
+class MutationGameflowBinding(ListableClass):
+    Turn = "Turn"  # effect source will be gone after current turn
+    NextTurn = "NextTurn"  # effect source will be created next turn and gone after next turn
+    Phase = "Phase"  # effect source will be gone after current phase
+    Stage = "Stage"  # effect source will be gone after current stage
+    Game = "Game"  # effect source is permanent
 
 
 class Tag(ListableClass):
@@ -91,15 +89,6 @@ class OperatorType(object):
     Set = "Set"
     Get = "Get"
     RefillActionCardHand = "RefillActionCardHand"
-
-
-class GameflowMessageType:
-    Use = "Use"
-    Action = "Action"
-    Turn = "Turn"
-    Phase = "Phase"
-    Stage = "Stage"
-    Discipline = "Discipline"
 
 
 class LogLevel:

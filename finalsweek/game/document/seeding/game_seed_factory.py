@@ -29,6 +29,7 @@ class GameSeedFactory(object):
             "phase_discipline_cards": {},
             "seats":                  seats,
             "mutations":              [],
+            "queued_mutations":       [],
             "metadata":               {}
         }
         return data

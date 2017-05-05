@@ -17,6 +17,7 @@ class Game(DocumentBase):
         "phase_discipline_cards": CardIdDict,
         "seats":                  Seat,
         "mutations":              Mutation,
+        "queued_mutations":       Mutation,  # Just for next turn at the moment
         "metadata":               dict
     }
 

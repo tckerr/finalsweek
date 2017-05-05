@@ -14,7 +14,8 @@ class MutationFactory(object):
             "tags":               template.tags,
             "priority":           template.priority,
             "match_all":          template.match_all,
-            "expiry_criteria":    template.expiry_criteria,
+            "gameflow_binding":   template.gameflow_binding,
+            "uses":               template.uses,
             "operation_modifier": template.operation_modifier
         }
         mutation_data.update(exports)

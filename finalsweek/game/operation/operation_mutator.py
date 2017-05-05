@@ -1,6 +1,4 @@
-from game.configuration.definitions import GameflowMessageType
 from game.exceptions import ExportException
-from game.program_api.message_api import GameflowMessage
 from game.scripting.mutation_script_runner import MutationScriptRunnerFactory
 
 
@@ -23,8 +21,10 @@ class OperationMutator(object):
         result = runner.run(self.program_api, script)
         if "operation" not in result.exports:
             raise ExportException("Operation modifier scripts must export an 'operation'")
-        # TODO: too end-around?
-        self.program_api.messenger.dispatch(GameflowMessage(GameflowMessageType.Use), mutation_id=mutation.id)
+        # TODO: extract
+        mutation.decrement_uses()
+        if mutation.expired:
+            self.program_api.actors.remove_card_in_play(mutation.id)
         return operation
 
     @staticmethod

@@ -1,6 +1,4 @@
-from game.configuration.definitions import GameflowMessageType
 from game.gameflow.actions.script_card_action import ScriptCardAction
-from game.program_api.message_api import GameflowMessage
 from game.scripting.discipline_card_script_runner import DisciplineCardScriptRunner
 
 
@@ -20,18 +18,11 @@ class DisciplineAction(ScriptCardAction):
 
     # TODO: there's some duplication between this class and ActionCardAction
     def _resolve_completion(self, actor_id, api, card, result):
-        exclusions = []
         if card.generates_mutation:
-            exclusion = self.card_mutation_generator.generate_without_transfer(actor_id, api, card, result)
-            exclusions.append(exclusion)
-        self._dispatch_discipline_message(actor_id, api, exclusions)
+            self.card_mutation_generator.generate_without_transfer(actor_id, api, card, result)
 
     @staticmethod
     def _get_current_turn(actor_id, api):
         turn = api.turns.get_or_create_current_turn()
         assert turn.actor_id == actor_id
         return turn
-
-    @staticmethod
-    def _dispatch_discipline_message(actor_id, api, exclusions):
-        api.messenger.dispatch(GameflowMessage(GameflowMessageType.Discipline, actor_id=actor_id), exclude=exclusions)

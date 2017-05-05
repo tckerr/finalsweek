@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from game.configuration.definitions import GameflowMessageType, LogLevel, LogType
-from game.program_api.message_api import GameflowMessage
+from game.configuration.definitions import LogLevel, LogType
 from logger import Logger
 
 
@@ -15,7 +14,6 @@ class PhaseHandlerBase(object):
 
     def on_complete(self, phase):
         phase.completed = datetime.utcnow()
-        self.api.messenger.dispatch(GameflowMessage(GameflowMessageType.Phase))
         self._log_phase_complete(phase)
 
     @staticmethod

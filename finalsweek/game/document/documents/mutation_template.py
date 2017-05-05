@@ -8,6 +8,7 @@ class MutationTemplate(DocumentBase):
         "tags":               str,
         "priority":           int,
         "match_all":          bool,
-        "expiry_criteria":    list,
+        "gameflow_binding":   str,
+        "uses":               int,
         "operation_modifier": OperationModifier
     }

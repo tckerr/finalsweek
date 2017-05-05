@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from multiselectfield import MultiSelectField
 
-from game.configuration.definitions import Tag, MutationExpiryType
+from game.configuration.definitions import Tag, MutationGameflowBinding
 
 
 class DefaultModel(models.Model):
@@ -99,18 +99,11 @@ class MutationTemplate(DefaultModel):
     def __str__(self):
         return self.name or "undefined"
 
-    # source_actor_id = models.BooleanField(default=False)
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, default="")
     tags = MultiSelectField(choices=Tag.prop_list())
     priority = models.IntegerField(default=0)
-
-    # can be used if we want
+    uses = models.IntegerField(default=None, null=True)
     match_all = models.BooleanField(default=False)
-
-    # need to create this on the mutation class
-    expiry_criteria = MultiSelectField(choices=MutationExpiryType.prop_list())
-
-    # currently mutation_effect_id on the resulting Mutation (we're renaming mutation effect to OperationModifier)
+    gameflow_binding = models.CharField(max_length=255, choices=MutationGameflowBinding.prop_list())
     operation_modifier = models.ForeignKey(OperationModifier)

@@ -1,14 +1,14 @@
 from datetime import datetime
 
-from game.configuration.definitions import GameflowMessageType
+from game.document.document_factories.turn_factory import TurnFactory
 from game.gameflow.flowstate.providers import CurrentTurnProvider
-from game.program_api.message_api import GameflowMessage
 from game.scripting.api.program_child_api import ProgramChildApi
 
 
 class TurnApi(ProgramChildApi):
     def __init__(self, program_api) -> None:
         super().__init__(program_api)
+        self.turn_factory = TurnFactory()
         self.current_turn_provider = CurrentTurnProvider()
 
     def get_or_create_current_turn(self, fresh=False):
@@ -21,8 +21,11 @@ class TurnApi(ProgramChildApi):
         for stage in self.data.gameflow.stages:
             for phase in stage.phases:
                 if phase.id == phase_id:
-                    return phase.create_turn(actor_id)
+                    return self._create_turn(actor_id, phase)
         raise Exception("Phase {} not found.".format(phase_id))
+
+    def _create_turn(self, actor_id, phase):
+        return self.turn_factory.create(actor_id, phase, [])
 
     def list_turns(self):
         for stage in self.data.gameflow.stages:
@@ -36,9 +39,9 @@ class TurnApi(ProgramChildApi):
                 return self._complete(turn)
         raise Exception("Turn not found: {}".format(turn_id))
 
-    def _complete(self, turn):
+    @staticmethod
+    def _complete(turn):
         turn.completed = datetime.utcnow()
-        self.program_api.messenger.dispatch(GameflowMessage(GameflowMessageType.Turn, actor_id=turn.actor_id))
 
     def refresh_current_turn(self, turn_id):
         turn = self.get_or_create_current_turn()
