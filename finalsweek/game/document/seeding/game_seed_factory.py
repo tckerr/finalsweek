@@ -1,12 +1,14 @@
 from game.document.seeding.action_card_deck_seed_factory import ActionCardDeckSeedFactory
 from game.document.seeding.afterschool_card_deck_seed_factory import AfterSchoolCardDeckSeedFactory
 from game.document.seeding.discipline_card_deck_seed_factory import DisciplineCardDeckSeedFactory
+from game.document.seeding.mutation_queue_seed_factory import MutationQueueSeedFactory
 from game.document.seeding.rules_seed_factory import RulesSeedFactory
 from game.document.seeding.seat_seed_factory import SeatSeedFactory
 
 
 class GameSeedFactory(object):
     def __init__(self):
+        self.mutation_queue_seed_factory = MutationQueueSeedFactory()
         self.rules_seed_factory = RulesSeedFactory()
         self.action_card_deck_seed_factory = ActionCardDeckSeedFactory()
         self.afterschool_card_deck_seed_factory = AfterSchoolCardDeckSeedFactory()
@@ -30,6 +32,7 @@ class GameSeedFactory(object):
             "seats":                  seats,
             "mutations":              [],
             "queued_mutations":       [],
+            "mutation_queue":         {},
             "metadata":               {}
         }
         return data

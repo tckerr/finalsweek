@@ -23,7 +23,6 @@ class ActionCardAction(ScriptCardAction):
     def _resolve_completion(self, actor_id, api, card, result):
         actor = api.actors.get(actor_id)
         self.action_card_trouble_applier.apply(api, actor, card)
-        exclusions = []
         if card.generates_mutation:
             self.card_mutation_generator.generate(actor_id, api, card, result)
         else:

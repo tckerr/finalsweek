@@ -2,6 +2,7 @@ from game.document.documents.card import CardIdDict
 from game.document.documents.document_base import DocumentBase
 from game.document.documents.gameflow import Gameflow
 from game.document.documents.mutation import Mutation
+from game.document.documents.mutation_queue import MutationQueueIdDict
 from game.document.documents.pile import Pile
 from game.document.documents.rules import Rules
 from game.document.documents.seat import Seat
@@ -18,6 +19,7 @@ class Game(DocumentBase):
         "seats":                  Seat,
         "mutations":              Mutation,
         "queued_mutations":       Mutation,  # Just for next turn at the moment
+        "mutation_queue":         MutationQueueIdDict,  # key is MutationGameflowBinding
         "metadata":               dict
     }
 

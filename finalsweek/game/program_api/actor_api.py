@@ -85,11 +85,6 @@ class ActorApi(ProgramChildApi):
         in_play_effect = InPlayEffect(in_play_effect_seed, target_actor)
         target_actor.cards_in_play.append(in_play_effect)
 
-    # TODO: delete me, now
-    def remove_mutation_and_card_in_play(self, mutation_id):
-        self.program_api.mutations.remove_mutation(mutation_id)
-        self.remove_card_in_play(mutation_id)
-
     def remove_card_in_play(self, mutation_id):
         card_to_remove = None
         for actor in self._actors():
@@ -99,7 +94,7 @@ class ActorApi(ProgramChildApi):
                     break
             if card_to_remove is not None:
                 actor.cards_in_play.remove(card_to_remove)
-                message = "Removed mutation {} from play".format(mutation_id)
+                message = "Removed card associated to mutation {} from play".format(mutation_id)
                 Logger.log(message, level=LogLevel.Info, log_type=LogType.GameLogic)
             return
 

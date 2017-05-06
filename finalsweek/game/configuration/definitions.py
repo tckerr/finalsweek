@@ -24,10 +24,30 @@ class CardTypeName:
 
 class MutationGameflowBinding(ListableClass):
     Turn = "Turn"  # effect source will be gone after current turn
+    NextChooseSeatsPhase = "Next Choose Seats Phase"
+    NextAccumulationPhase = "Next Accumulation Phase"
     NextClasstimePhase = "Next Classtime Phase"
+    NextDismissalPhase = "Next Dismissal Phase"
+    NextAfterSchoolPhase = "Next After School Phase"
+    NextScorePhase = "Next Score Phase"
     Phase = "Phase"  # effect source will be gone after current phase
     Stage = "Stage"  # effect source will be gone after current stage
     Game = "Game"  # effect source is permanent
+
+
+class GameflowTypeMutationGameflowBindingMap(object):
+    @staticmethod
+    def get(item):
+        return GameflowTypeMutationGameflowBindingMap._map.get(item)
+
+    _map = {
+        PhaseTypeName.ChooseSeats:  MutationGameflowBinding.NextChooseSeatsPhase,
+        PhaseTypeName.Accumulation: MutationGameflowBinding.NextAccumulationPhase,
+        PhaseTypeName.Classtime:    MutationGameflowBinding.NextClasstimePhase,
+        PhaseTypeName.Dismissal:    MutationGameflowBinding.NextDismissalPhase,
+        PhaseTypeName.AfterSchool:  MutationGameflowBinding.NextAfterSchoolPhase,
+        PhaseTypeName.Score:        MutationGameflowBinding.NextScorePhase
+    }
 
 
 class Tag(ListableClass):

@@ -1,4 +1,6 @@
 from game.configuration.definitions import LogLevel, LogType, MutationGameflowBinding
+from game.document.documents.mutation_queue import MutationQueue
+from game.document.seeding.mutation_queue_seed_factory import MutationQueueFactory
 from game.operation.factories import MutationFactory
 from game.operation.operation_mutator import OperationMutator
 from game.scripting.api.program_child_api import ProgramChildApi
@@ -10,6 +12,7 @@ class MutationApi(ProgramChildApi):
         super().__init__(program_api)
         self.mutation_factory = MutationFactory()
         self.operation_mutator = OperationMutator(program_api)
+        self.mutation_queue_factory = MutationQueueFactory()
 
     @property
     def _mutations(self):
@@ -37,9 +40,10 @@ class MutationApi(ProgramChildApi):
 
     def _register(self, mutation):
         gameflow_binding = mutation.gameflow_binding
-        if gameflow_binding == MutationGameflowBinding.NextClasstimePhase:
-            self.data.queued_mutations.append(mutation)
-        elif gameflow_binding == MutationGameflowBinding.Turn:
+        if gameflow_binding not in [v for k, v in MutationGameflowBinding.prop_list()]:
+            raise Exception("Invalid MutationGameflowBinding: {}".format(gameflow_binding))
+        # TODO: convert these to "Current..." to make it clear
+        if gameflow_binding == MutationGameflowBinding.Turn:
             self.program_api.turns.get_current_turn().mutations.append(mutation)
         elif gameflow_binding == MutationGameflowBinding.Phase:
             self.program_api.turns.get_current_turn().phase.mutations.append(mutation)
@@ -48,7 +52,10 @@ class MutationApi(ProgramChildApi):
         elif gameflow_binding == MutationGameflowBinding.Game:
             self.data.mutations.append(mutation)
         else:
-            raise Exception("Invalid MutationGameflowBinding: {}".format(gameflow_binding))
+            # register for next instance of that type
+            if gameflow_binding not in self.data.mutation_queue:
+                self.data.mutation_queue[gameflow_binding] = self.mutation_queue_factory.create()
+            self.data.mutation_queue[gameflow_binding].mutations.append(mutation)
 
     def mutate(self, operation):
         return self.operation_mutator.mutate(operation, self._mutations)

@@ -14,6 +14,8 @@ class PhaseHandlerBase(object):
 
     def on_complete(self, phase):
         phase.completed = datetime.utcnow()
+        for mutation in phase.mutations:
+            self.api.actors.remove_card_in_play(mutation.id)
         self._log_phase_complete(phase)
 
     @staticmethod

@@ -17,6 +17,7 @@ class Mutation(DocumentBase):
     }
 
     def __init__(self, base_data, parent=None):
+        self.source_actor_id = None
         self.id = None
         self.gameflow_binding = None
         self.uses = None
@@ -25,6 +26,18 @@ class Mutation(DocumentBase):
         self.tags = None
         super().__init__(base_data, parent)
         self.mutation_matcher = MutationMatcher()
+
+    @property
+    def summary(self):
+        return "[Binding: {binding}, " \
+               "Uses: {uses}, " \
+               "TargetedActor: {targeted_actor_id}, " \
+               "SourceActor: {source_actor_id}]".format(
+            binding=self.gameflow_binding,
+            uses=self.uses,
+            targeted_actor_id=self.targeted_actor_id,
+            source_actor_id=self.source_actor_id
+        )
 
     @property
     def expired(self):
