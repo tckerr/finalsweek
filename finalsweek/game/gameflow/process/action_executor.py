@@ -1,6 +1,6 @@
-from game.configuration.definitions import LogType, LogLevel
 from game.gameflow.actions.factories import AutomatedActionFactory
-from logger import Logger
+from trace.logger import Logger
+from trace.definitions import LogLevel, LogType
 
 
 class ActionExecutor(object):

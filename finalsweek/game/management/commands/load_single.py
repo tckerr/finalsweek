@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from game.test_runner import TestRunner
+from test_runner import TestRunner
 
 
 class Command(BaseCommand):

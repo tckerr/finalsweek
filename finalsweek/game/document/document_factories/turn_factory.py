@@ -1,8 +1,8 @@
-from game.configuration.definitions import LogLevel, LogType
 from game.document.documents.turn import Turn
 from game.document.seeding.turn_seed_factory import TurnSeedFactory
 from game.operation.mutation_adapter import MutationAdapter
-from logger import Logger
+from trace.logger import Logger
+from trace.definitions import LogLevel, LogType
 
 
 class TurnFactory(object):

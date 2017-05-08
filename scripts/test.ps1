@@ -2,7 +2,7 @@ param(
     [string]$test_name = "create"
 )
 
-$TEST_ROOT = "$($PSScriptRoot)\test\"
+$TEST_ROOT = "$($PSScriptRoot)\_test\"
 
 switch ($test_name) {
     "create"    { & "$($TEST_ROOT)\create_single.ps1" }

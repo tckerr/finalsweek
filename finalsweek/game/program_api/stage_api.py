@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from game.configuration.definitions import LogLevel, LogType
 from game.scripting.api.program_child_api import ProgramChildApi
-from logger import Logger
+from trace.logger import Logger
+from trace.definitions import LogLevel, LogType
 
 
 class StageApi(ProgramChildApi):

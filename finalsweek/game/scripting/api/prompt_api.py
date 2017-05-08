@@ -1,5 +1,5 @@
 from game.scripting.api.sandbox_api import SandboxApi
-from logger import log
+from trace.logger import log
 
 
 class PromptException(Exception):

@@ -3,7 +3,7 @@ from game.scripting.api.prompt_api import PromptException
 from game.scripting.api.seat_api import SeatApi
 from game.scripting.api.student_api import StudentApi
 from game.scripting.repositories import ScriptContextRepository
-from logger import log
+from trace.logger import log
 from util.helpers import set_in_dict
 
 

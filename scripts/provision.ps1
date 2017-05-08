@@ -47,8 +47,10 @@ pip install markdown
 pip install django-filter
 pip install wheel
 pip install names
-pip install siftpy -U --no-cache-dir
 pip install django-multiselectfield
+pip install django-rest-auth
+pip install django-cors-headers
+pip install django-rest-auth[with_social]
 
 write-host "Running initial migration..." -ForegroundColor Cyan
 ./migrate.ps1
@@ -57,6 +59,10 @@ if($s){
     write-host "Creating superuser..." -ForegroundColor Cyan
     python ../finalsweek/manage.py createsuperuser
 }
+
+write-host "Installing mongo service on port 8001..." -ForegroundColor Cyan
+mongod --remove
+mongod --install --port 8001 --dbpath $PSScriptRoot/../data/mongo --logpath $PSScriptRoot/../log/mongodb.log
 
 deactivate
 write-host "Done!" -ForegroundColor Green

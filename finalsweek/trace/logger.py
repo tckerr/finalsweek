@@ -4,8 +4,8 @@ import uuid
 
 import settings as django_settings
 from game.configuration import settings
-from game.configuration.definitions import LogType, LogLevel
 from game.configuration.settings import bcolors
+from trace.definitions import LogLevel, LogType
 
 
 def log(*a, **k):
@@ -71,3 +71,5 @@ class Logger(object):
 
     def get_log_type_color(self, log_type):
         return self.options.log_type_colors.get(log_type, "")
+
+

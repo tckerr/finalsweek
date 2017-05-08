@@ -1,5 +1,5 @@
 from game.gameflow.actions.base import ActionBase
-from logger import Logger
+from trace.logger import Logger
 
 
 class ScoreAction(ActionBase):

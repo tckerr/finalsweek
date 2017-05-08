@@ -2,8 +2,8 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand
 
-import logger
-from game.test_runner import TestRunner
+from trace import logger
+from test_runner import TestRunner
 
 
 class Command(BaseCommand):

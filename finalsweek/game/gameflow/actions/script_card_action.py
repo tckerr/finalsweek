@@ -7,8 +7,8 @@ from game.systems.card_mutation_generator import CardMutationGenerator
 class ScriptCardAction(ActionBase):
     __metaclass__ = ABCMeta
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, data) -> None:
+        super().__init__(data)
         self.card_mutation_generator = CardMutationGenerator()
 
     def execute(self, actor_id, api):

@@ -1,8 +1,8 @@
-from game.configuration.definitions import LogLevel, LogType
 from game.scripting.api.prompt_api import PromptApi
 from game.scripting.repositories import ActionCardScriptContextRepository, PromptScriptContextRepository
 from game.scripting.trusted_script_runner import TrustedScriptRunner, ScriptResult
-from logger import log, Logger
+from trace.logger import log, Logger
+from trace.definitions import LogLevel, LogType
 
 
 class PromptScriptResult(ScriptResult):

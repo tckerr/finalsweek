@@ -1,11 +1,12 @@
+from game.document.documents.prompt import Prompt
 from game.gameflow.actions.script_card_action import ScriptCardAction
 from game.scripting.discipline_card_script_runner import DisciplineCardScriptRunner
 
 
 class DisciplineAction(ScriptCardAction):
-    def __init__(self, prompt) -> None:
-        super().__init__()
-        self.prompt = prompt
+    def __init__(self, data) -> None:
+        super().__init__(data)
+        self.prompt = Prompt(data["prompt"])
 
     def _get_card(self, actor_id, api):
         # TODO: check if fresh is needed

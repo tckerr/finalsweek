@@ -1,8 +1,8 @@
-from game.configuration.definitions import LogLevel, LogType
 from game.document.documents.phase import Phase
 from game.document.seeding.phase_seed_factory import PhaseSeedFactory
 from game.operation.mutation_adapter import MutationAdapter
-from logger import Logger
+from trace.logger import Logger
+from trace.definitions import LogLevel, LogType
 
 
 class PhaseFactory(object):

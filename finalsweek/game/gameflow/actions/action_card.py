@@ -1,3 +1,4 @@
+from game.document.documents.prompt import Prompt
 from game.gameflow.actions.script_card_action import ScriptCardAction
 from game.scripting.played_card_script_runner import ActionCardScriptRunner
 from game.systems.action_card_expender import ActionCardExpender
@@ -5,10 +6,10 @@ from game.systems.action_card_trouble_applier import ActionCardTroubleApplier
 
 
 class ActionCardAction(ScriptCardAction):
-    def __init__(self, card_id, prompt) -> None:
-        super().__init__()
-        self.prompt = prompt
-        self.card_id = card_id
+    def __init__(self, data) -> None:
+        super().__init__(data)
+        self.prompt = Prompt(data["prompt"]) # TODO: make not just data but actual prompt
+        self.card_id = data["card_id"]
         self.action_card_trouble_applier = ActionCardTroubleApplier()
         self.action_card_expender = ActionCardExpender()
 

@@ -1,7 +1,7 @@
-from game.configuration.definitions import LogLevel, LogType
 from game.exceptions import ExportException
 from game.scripting.mutation_script_runner import MutationScriptRunnerFactory
-from logger import Logger
+from trace.logger import Logger
+from trace.definitions import LogLevel, LogType
 
 
 class OperationMutator(object):

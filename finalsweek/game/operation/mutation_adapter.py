@@ -1,5 +1,4 @@
-from game.configuration.definitions import MutationGameflowBinding, LogLevel, LogType
-from logger import Logger
+from game.configuration.definitions import MutationGameflowBinding
 
 
 class MutationAdapter(object):

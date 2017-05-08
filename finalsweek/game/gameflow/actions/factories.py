@@ -12,7 +12,7 @@ class ActionFactory(object):
 class ScoreActionFactory(object):
     @staticmethod
     def create():
-        return ScoreAction()
+        return ScoreAction({})
 
 
 class AccumulationActionFactory(ActionFactory):

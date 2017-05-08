@@ -12,7 +12,8 @@ class GameInterface(object):
 
     def create(self, player_count):
         game_id, api = self.game_manager.new(player_count)
-        return self.digest_provider.game_info_digest(game_id, api)
+        turn = api.turns.get_current_turn()
+        return self.digest_provider.general_digest(game_id, api, turn)
 
     # TODO: requesting_actor_id should be generated from auth user, may need to pull ProgramApi up a level to check this
     # TODO: action shouldn't be passed in, but data to build an action should
@@ -34,4 +35,4 @@ class GameInterface(object):
         return self.__summarize(api, requesting_actor_id, turn, game_id)
 
     def __summarize(self, api, requesting_actor_id, turn, game_id):
-        return self.digest_provider.general_digest(game_id, api, turn, requesting_actor_id)
+        return self.digest_provider.general_digest(game_id, api, turn)

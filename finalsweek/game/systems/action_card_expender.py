@@ -1,5 +1,5 @@
-from game.configuration.definitions import LogLevel, LogType
-from logger import Logger
+from trace.logger import Logger
+from trace.definitions import LogLevel, LogType
 
 
 class ActionCardExpender(object):

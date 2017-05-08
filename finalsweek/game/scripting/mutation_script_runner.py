@@ -1,5 +1,5 @@
 from game.scripting.trusted_script_runner import TrustedScriptRunner
-from logger import log
+from trace.logger import log
 
 
 class MutationScriptRunnerFactory(object):

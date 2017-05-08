@@ -5,7 +5,14 @@ import finalsweek_auth as credentials
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = credentials.secret_key
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    'localhost:4200',
+    'testserver'
+]
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CORS_ORIGIN_WHITELIST = ALLOWED_HOSTS
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -14,17 +21,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
     'rest_framework',
     'rest_framework.authtoken',
     'django_extensions',
+    'rest_auth',
+    'rest_auth.registration',
+    'corsheaders',
     'game',
     'api',
 ]
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+# FOR REST AUTH REGISTRATION
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -86,9 +104,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES':     [
-        'rest_framework.permissions.DjangoModelPermissions',
-    ],
+    'DEFAULT_PERMISSION_CLASSES':     [],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -112,10 +128,14 @@ LOGGING = {
         }
     },
     'loggers':  {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
         'django.db.backends': {
-            'level':    'DEBUG',
+            'level':    'WARNING',
             'handlers': [
-                # 'console',
+                'console',
             ],
         }
     }

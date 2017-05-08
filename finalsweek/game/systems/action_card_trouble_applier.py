@@ -1,6 +1,7 @@
-from game.configuration.definitions import OperatorType, LogLevel, LogType, Tag
+from game.configuration.definitions import OperatorType, Tag
 from game.operation.operations.modify_attribute import ModifyAttribute
-from logger import Logger
+from trace.logger import Logger
+from trace.definitions import LogLevel, LogType
 
 
 class ActionCardTroubleApplier(object):

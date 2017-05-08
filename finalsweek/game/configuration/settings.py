@@ -1,4 +1,5 @@
-from game.configuration.definitions import PhaseTypeName, StageTypeName, LogLevel, LogType
+from game.configuration.definitions import PhaseTypeName, StageTypeName
+from trace.definitions import LogLevel, LogType
 
 
 class bcolors:
@@ -73,7 +74,7 @@ default_game_definition = [
     },
     {
         "stage_type": StageTypeName.Play,
-        "phase_sets": 5,
+        "phase_sets": 8,
         "phases":     [
             {
                 "phase_type": PhaseTypeName.Accumulation,
