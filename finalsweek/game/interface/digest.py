@@ -11,6 +11,7 @@ class CardTemplateDigest(Digest):
         self.card_type = card_template.card_type
         self.name = card_template.name
         self.trouble_cost = card_template.trouble_cost
+        self.description = card_template.description
 
     @property
     def data(self):
@@ -18,6 +19,7 @@ class CardTemplateDigest(Digest):
             "id":           self.id,
             "card_type":    self.card_type,
             "name":         self.name,
+            "description":  self.description,
             "trouble_cost": self.trouble_cost
         }
 
@@ -44,6 +46,16 @@ class ActorDigest(Digest):
         self.name = actor.name
         self.in_play_effects = InPlayEffectDigest(actor.id, api)
         self.hand = HandDigest(actor.id, api)  # TODO: make hand private
+        self.stats = {
+            "grades":     actor.grades,
+            "popularity": actor.popularity,
+            "trouble":    actor.trouble,
+            "torment":    actor.torment
+        }
+        self.seat = {
+            "row": actor.seat.row,
+            "column": actor.seat.column
+        }
 
     @property
     def data(self):
@@ -52,7 +64,9 @@ class ActorDigest(Digest):
             "label":           self.label,
             "name":            self.name,
             "hand":            self.hand.data,
-            "in_play_effects": self.in_play_effects.data
+            "in_play_effects": self.in_play_effects.data,
+            "stats":           self.stats,
+            "seat":            self.seat,
         }
 
 
