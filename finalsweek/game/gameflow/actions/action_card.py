@@ -8,7 +8,7 @@ from game.systems.action_card_trouble_applier import ActionCardTroubleApplier
 class ActionCardAction(ScriptCardAction):
     def __init__(self, data) -> None:
         super().__init__(data)
-        self.prompt = Prompt(data["prompt"]) # TODO: make not just data but actual prompt
+        self.prompt = Prompt(data["prompt"])
         self.card_id = data["card_id"]
         self.action_card_trouble_applier = ActionCardTroubleApplier()
         self.action_card_expender = ActionCardExpender()

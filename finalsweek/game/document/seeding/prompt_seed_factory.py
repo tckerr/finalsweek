@@ -11,5 +11,6 @@ class PromptSeedFactory(object):
         return Prompt({
             "id":     random_id(),
             "open":   {},
-            "closed": {}
+            "closed": {},
+            "context_id": None
         })
