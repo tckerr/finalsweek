@@ -8,13 +8,14 @@ class ActorApi(SandboxApi):
         super(ActorApi, self).__init__(*args, **kwargs)
 
     def get_actors(self):
-        return self.repo.actors()
+        return self._sort_by_id(self.repo.actors())
 
     def get_requestor(self):
         return self.repo.requestor()
 
     def get_all_but_requestor(self):
-        return list(filter(lambda a: a.id != self.repo.requestor_id, self.repo.actors()))
+        results = filter(lambda a: a.id != self.repo.requestor_id, self.repo.actors())
+        return self._sort_by_id(results)
 
     def get_adjacent_actors(self, target_actor):
         actors = self.repo.actors()
@@ -24,7 +25,7 @@ class ActorApi(SandboxApi):
             proximate_row = abs(a.student.seat.row - target_actor.student.seat.row) <= 1
             if proximate_column and proximate_row and (proximate_column + proximate_row) > 0:
                 results.append(a)
-        return results
+        return self._sort_by_id(results)
 
     def set_grades(self, actor, value):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Set, tags={Tag.Grades})
@@ -70,3 +71,6 @@ class ActorApi(SandboxApi):
             targeted_actor_id=actor.id,
             tags=default_tags.union(tags or set())
         )
+
+    def _sort_by_id(self, actors):
+        return list(sorted(actors, key=lambda actor: actor.id))

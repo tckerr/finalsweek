@@ -14,7 +14,8 @@ class PhaseTypeName:
     Dismissal = "Dismissal"
     AfterSchool = "After School"
     Score = "Score"
-    
+
+
 class CardTypeName:
     ActionCard = "Action Card"
     DisciplineCard = "Discipline Card"
@@ -108,5 +109,3 @@ class OperatorType(object):
     Set = "Set"
     Get = "Get"
     RefillActionCardHand = "RefillActionCardHand"
-
-

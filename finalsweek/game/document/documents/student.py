@@ -10,6 +10,7 @@ class Student(DocumentBase):
     }
 
     def __init__(self, base_data, parent=None):
+        self.student_info_id = None
         self.id = None
         self.actor = None
         super().__init__(base_data, parent)
@@ -25,3 +26,11 @@ class Student(DocumentBase):
     @property
     def controlled(self):
         return self.actor is not None
+
+    @property
+    def name(self):
+        student_infos = self._find("Game").rules.student_infos
+        for student_info in student_infos:
+            if student_info.id == self.student_info_id:
+                return student_info.display_name
+        raise Exception("Student info not found: {}".format(self.student_info_id))

@@ -17,8 +17,8 @@ class GameInterface(object):
 
     # TODO: requesting_actor_id should be generated from auth user, may need to pull ProgramApi up a level to check this
     # TODO: action shouldn't be passed in, but data to build an action should
-    def take_turn(self, game_id, requesting_actor_id, action):
-        api, turn = self.game_manager.load(game_id)
+    def take_turn(self, game_id, requesting_actor_id, action, fresh=False):
+        api, turn = self.game_manager.load(game_id, fresh=fresh)
         if turn.actor_id != requesting_actor_id:
             raise TurnPermissionException("Not your turn!")
         turn = self.action_executor.execute(turn, action, api)

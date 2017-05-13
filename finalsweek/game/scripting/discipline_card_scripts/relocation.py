@@ -26,7 +26,7 @@ if lowest_popularity.id == ActorApi.get_requestor().id:
             eligible_seats = empty_seats
         eligible_seats = list(filter(lambda s: s.id not in results.keys(), eligible_seats))
         if eligible_seats:
-            selected_seat = PromptApi.prompt_seat_choice(eligible_seats, "Target Seat for student {}".format(student.id))
+            selected_seat = PromptApi.prompt_seat_choice(eligible_seats, "Target Seat for Student {} ({})".format(student.name, student.id))
             results[selected_seat] = actor.student
 
     for student, seat in results.items():

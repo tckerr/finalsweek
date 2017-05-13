@@ -67,9 +67,10 @@ class ActivityViewSet(GameInterfaceViewSet):
         actor_id = self.get_post_data(request, "actor_id")
         game_id = self.get_post_data(request, "game_id")
         action_params = self.get_post_data(request, "action_params")
+        fresh = self.request.query_params.get("fresh", False)
         action_cls = get_action_cls(action_params)
         try:
-            digest = self.interface.take_turn(game_id, actor_id, action_cls(action_params))
+            digest = self.interface.take_turn(game_id, actor_id, action_cls(action_params), fresh)
         except TurnValidationException as e:
             raise ValidationError(e)
         return Response(self._serialize(digest))

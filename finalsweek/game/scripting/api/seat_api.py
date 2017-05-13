@@ -7,12 +7,13 @@ class SeatApi(SandboxApi):
 
     def get_filled_seats(self):
         seats = self.get_seats()
-        filled = list(filter(lambda s: not s.empty, seats))
-        return filled
+        filled = filter(lambda s: not s.empty, seats)
+        return self._sort_by_id(filled)
 
     def get_empty_seats(self):
         seats = self.get_seats()
-        return list(filter(lambda s: s.empty, seats))
+        empty = filter(lambda s: s.empty, seats)
+        return self._sort_by_id(empty)
 
     def get_adjacent_seats(self, seat):
         seats = self.get_seats()
@@ -22,4 +23,7 @@ class SeatApi(SandboxApi):
             row_diff = abs(s.row - seat.row)
             if col_diff <= 1 and row_diff <= 1 and (row_diff + col_diff) != 0:
                 results.append(s)
-        return results
+        return self._sort_by_id(results)
+
+    def _sort_by_id(self, seats):
+        return list(sorted(seats, key=lambda seat: seat.id))

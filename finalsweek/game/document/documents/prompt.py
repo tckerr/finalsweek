@@ -14,14 +14,6 @@ class Prompt(DocumentBase):
         self.closed = None
         super().__init__(base_data, parent)
 
-    def answer(self, key, val):
-        del self.open[key]
-        self.closed[key] = val
-
-    @property
-    def pending(self):
-        return [(k, v) for k, v in self.open.items()]
-
     @property
     def is_new(self):
         return len(self.closed) == 0

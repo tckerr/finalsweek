@@ -6,6 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = credentials.secret_key
 DEBUG = True
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     'localhost',
     'localhost:4200',
     'testserver'

@@ -13,7 +13,7 @@ class PromptApi(SandboxApi):
         super().__init__(*a, **k)
 
     def prompt_student_choice(self, student_set, answer_key):
-        return self.__answer_or_prompt(student_set, answer_key, display_field="id", unique_field="id")
+        return self.__answer_or_prompt(student_set, answer_key, display_field="name", unique_field="id")
 
     def prompt_actor_choice(self, actor_set, answer_key):
         return self.__answer_or_prompt(actor_set, answer_key, display_field="name", unique_field="id")
@@ -28,7 +28,8 @@ class PromptApi(SandboxApi):
 
     def __answer_or_prompt(self, item_set, answer_key, display_field=None, unique_field=None):
         if self.__prompt_is_answered(answer_key):
-            answer = self.prompt.closed[answer_key]
+            print(answer_key, self.prompt.closed[answer_key])
+            answer = self.prompt.closed[answer_key]["selected_option"]["id"]
             for item in item_set:
                 if unique_field:
                     value = getattr(item, unique_field)
@@ -61,6 +62,8 @@ class PromptApi(SandboxApi):
         return {
             "closed": self.prompt.closed,
             "open":   {
-                answer_key: options
+                answer_key: {
+                    "options": options
+                }
             }
         }
