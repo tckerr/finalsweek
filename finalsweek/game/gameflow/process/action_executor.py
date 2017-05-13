@@ -1,3 +1,4 @@
+from game.gameflow.action_eligibility_resolver import ActionEligibilityResolver
 from game.gameflow.actions.factories import AutomatedActionFactory
 from trace.logger import Logger
 from trace.definitions import LogLevel, LogType
@@ -6,9 +7,11 @@ from trace.definitions import LogLevel, LogType
 class ActionExecutor(object):
     def __init__(self):
         super(ActionExecutor, self).__init__()
+        self.action_eligibility_resolver = ActionEligibilityResolver()
         self.automated_action_factory = AutomatedActionFactory()
 
     def execute(self, turn, action, api):
+        self.action_eligibility_resolver.validate(action, turn)
         phase_definition = api.phases.get_phase_definition(turn.phase.phase_type)
         self._execute(api, action, turn, phase_definition)
         return self._next_actor_turn(api)  # this may be same turn if prompt=true

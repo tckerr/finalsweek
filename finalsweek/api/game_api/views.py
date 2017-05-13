@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from game.document.persistence.connectors import GameDbConnector
+from game.exceptions import TurnValidationException
 from game.gameflow.actions.action_card import ActionCardAction
 from game.gameflow.actions.base import ActionBase
 from game.gameflow.actions.discipline import DisciplineAction
@@ -67,5 +68,8 @@ class ActivityViewSet(GameInterfaceViewSet):
         game_id = self.get_post_data(request, "game_id")
         action_params = self.get_post_data(request, "action_params")
         action_cls = get_action_cls(action_params)
-        digest = self.interface.take_turn(game_id, actor_id, action_cls(action_params))
+        try:
+            digest = self.interface.take_turn(game_id, actor_id, action_cls(action_params))
+        except TurnValidationException as e:
+            raise ValidationError(e)
         return Response(self._serialize(digest))
