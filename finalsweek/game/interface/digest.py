@@ -53,7 +53,7 @@ class ActorDigest(Digest):
             "torment":    actor.torment
         }
         self.seat = {
-            "row": actor.seat.row,
+            "row":    actor.seat.row,
             "column": actor.seat.column
         }
 
@@ -70,6 +70,38 @@ class ActorDigest(Digest):
         }
 
 
+class StudentDigest(Digest):
+    def __init__(self, student, api) -> None:
+        super().__init__()
+        self.name = student.name
+        self.student_info_id = student.student_info_id
+        self.actor = ActorDigest(student.actor, api) if student.actor else None
+
+    @property
+    def data(self):
+        return {
+            "name":            self.name,
+            "actor":           self.actor.data if self.actor else None,
+            "student_info_id": self.student_info_id,
+        }
+
+
+class SeatDigest(Digest):
+    def __init__(self, seat, api) -> None:
+        super().__init__()
+        self.row = seat.row
+        self.column = seat.column
+        self.student = StudentDigest(seat.student, api) if seat.student else None
+
+    @property
+    def data(self):
+        return {
+            "row":     self.row,
+            "column":  self.column,
+            "student": self.student.data if self.student else None
+        }
+
+
 class PublicDigest(Digest):
     def __init__(self, game_id, api, turn):
         super().__init__()
@@ -78,6 +110,7 @@ class PublicDigest(Digest):
         self.phase_type = turn.phase.phase_type if turn else "Complete"
         self.stage_type = turn.phase.stage.stage_type if turn else "Complete"
         self.turn = TurnDigest(turn, api) if turn else None
+        self.seats = [SeatDigest(s, api) for s in api.data.seats]
 
     @property
     def data(self):
@@ -87,6 +120,7 @@ class PublicDigest(Digest):
             "actors":     [a.data for a in self.actors],
             "phase_type": self.phase_type,
             "stage_type": self.stage_type,
+            "seats":      [s.data for s in self.seats]
         }
 
 

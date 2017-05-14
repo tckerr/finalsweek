@@ -19,3 +19,4 @@ class Stage(DocumentBase):
     def __init__(self, base_data, parent=None):
         self.phases = None
         super().__init__(base_data, parent)
+
