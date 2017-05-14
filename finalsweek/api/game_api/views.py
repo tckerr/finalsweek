@@ -12,6 +12,9 @@ from game.interface.game_interface import GameInterface
 
 
 # TODO: its own class
+from util.random import reseed
+
+
 def get_action_cls(action):
     action_type = action.get("type", None)
     if action_type == "DisciplineAction":
@@ -38,7 +41,7 @@ class GameInterfaceViewSet(viewsets.ViewSet):
         return request.query_params.get(key)
 
     @staticmethod
-    def get_post_data(request, key,):
+    def get_post_data(request, key):
         if key not in request.data:
             raise ValidationError("You must supply the '{}' parameter.".format(key))
         return request.data[key]
@@ -47,6 +50,7 @@ class GameInterfaceViewSet(viewsets.ViewSet):
 class GameViewSet(GameInterfaceViewSet):
     def create(self, request):
         player_count = self.get_post_data(request, "player_count")
+        reseed(self.request.data.get("seed", None))
         digest = self.interface.create(player_count)
         return Response(self._serialize(digest))
 

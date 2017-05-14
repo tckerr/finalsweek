@@ -19,8 +19,9 @@ class GameDbConnector(object):
 
     def list_summaries(self):
         summary_projection = {
-            "_id":   1,
-            "seats.student.actor.id": 1
+            "_id":                    1,
+            "seats.student.actor.id": 1,
+            "metadata":               1
         }
         games = list(self.mongo_db_connector.list(self._doc_name, projection=summary_projection))
         return map(self.adapt_game, games)
@@ -28,11 +29,12 @@ class GameDbConnector(object):
     @staticmethod
     def adapt_game(game):
         return {
-            "id":     str(game["_id"]),
-            "actors": [seat["student"]["actor"]["id"]
-                       for seat in game["seats"]
-                       if "student" in seat
-                       and "actor" in seat["student"]]
+            "id":           str(game["_id"]),
+            "metadata": game["metadata"],
+            "actors":       [seat["student"]["actor"]["id"]
+                             for seat in game["seats"]
+                             if "student" in seat
+                             and "actor" in seat["student"]]
         }
 
     def insert(self, data):

@@ -1,17 +1,24 @@
-import random as __random
 import string
+import sys
 
 import names as __names
 
 from game.configuration.settings import generation
 
-__seeded_random = __random.Random(generation["seed"])
-__random.random = __seeded_random.random
+this = sys.modules[__name__]
+
+
+def reseed(seed=None):
+    import random as __new_random
+    this.__seeded_random = __new_random.Random(seed or generation["seed"])
+
+
+reseed()
 
 
 def random_id():
     length = range(0, generation["id_len"])
-    return "".join([__seeded_random.choice(string.ascii_letters) for _ in length])
+    return "".join([this.__seeded_random.choice(string.ascii_letters) for _ in length])
 
 
 def random_name():
@@ -19,8 +26,8 @@ def random_name():
 
 
 def shuffle(lst):
-    return __seeded_random.shuffle(lst)
+    return this.__seeded_random.shuffle(lst)
 
 
 def choice(lst):
-    return __seeded_random.choice(lst)
+    return this.__seeded_random.choice(lst)

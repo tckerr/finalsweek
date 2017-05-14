@@ -20,6 +20,7 @@ class SeatSeedFactory(object):
                 })
         shuffle(seats)
         student_info_ids = [si["id"] for si in student_info]
+        shuffle(student_info_ids)
         for seat in seats:
             if total == 0:
                 break
