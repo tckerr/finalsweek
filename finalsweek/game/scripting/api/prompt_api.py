@@ -28,7 +28,6 @@ class PromptApi(SandboxApi):
 
     def __answer_or_prompt(self, item_set, answer_key, display_field=None, unique_field=None):
         if self.__prompt_is_answered(answer_key):
-            print(answer_key, self.prompt.closed[answer_key])
             answer = self.prompt.closed[answer_key]["selected_option"]["id"]
             for item in item_set:
                 if unique_field:

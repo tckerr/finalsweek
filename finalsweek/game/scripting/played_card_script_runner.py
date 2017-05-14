@@ -34,7 +34,8 @@ class PromptScriptRunner(TrustedScriptRunner):
 
     def log_script_start(self, *a, api, **k):
         super().log_script_start(self.actor_id, api, self.prompt)
-        Logger.log("Executing with answers:", self.prompt.closed, level=LogLevel.Info,
+        answers = {k: v["selected_option"]["id"] for k, v in self.prompt.closed.items() }
+        Logger.log("Executing with answers:", answers, level=LogLevel.Info,
                    log_type=LogType.Operational)
 
 

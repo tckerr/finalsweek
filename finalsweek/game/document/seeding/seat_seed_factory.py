@@ -19,10 +19,11 @@ class SeatSeedFactory(object):
                     "student": None
                 })
         shuffle(seats)
+        student_info_ids = [si["id"] for si in student_info]
         for seat in seats:
             if total == 0:
                 break
-            seat["student"] = self.student_seed_factory.create(student_info, player_count > 0)
+            seat["student"] = self.student_seed_factory.create(student_info_ids.pop(), player_count > 0)
             total -= 1
             player_count -= 1
 

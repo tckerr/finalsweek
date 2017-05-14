@@ -7,8 +7,7 @@ class StudentSeedFactory(object):
         super().__init__()
         self.actor_seed_factory = ActorSeedFactory()
 
-    def create(self, student_info, as_actor=False):
-        student_info_id = choice(student_info)["id"]
+    def create(self, student_info_id, as_actor=False):
         actor = self.actor_seed_factory.create() if as_actor else None
         return {
             "id":              random_id(),
