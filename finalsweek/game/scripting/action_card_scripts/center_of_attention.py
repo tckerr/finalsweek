@@ -7,5 +7,6 @@ PromptApi = __locals.get('PromptApi')
 export = __locals.get('export')
 # +- END ACTION CARD BOILERPLATE -------+
 
+
 requestor = ActorApi.get_requestor()
 export("targeted_actor_id", requestor.id)
