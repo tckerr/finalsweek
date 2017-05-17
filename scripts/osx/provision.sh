@@ -49,19 +49,7 @@ printf "\nActivating virtual environment..."
 source $VENVDIR/bin/activate
 
 printf "\nInstalling project dependencies..."
-pip install mysqlclient
-pip install pymongo
-pip install django
-pip install django-extensions
-pip install djangorestframework
-pip install markdown
-pip install django-filter
-pip install wheel
-pip install names
-pip install django-multiselectfield
-pip install django-rest-auth
-pip install django-cors-headers
-pip install django-rest-auth[with_social]
+pip install -r $REPODIR/requirements.txt
 
 printf "\nRunning initial migration..."
 python $REPODIR/finalsweek/manage.py migrate
