@@ -6,8 +6,8 @@ import settings
 
 class MongoDbConnector(object):
     def __init__(self, db_name):
-        self._host = settings.credentials.mongo_connection_host
-        self._port = settings.credentials.mongo_connection_port
+        self._host = settings.MONGO_CONNECTION_HOST
+        self._port = settings.MONGO_CONNECTION_PORT
         self._client = MongoClient("{}:{}".format(self._host, self._port))
         self._db = self._client[db_name]
 

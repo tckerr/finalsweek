@@ -1,9 +1,16 @@
 import os
 
-import finalsweek_auth as credentials
+try:
+    import finalsweek_auth as credentials
+except:
+    raise Exception("No 'finalsweek_auth' module defined in finalsweek root; Please define an authorization module.")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = credentials.secret_key
+
+MONGO_CONNECTION_HOST = credentials.mongo_connection_host
+MONGO_CONNECTION_PORT = credentials.mongo_connection_port
+
 DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
