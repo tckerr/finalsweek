@@ -6,8 +6,8 @@ finalsweek/finalsweek_auth.py
 notes/
 arch.txt
 components.txt
-*.sqlite 
-data/
+*.sqlite
+data/mongo
 log/
 .idea/
 
