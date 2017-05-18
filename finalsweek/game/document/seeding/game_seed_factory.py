@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from game.document.seeding.action_card_deck_seed_factory import ActionCardDeckSeedFactory
 from game.document.seeding.afterschool_card_deck_seed_factory import AfterSchoolCardDeckSeedFactory
 from game.document.seeding.discipline_card_deck_seed_factory import DisciplineCardDeckSeedFactory
@@ -15,7 +17,7 @@ class GameSeedFactory(object):
         self.discipline_card_deck_seed_factory = DisciplineCardDeckSeedFactory()
         self.seat_seed_factory = SeatSeedFactory()
 
-    def generate(self, player_count):
+    def generate(self, player_count, seed):
         # todo replace all the factories with these
         rules = self.rules_seed_factory.create()
         action_card_deck = self.action_card_deck_seed_factory.create(rules["card_templates"], rules["settings"])
@@ -33,6 +35,9 @@ class GameSeedFactory(object):
             "mutations":              [],
             "queued_mutations":       [],
             "mutation_queue":         {},
-            "metadata":               {}
+            "metadata":               {
+                "seed": seed,
+                "created": datetime.now()
+            }
         }
         return data

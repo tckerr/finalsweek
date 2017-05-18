@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
@@ -50,14 +49,15 @@ class GameInterfaceViewSet(viewsets.ViewSet):
 class GameViewSet(GameInterfaceViewSet):
     def create(self, request):
         player_count = self.get_post_data(request, "player_count")
-        reseed(self.request.data.get("seed", None))
-        digest = self.interface.create(player_count)
+        seed = self.request.data.get("seed", None)
+        reseed(seed)
+        digest = self.interface.create(player_count, seed)
         return Response(self._serialize(digest))
 
     def list(self, request):
         db = GameDbConnector()
-        ids = db.list_summaries()
-        return Response(ids)
+        summaries = db.list_summaries()
+        return Response(summaries)
 
     def retrieve(self, request, pk=None, actor_id=None):
         fresh = self.request.query_params.get("fresh", False)

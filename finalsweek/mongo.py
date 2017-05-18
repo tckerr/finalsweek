@@ -11,9 +11,11 @@ class MongoDbConnector(object):
         self._client = MongoClient("{}:{}".format(self._host, self._port))
         self._db = self._client[db_name]
 
-    def list(self, document_type, projection=None, **kwargs):
+    def list(self, document_type, projection=None, sort=None, **kwargs):
         self._fix_id(kwargs)
         cursor = self._db[document_type].find(kwargs, projection)
+        if sort:
+            cursor = cursor.sort(*sort)
         for item in cursor:
             yield item
 

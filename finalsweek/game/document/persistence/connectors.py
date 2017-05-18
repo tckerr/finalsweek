@@ -1,3 +1,5 @@
+from pymongo import DESCENDING
+
 from mongo import MongoDbConnector
 
 
@@ -23,7 +25,10 @@ class GameDbConnector(object):
             "seats.student.actor.id": 1,
             "metadata":               1
         }
-        games = list(self.mongo_db_connector.list(self._doc_name, projection=summary_projection))
+        results = self.mongo_db_connector \
+            .list(self._doc_name, projection=summary_projection, sort=("metadata.created", DESCENDING))
+
+        games = list(results)
         return map(self.adapt_game, games)
 
     @staticmethod
