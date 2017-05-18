@@ -32,8 +32,12 @@ class ActorApi(SandboxApi):
         self.program_api.actors.set_grades(operation=operation)
 
     def add_grades(self, actor, value):
-        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Add, tags={Tag.Grades})
+        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Add, tags={Tag.Grades})            
         self.program_api.actors.add_grades(operation=operation)
+        
+    def subtract_grades(self, actor, value):
+        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Subtract, tags={Tag.Grades})            
+        self.program_api.actors.subtract_grades(operation=operation)
 
     def set_popularity(self, actor, value):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Set, tags={Tag.Popularity})
@@ -43,6 +47,10 @@ class ActorApi(SandboxApi):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Add, tags={Tag.Popularity})
         self.program_api.actors.add_popularity(operation=operation)
 
+    def subtract_popularity(self, actor, value):
+        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Subtract, tags={Tag.Popularity})
+        self.program_api.actors.subtract_popularity(operation=operation)
+
     def set_trouble(self, actor, value):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Set, tags={Tag.Trouble})
         self.program_api.actors.set_trouble(operation=operation)
@@ -50,6 +58,10 @@ class ActorApi(SandboxApi):
     def add_trouble(self, actor, value):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Add, tags={Tag.Trouble})
         self.program_api.actors.add_trouble(operation=operation)
+
+    def subtract_trouble(self, actor, value):
+        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Subtract, tags={Tag.Trouble})
+        self.program_api.actors.subtract_trouble(operation=operation)
 
     def set_torment(self, actor, value):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Set, tags={Tag.Torment})
@@ -59,11 +71,20 @@ class ActorApi(SandboxApi):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Add, tags={Tag.Torment})
         self.program_api.actors.add_torment(operation=operation)
 
+    def subtract_torment(self, actor, value):
+        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Subtract, tags={Tag.Torment})
+        self.program_api.actors.subtracy_torment(operation=operation)
+
     def refresh_hand(self, actor):
         # TODO: should this be an operation or does it not matter?
         self.program_api.actors.refresh_hand(actor.id)
 
     def _build_mod_attribute_operation(self, actor, value, operator, tags=None):
+        # TODO: backwards compat until Add tag is phased out for subtract operations
+        if operator == OperatorType.Add and value < 0:
+            operator = OperatorType.Subtract
+            value *= -1
+        
         default_tags = self.repo.default_tags
         return ModifyAttribute(
             operator=operator,

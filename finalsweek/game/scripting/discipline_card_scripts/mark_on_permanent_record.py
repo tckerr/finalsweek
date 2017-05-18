@@ -8,5 +8,5 @@ export = __locals.get('export')
 
 actor = ActorApi.get_requestor()
 trouble = actor.trouble
-ActorApi.add_grades(actor, -trouble)
-ActorApi.add_popularity(actor, -trouble)
+ActorApi.subtract_grades(actor, trouble)
+ActorApi.subtract_popularity(actor, trouble)

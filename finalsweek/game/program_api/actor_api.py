@@ -71,7 +71,6 @@ class ActorApi(ProgramChildApi):
 
     # TODO: system operation
     # TODO: make an in_play API
-
     def transfer_card_to_in_play(self, source_actor_id, targeted_actor_id, card_id, mutation_id):
         card = self._action_card_by_actor(source_actor_id, card_id)
         source_actor = self._get(source_actor_id)
@@ -124,6 +123,15 @@ class ActorApi(ProgramChildApi):
         return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Subtract)
+    def subtract_grades(self, operation):
+        operation = self._mutate(operation)
+        actor = self._get_targeted_actor(operation)
+        actor.grades = floor_at_zero(actor.grades - operation.value)
+        self._log_mod_operation(actor, "grades", operation)
+        return operation
+
+    @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)
     def set_popularity(self, operation):
         operation = self._mutate(operation)
@@ -138,6 +146,15 @@ class ActorApi(ProgramChildApi):
         operation = self._mutate(operation)
         actor = self._get_targeted_actor(operation)
         actor.popularity = floor_at_zero(actor.popularity + operation.value)
+        self._log_mod_operation(actor, "popularity", operation)
+        return operation
+
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Subtract)
+    def subtract_popularity(self, operation):
+        operation = self._mutate(operation)
+        actor = self._get_targeted_actor(operation)
+        actor.popularity = floor_at_zero(actor.popularity - operation.value)
         self._log_mod_operation(actor, "popularity", operation)
         return operation
 
@@ -160,6 +177,15 @@ class ActorApi(ProgramChildApi):
         return operation
 
     @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Subtract)
+    def subtract_trouble(self, operation):
+        operation = self._mutate(operation)
+        actor = self._get_targeted_actor(operation)
+        actor.trouble = floor_at_zero(actor.trouble - operation.value)
+        self._log_mod_operation(actor, "trouble", operation)
+        return operation
+
+    @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Set)
     def set_torment(self, operation):
         operation = self._mutate(operation)
@@ -168,13 +194,21 @@ class ActorApi(ProgramChildApi):
         self._log_mod_operation(actor, "torment", operation)
         return operation
 
-    # TODO: subtract needs to be different than add otherwise mutations will trigger
     @accepts_operation(OperationType.ModifyAttribute)
     @accepts_operator(OperatorType.Add)
     def add_torment(self, operation):
         operation = self._mutate(operation)
         actor = self._get_targeted_actor(operation)
         actor.torment = floor_at_zero(actor.torment + operation.value)
+        self._log_mod_operation(actor, "torment", operation)
+        return operation
+
+    @accepts_operation(OperationType.ModifyAttribute)
+    @accepts_operator(OperatorType.Subtract)
+    def subtract_torment(self, operation):
+        operation = self._mutate(operation)
+        actor = self._get_targeted_actor(operation)
+        actor.torment = floor_at_zero(actor.torment - operation.value)
         self._log_mod_operation(actor, "torment", operation)
         return operation
 

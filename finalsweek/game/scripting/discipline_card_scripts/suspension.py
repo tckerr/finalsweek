@@ -11,4 +11,4 @@ trouble = actor.trouble
 if trouble == 0:
     ActorApi.add_grades(actor, 4)
 elif trouble > 3:
-    ActorApi.add_grades(actor, -2)
+    ActorApi.subtract_grades(actor, 2)

@@ -9,5 +9,5 @@ export = __locals.get('export')
 
 
 requestor = ActorApi.get_requestor()
-ActorApi.add_torment(requestor, -1)
-ActorApi.add_popularity(requestor, -2)
+ActorApi.subtract_torment(requestor, 1)
+ActorApi.subtract_popularity(requestor, 2)

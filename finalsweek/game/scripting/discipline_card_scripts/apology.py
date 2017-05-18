@@ -9,4 +9,4 @@ export = __locals.get('export')
 actor = ActorApi.get_requestor()
 trouble = min(actor.trouble, 5)
 if trouble > 0:
-    ActorApi.add_popularity(actor, -2 * trouble)
+    ActorApi.subtract_popularity(actor, 2 * trouble)

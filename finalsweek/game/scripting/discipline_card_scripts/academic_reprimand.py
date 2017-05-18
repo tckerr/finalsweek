@@ -7,12 +7,12 @@ export = __locals.get('export')
 # +- END DISCIPLINE CARD BOILERPLATE -------+
 
 penalties = {
-    1: -1,
-    2: -2,
-    3: -4,
-    4: -5
+    1: 1,
+    2: 2,
+    3: 4,
+    4: 5
 }
 actor = ActorApi.get_requestor()
 trouble = min(actor.trouble, 4)
 if trouble > 0:
-    ActorApi.add_grades(actor, penalties[trouble])
+    ActorApi.subtract_grades(actor, penalties[trouble])

@@ -9,5 +9,5 @@ export = __locals.get('export')
 
 
 requestor = ActorApi.get_requestor()
-ActorApi.add_grades(requestor, -1)
+ActorApi.subtract_grades(requestor, 1)
 ActorApi.add_popularity(requestor, 10)

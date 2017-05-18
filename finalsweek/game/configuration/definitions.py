@@ -93,6 +93,8 @@ class Tag(ListableClass):
     Trouble = "Trouble"  # affects Trouble
     Torment = "Torment"  # affects Torment
     Seat = "Seat"
+    StatAdd = "StatAdd"
+    StatSubtract = "StatSubtract"
 
 
 class OperationType(object):
@@ -106,6 +108,7 @@ class OperationType(object):
 
 class OperatorType(object):
     Add = "Add"
+    Subtract = "Subtract"
     Set = "Set"
     Get = "Get"
     RefillActionCardHand = "RefillActionCardHand"

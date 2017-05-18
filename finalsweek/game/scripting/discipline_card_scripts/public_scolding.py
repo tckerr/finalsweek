@@ -11,6 +11,6 @@ trouble = min(actor.trouble, 5)
 if trouble >= 2:
     ActorApi.add_torment(actor, 1)
     if trouble == 4:
-        ActorApi.add_popularity(actor, -3)
+        ActorApi.subtract_popularity(actor, 3)
     elif trouble > 4:
-        ActorApi.add_popularity(actor, -6)
+        ActorApi.subtract_popularity(actor, 6)
