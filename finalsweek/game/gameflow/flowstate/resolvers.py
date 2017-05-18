@@ -3,9 +3,9 @@ from game.gameflow.flowstate.flowstate import Flowstate, CompletedFlowstate, Aut
 
 
 class FlowstateTurnResolver(BaseFlowstateResolver):
-    def resolve(self, actors, actual_stage, stage_type, actual_phase, phase_type, turn_set, api):
-        for actor in actors:
-            actual_turn = self.__get_turn_at_set(actual_phase, actor, turn_set)
+    def resolve(self, actor, actual_stage, stage_type, actual_phase, phase_type, turn_count, api):
+        for turn_number in range(0, turn_count):
+            actual_turn = self.__get_turn_at_set(actual_phase, actor, turn_number)
             if not actual_stage or not actual_phase or not actual_turn or actual_turn.completed is None:
                 return Flowstate(stage_type, actual_stage, phase_type, actual_phase, actor, actual_turn)
         return CompletedFlowstate()
@@ -30,9 +30,9 @@ class FlowstatePhaseResolver(BaseFlowstateResolver):
             actual_phase = self.__get_phase_at_set(actual_stage, phase_type, phase_set)
             if actual_phase and actual_phase.completed is not None:
                 continue
-            for turn_set in range(0, phase_definition.turn_sets):
-                flowstate = self.flowstate_turn_resolver.resolve(actors, actual_stage, stage_type, actual_phase,
-                                                                 phase_type, turn_set, api)
+            for actor in actors:
+                flowstate = self.flowstate_turn_resolver.resolve(actor, actual_stage, stage_type, actual_phase,
+                                                                 phase_type, phase_definition.turn_sets, api)
                 if flowstate.pending:
                     return flowstate
             if not actual_phase:
