@@ -10,8 +10,8 @@ class GameInterface(object):
         self.action_executor = ActionExecutor()
         self.game_manager = GameStateManager()
 
-    def create(self, player_count, seed):
-        game_id, api = self.game_manager.new(player_count, seed)
+    def create(self, player_count, seed, rules):
+        game_id, api = self.game_manager.new(player_count, seed, rules)
         turn = api.turns.get_current_turn()
         return self.digest_provider.general_digest(game_id, api, turn)
 

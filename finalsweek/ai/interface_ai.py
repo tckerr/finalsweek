@@ -74,13 +74,14 @@ class AiActor(object):
         card_id = self.__get_card_id(turn, actor_data["hand"])
         prompt = turn["prompt"]
         open_items = list(prompt["open"].items())
-        for answer_key, prompt_options in open_items:
+        for answer_key, open_prompt in open_items:
+            prompt_options = open_prompt["options"]
             self.__enumerate_options(answer_key, prompt_options)
             if not prompt_options:
                 self.__think("Skipping prompt", prompt["id"], "for card", card_id, "... no options")
                 self.__set_card_prompt_map(prompt["id"], None)
                 return
-            selection = choice([o["id"] for o in prompt_options])
+            selection = choice(prompt_options)
             prompt = self.answer(answer_key, prompt, selection)
         return {
             "card_id": card_id,
@@ -90,6 +91,7 @@ class AiActor(object):
 
     def __enumerate_options(self, answer_key, prompt_options):
         self.__think("> Have a decision to make, '{}':".format(answer_key))
+        print(prompt_options)
         for option in prompt_options:
             self.__think("   {}: {}".format(option["display"], option["id"]))
 
@@ -122,12 +124,13 @@ class AiActor(object):
         turn = data["public"]["turn"]
         prompt = turn["prompt"]
         open_items = list(prompt["open"].items())
-        for answer_key, prompt_options in open_items:
+        for answer_key, open_prompt in open_items:
+            prompt_options = open_prompt["options"]
             self.__enumerate_options(answer_key, prompt_options)
             if not prompt_options:
                 self.__think("Skipping discipline prompt", prompt["pending"], "... no options")
                 return
-            selection = choice([o["id"] for o in prompt_options])
+            selection = choice(prompt_options)
             prompt = self.answer(answer_key, prompt, selection)
         return {
             "prompt": prompt,
@@ -136,6 +139,7 @@ class AiActor(object):
 
     @staticmethod
     def answer(answer_key, prompt, selection):
+        prompt["closed"][answer_key] = prompt["open"][answer_key]
+        prompt["closed"][answer_key]["selected_option"] = selection
         del prompt["open"][answer_key]
-        prompt["closed"][answer_key] = selection
         return prompt

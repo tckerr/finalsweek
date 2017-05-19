@@ -2,8 +2,8 @@ from game.program_api.program_api import ProgramApi
 
 
 class GameStateManager(object):
-    def new(self, player_count, seed):
-        api = ProgramApi.new(player_count, seed)
+    def new(self, player_count, seed, rules):
+        api = ProgramApi.new(player_count, seed, rules)
         api.turns.get_or_create_current_turn()
         game_id = self.save(api)
         return game_id, api

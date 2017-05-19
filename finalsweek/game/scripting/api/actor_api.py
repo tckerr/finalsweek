@@ -32,11 +32,11 @@ class ActorApi(SandboxApi):
         self.program_api.actors.set_grades(operation=operation)
 
     def add_grades(self, actor, value):
-        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Add, tags={Tag.Grades})            
+        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Add, tags={Tag.Grades})
         self.program_api.actors.add_grades(operation=operation)
-        
+
     def subtract_grades(self, actor, value):
-        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Subtract, tags={Tag.Grades})            
+        operation = self._build_mod_attribute_operation(actor, value, OperatorType.Subtract, tags={Tag.Grades})
         self.program_api.actors.subtract_grades(operation=operation)
 
     def set_popularity(self, actor, value):
@@ -73,7 +73,7 @@ class ActorApi(SandboxApi):
 
     def subtract_torment(self, actor, value):
         operation = self._build_mod_attribute_operation(actor, value, OperatorType.Subtract, tags={Tag.Torment})
-        self.program_api.actors.subtracy_torment(operation=operation)
+        self.program_api.actors.subtract_torment(operation=operation)
 
     def refresh_hand(self, actor):
         # TODO: should this be an operation or does it not matter?
@@ -84,7 +84,7 @@ class ActorApi(SandboxApi):
         if operator == OperatorType.Add and value < 0:
             operator = OperatorType.Subtract
             value *= -1
-        
+
         default_tags = self.repo.default_tags
         return ModifyAttribute(
             operator=operator,

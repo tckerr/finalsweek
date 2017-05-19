@@ -1,4 +1,4 @@
-from game.document.seeding.operation_modifier_seed_factory import OperationModifierSeedFactory
+from game.configuration.factories.operation_modifier_seed_factory import OperationModifierSeedFactory
 from game.models import MutationTemplate
 
 

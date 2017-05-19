@@ -22,9 +22,9 @@ class ProgramApi(object):
         return cls(cache)
 
     @classmethod
-    def new(cls, player_count, seed):
+    def new(cls, player_count, seed, rules):
         generator = GameSeedFactory()
-        game_seed = generator.generate(player_count=player_count, seed=seed)
+        game_seed = generator.generate(player_count=player_count, seed=seed, rules=rules)
         cache = GameDocumentCache()
         cache.load_from_seed(game_seed)
         return cls(cache)
