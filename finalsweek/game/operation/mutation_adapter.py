@@ -1,4 +1,4 @@
-from game.configuration.definitions import MutationGameflowBinding
+from game.definitions import MutationGameflowBinding
 
 
 class MutationAdapter(object):

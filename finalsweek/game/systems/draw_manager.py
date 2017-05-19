@@ -1,4 +1,4 @@
-from game.configuration.definitions import OperatorType, Tag
+from game.definitions import OperatorType, Tag
 from game.operation.operations.draw import Draw
 
 

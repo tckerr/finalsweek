@@ -3,13 +3,12 @@ from django.db import models
 from django.utils import timezone
 from multiselectfield import MultiSelectField
 
-from game.configuration.definitions import Tag, MutationGameflowBinding
+from game.definitions import Tag, MutationGameflowBinding
 
 
 class DefaultModel(models.Model):
     class Meta:
         abstract = True
-
 
     created = models.DateTimeField(default=timezone.now)
 

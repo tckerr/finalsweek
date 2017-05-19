@@ -3,8 +3,8 @@ import sys
 import uuid
 
 import settings as django_settings
-from game.configuration import settings
-from game.configuration.settings import bcolors
+from configuration import settings
+from configuration.settings import bcolors
 from trace.definitions import LogLevel, LogType
 
 

@@ -3,7 +3,7 @@ import sys
 
 import names as __names
 
-from game.configuration.settings import generation
+from configuration.settings import generation
 
 this = sys.modules[__name__]
 

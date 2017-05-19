@@ -1,4 +1,4 @@
-from game.configuration.definitions import OperatorType, Tag
+from game.definitions import OperatorType, Tag
 from game.operation.operations.modify_attribute import ModifyAttribute
 from game.systems.phase_handlers.phase_handler_base import PhaseHandlerBase
 

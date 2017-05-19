@@ -1,4 +1,4 @@
-from game.configuration.definitions import PhaseTypeName
+from game.definitions import PhaseTypeName
 from game.gameflow.actions.base import ActionBase
 from game.gameflow.actions.redraw import RedrawAction
 from game.gameflow.actions.score import ScoreAction

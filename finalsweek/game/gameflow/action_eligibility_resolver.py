@@ -1,4 +1,4 @@
-from game.configuration.definitions import PhaseTypeName
+from game.definitions import PhaseTypeName
 from game.exceptions import TurnValidationException
 from game.gameflow.actions.action_card import ActionCardAction
 from game.gameflow.actions.base import ActionBase

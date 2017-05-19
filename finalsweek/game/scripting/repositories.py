@@ -1,4 +1,4 @@
-from game.configuration.definitions import Tag
+from game.definitions import Tag
 
 
 class ScriptContextRepository(object):

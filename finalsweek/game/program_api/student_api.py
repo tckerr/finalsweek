@@ -1,8 +1,8 @@
-from game.configuration.definitions import OperationType
+from game.definitions import OperationType
 from game.operation.decorators import accepts_operation
 from game.scripting.api.program_child_api import ProgramChildApi
-from trace.logger import Logger
 from trace.definitions import LogLevel, LogType
+from trace.logger import Logger
 
 
 class StudentApi(ProgramChildApi):

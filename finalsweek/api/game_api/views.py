@@ -2,15 +2,13 @@ from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
-from game.configuration.factories.rules_seed_factory import RulesSeedFactory
+from configuration.factories.rules_seed_factory import RulesSeedFactory
 from game.document.persistence.connectors import GameDbConnector
 from game.exceptions import TurnValidationException
 from game.gameflow.actions.action_card import ActionCardAction
 from game.gameflow.actions.base import ActionBase
 from game.gameflow.actions.discipline import DisciplineAction
 from game.interface.game_interface import GameInterface
-
-
 # TODO: its own class
 from util.random import reseed
 

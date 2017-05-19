@@ -1,4 +1,4 @@
-from game.configuration.definitions import PhaseTypeName, StageTypeName
+from game.definitions import PhaseTypeName, StageTypeName
 from trace.definitions import LogLevel, LogType
 
 

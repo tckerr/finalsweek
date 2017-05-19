@@ -1,4 +1,4 @@
-from game.configuration.definitions import PhaseTypeName
+from game.definitions import PhaseTypeName
 from game.systems.phase_handlers.accumulation_phase_handler import AccumulationPhaseHandler
 from game.systems.phase_handlers.classtime_phase_handler import ClasstimePhaseHandler
 from game.systems.phase_handlers.dismissal_phase_handler import DismissalPhaseHandler

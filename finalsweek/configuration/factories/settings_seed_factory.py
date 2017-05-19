@@ -1,4 +1,4 @@
-from game.configuration.settings import base_settings
+from configuration.settings import base_settings
 
 
 class SettingsSeedFactory(object):

@@ -1,8 +1,8 @@
-from game.configuration.factories.card_template_seed_factory import CardTemplateSeedFactory
-from game.configuration.factories.game_definition_seed_factory import GameDefinitionSeedFactory
-from game.configuration.factories.mutation_template_seed_factory import MutationTemplateSeedFactory
-from game.configuration.factories.settings_seed_factory import SettingsSeedFactory
-from game.configuration.factories.student_info_seed_factory import StudentInfoSeedFactory
+from configuration.factories.card_template_seed_factory import CardTemplateSeedFactory
+from configuration.factories.game_definition_seed_factory import GameDefinitionSeedFactory
+from configuration.factories.mutation_template_seed_factory import MutationTemplateSeedFactory
+from configuration.factories.settings_seed_factory import SettingsSeedFactory
+from configuration.factories.student_info_seed_factory import StudentInfoSeedFactory
 
 
 class RulesSeedFactory(object):

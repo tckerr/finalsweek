@@ -1,4 +1,4 @@
-from game.configuration.definitions import Tag
+from game.definitions import Tag
 from game.operation.operations.modify_seat import ModifySeat
 from game.scripting.api.sandbox_api import SandboxApi
 

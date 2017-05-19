@@ -1,10 +1,10 @@
-from game.configuration.definitions import MutationGameflowBinding
+from game.definitions import MutationGameflowBinding
 from game.document.seeding.mutation_queue_seed_factory import MutationQueueFactory
 from game.operation.factories import MutationFactory
 from game.operation.operation_mutator import OperationMutator
 from game.scripting.api.program_child_api import ProgramChildApi
-from trace.logger import Logger
 from trace.definitions import LogLevel, LogType
+from trace.logger import Logger
 
 
 class MutationApi(ProgramChildApi):

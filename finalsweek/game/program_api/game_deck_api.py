@@ -1,8 +1,8 @@
-from game.configuration.definitions import OperationType, OperatorType
+from game.definitions import OperationType, OperatorType
 from game.operation.decorators import accepts_operation, accepts_operator
 from game.scripting.api.program_child_api import ProgramChildApi
-from trace.logger import Logger
 from trace.definitions import LogLevel, LogType
+from trace.logger import Logger
 
 
 # TODO: split action card and dismissal card APIs

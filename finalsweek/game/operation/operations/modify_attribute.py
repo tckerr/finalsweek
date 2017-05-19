@@ -1,4 +1,4 @@
-from game.configuration.definitions import OperatorType, OperationType
+from game.definitions import OperatorType, OperationType
 from game.operation.operations.operation import Operation
 
 

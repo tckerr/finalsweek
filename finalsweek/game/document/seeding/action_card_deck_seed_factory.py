@@ -1,4 +1,4 @@
-from game.configuration.definitions import CardTypeName
+from game.definitions import CardTypeName
 from util.random import random_id, shuffle
 
 

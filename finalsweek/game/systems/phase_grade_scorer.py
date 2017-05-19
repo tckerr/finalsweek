@@ -1,7 +1,7 @@
-from game.configuration.definitions import OperatorType, Tag
+from game.definitions import OperatorType, Tag
 from game.operation.operations.modify_attribute import ModifyAttribute
-from trace.logger import Logger
 from trace.definitions import LogLevel, LogType
+from trace.logger import Logger
 
 
 class PhaseGradeScorer(object):

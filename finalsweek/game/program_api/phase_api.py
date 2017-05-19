@@ -1,4 +1,4 @@
-from game.configuration.definitions import GameflowTypeMutationGameflowBindingMap
+from game.definitions import GameflowTypeMutationGameflowBindingMap
 from game.document.document_factories.phase_factory import PhaseFactory
 from game.operation.mutation_adapter import MutationAdapter
 from game.scripting.api.program_child_api import ProgramChildApi

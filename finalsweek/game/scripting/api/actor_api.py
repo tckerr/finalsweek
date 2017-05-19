@@ -1,4 +1,4 @@
-from game.configuration.definitions import Tag, OperatorType
+from game.definitions import Tag, OperatorType
 from game.operation.operations.modify_attribute import ModifyAttribute
 from game.scripting.api.sandbox_api import SandboxApi
 
