@@ -3,7 +3,7 @@ from game.operation.operations.operation import Operation
 
 
 class ModifyAttribute(Operation):
-    valid_operators = (OperatorType.Add, OperatorType.Set)
+    valid_operators = (OperatorType.Add, OperatorType.Subtract, OperatorType.Set)
 
     def __init__(self, operator, value, targeted_actor_id, tags) -> None:
         super().__init__(OperationType.ModifyAttribute, tags)
