@@ -1,4 +1,4 @@
-from game.models import StudentInfo
+from configuration.models import StudentInfo
 
 
 class StudentInfoAdapter(object):

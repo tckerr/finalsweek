@@ -1,4 +1,4 @@
-from game.models import Card
+from configuration.models import Card
 
 
 class CardTemplateAdapter(object):

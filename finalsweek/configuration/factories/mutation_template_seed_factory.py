@@ -1,5 +1,5 @@
 from configuration.factories.operation_modifier_seed_factory import OperationModifierSeedFactory
-from game.models import MutationTemplate
+from configuration.models import MutationTemplate
 
 
 class MutationTemplateAdapter(object):

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'corsheaders',
     'game',
+    'configuration',
     'api',
 ]
 ACCOUNT_EMAIL_VERIFICATION = "none"
