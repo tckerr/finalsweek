@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
-from configuration.factories.rules_seed_factory import RulesSeedFactory
+from configuration.factories.rules_factory import RulesFactory
 from game.document.persistence.connectors import GameDbConnector
 from game.exceptions import TurnValidationException
 from game.gameflow.actions.action_card import ActionCardAction
@@ -47,7 +47,7 @@ class GameInterfaceViewSet(viewsets.ViewSet):
 
 class GameViewSet(GameInterfaceViewSet):
     def create(self, request):
-        rules = RulesSeedFactory().create()
+        rules = RulesFactory().create()
 
         player_count = self.get_post_data(request, "player_count")
         seed = self.request.data.get("seed", None)

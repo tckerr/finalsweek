@@ -15,7 +15,7 @@ class CardTemplateAdapter(object):
         }
 
 
-class CardTemplateSeedFactory(object):
+class CardTemplateFactory(object):
     def __init__(self) -> None:
         super().__init__()
         self.card_template_adapter = CardTemplateAdapter()

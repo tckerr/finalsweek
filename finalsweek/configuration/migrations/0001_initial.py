@@ -13,9 +13,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('game', '0031_auto_20170519_1946')
-    ]
+    dependencies = []
 
     state_operations = [
         migrations.CreateModel(

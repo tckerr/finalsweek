@@ -1,10 +1,10 @@
-from configuration.factories.operation_modifier_seed_factory import OperationModifierSeedFactory
+from configuration.factories.operation_modifier_factory import OperationModifierSeedFactory
 from configuration.models import MutationTemplate
 
 
 class MutationTemplateAdapter(object):
     def __init__(self):
-        self.operation_modifier_seed_factory = OperationModifierSeedFactory()
+        self.operation_modifier_factory = OperationModifierSeedFactory()
 
     def adapt(self, data):
         return {
@@ -14,11 +14,11 @@ class MutationTemplateAdapter(object):
             "match_all":          data.match_all,
             "gameflow_binding":   data.gameflow_binding,
             "uses":               data.uses,
-            "operation_modifier": self.operation_modifier_seed_factory.create(data.operation_modifier)
+            "operation_modifier": self.operation_modifier_factory.create(data.operation_modifier)
         }
 
 
-class MutationTemplateSeedFactory(object):
+class MutationTemplateFactory(object):
     def __init__(self) -> None:
         super().__init__()
         self.mutation_template_adapter = MutationTemplateAdapter()

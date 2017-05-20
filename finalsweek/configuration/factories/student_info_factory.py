@@ -16,7 +16,7 @@ class StudentInfoAdapter(object):
         }
 
 
-class StudentInfoSeedFactory(object):
+class StudentInfoFactory(object):
     def __init__(self) -> None:
         super().__init__()
         self.student_info_adapter = StudentInfoAdapter()
